@@ -170,6 +170,25 @@ if (ivoryCard) {
   ivoryCard.insertAdjacentHTML("afterbegin",
     `<svg class="mandala" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg"><g>${petals}${petals2}<circle cx="260" cy="260" r="46" fill="none" stroke="#b08a3a" stroke-width="2"/><circle cx="260" cy="260" r="24" fill="none" stroke="#b08a3a" stroke-width="2"/></g></svg>`);
 }
+
+// Velvet Red: ornate gold mandala ornaments for two opposite corners
+const velvetCard = document.querySelector('.card[data-tpl="t-velvetred"]');
+if (velvetCard) {
+  const GOLD = "#e3c373";
+  const ring = (n, lift, rx, ry, sw) => Array.from({length:n}, (_, i) =>
+    `<ellipse cx="150" cy="${150 - lift}" rx="${rx}" ry="${ry}" fill="none" stroke="${GOLD}" stroke-width="${sw}" transform="rotate(${i * (360 / n)} 150 150)"/>`).join("");
+  const goldMandala = (cls) => `<svg class="mandala ${cls}" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><g opacity="0.95">
+      ${ring(32, 112, 3.5, 12, 1)}
+      ${ring(24, 92, 9, 42, 1.3)}
+      ${ring(16, 66, 8, 32, 1.3)}
+      ${ring(12, 40, 7, 20, 1.3)}
+      <circle cx="150" cy="150" r="120" fill="none" stroke="${GOLD}" stroke-width="1"/>
+      <circle cx="150" cy="150" r="106" fill="none" stroke="${GOLD}" stroke-width="1.4"/>
+      <circle cx="150" cy="150" r="22" fill="none" stroke="${GOLD}" stroke-width="1.3"/>
+      <circle cx="150" cy="150" r="8" fill="${GOLD}"/>
+    </g></svg>`;
+  velvetCard.insertAdjacentHTML("beforeend", goldMandala("top") + goldMandala("bottom"));
+}
 Object.keys(decor).forEach(tpl => {
   const card = document.querySelector(`.card[data-tpl="${tpl}"]`);
   ["c-tl","c-tr","c-bl","c-br"].forEach(pos => {
@@ -192,6 +211,7 @@ const templates = [
   { id:"t-ivory",    name:"Ivory Mandala", bg:"#f7f1e6" },
   { id:"t-pcroyal",  name:"Royal Peacock", bg:"linear-gradient(180deg,#0a3b6b,#0e6f8a)" },
   { id:"t-shivad",   name:"Divine Shiva",  bg:"linear-gradient(180deg,#d4eaf6,#aed4ec)" },
+  { id:"t-velvetred", name:"Velvet Red",   bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
 ];
 const tplWrap = document.getElementById("templates");
 const previewCap = document.getElementById("previewCap");
