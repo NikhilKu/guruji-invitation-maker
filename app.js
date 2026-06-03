@@ -241,6 +241,31 @@ if (mandirCard) {
     cluster("fl-tl") + cluster("fl-tr") + cluster("fl-bl") + cluster("fl-br") +
     diya("dy-l") + diya("dy-r") + lotus("lo-l") + lotus("lo-r"));
 }
+
+// Marigold Garland: a hanging genda-phool garland across the top
+const marigoldCard = document.querySelector('.card[data-tpl="t-marigold"]');
+if (marigoldCard) {
+  const bloom = (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})">
+    ${Array.from({length:12},(_,k)=>`<ellipse cx="0" cy="-11" rx="4.5" ry="9" fill="#f7b545" transform="rotate(${k*30})"/>`).join("")}
+    <circle r="10" fill="#ef8a1e"/>
+    ${Array.from({length:8},(_,k)=>`<circle cx="0" cy="-6" r="2.6" fill="#f9cd6e" transform="rotate(${k*45})"/>`).join("")}
+    <circle r="3.5" fill="#c2600e"/></g>`;
+  const leaf = (x, y, r) => `<ellipse cx="${x}" cy="${y}" rx="5" ry="11" fill="#3f8a4a" transform="rotate(${r} ${x} ${y})"/>`;
+  let g = `<path d="M2,16 Q215,46 428,16" fill="none" stroke="#3f8a4a" stroke-width="2"/>`;
+  for (let i = 0; i <= 9; i++) { const x = 16 + i*44; const y = 16 + Math.sin(i/9*Math.PI)*18; g += leaf(x-9,y+5,-28) + leaf(x+9,y+5,28) + bloom(x, y, 0.85 + (i%2)*0.18); }
+  marigoldCard.insertAdjacentHTML("afterbegin", `<svg class="garland" viewBox="0 0 430 66" xmlns="http://www.w3.org/2000/svg">${g}</svg>`);
+}
+
+// Celestial Night: scattered gold stars, faint dots, and a crescent moon
+const celestialCard = document.querySelector('.card[data-tpl="t-celestial"]');
+if (celestialCard) {
+  const star = (x, y, r, o) => `<path transform="translate(${x},${y})" d="M0,${-r} L${(r*0.3).toFixed(1)},${(-r*0.3).toFixed(1)} L${r},0 L${(r*0.3).toFixed(1)},${(r*0.3).toFixed(1)} L0,${r} L${(-r*0.3).toFixed(1)},${(r*0.3).toFixed(1)} L${-r},0 L${(-r*0.3).toFixed(1)},${(-r*0.3).toFixed(1)} Z" fill="#ecca72" opacity="${o}"/>`;
+  const pts = [[42,72,5],[110,44,3],[384,64,4.5],[330,116,3],[58,300,4],[392,250,4],[34,470,3],[400,440,5],[78,560,4],[360,584,4],[300,170,3],[140,210,2.5],[300,520,3],[150,620,3],[230,92,2.5]];
+  let s = pts.map(([x,y,r]) => star(x, y, r, (0.45 + Math.random()*0.45).toFixed(2))).join("");
+  s += Array.from({length:34},(_,i) => `<circle cx="${(17+i*131)%420+5}" cy="${(29+i*97)%650+8}" r="1.1" fill="#cfd8f0" opacity="0.55"/>`).join("");
+  s += `<g transform="translate(372,96)"><circle r="20" fill="#ecca72"/><circle cx="8" cy="-6" r="18" fill="#0d1631"/></g>`;
+  celestialCard.insertAdjacentHTML("afterbegin", `<svg class="sky" viewBox="0 0 430 680" xmlns="http://www.w3.org/2000/svg">${s}</svg>`);
+}
 Object.keys(decor).forEach(tpl => {
   const card = document.querySelector(`.card[data-tpl="${tpl}"]`);
   ["c-tl","c-tr","c-bl","c-br"].forEach(pos => {
@@ -255,6 +280,11 @@ document.querySelectorAll(".card").forEach(card => {
 
 /* ===== App logic ===== */
 const templates = [
+  { id:"t-emerald",  name:"Emerald Royal",  bg:"radial-gradient(circle at 50% 22%,#136045,#073a27)" },
+  { id:"t-amethyst", name:"Royal Amethyst", bg:"radial-gradient(circle at 50% 22%,#5e2f80,#2b1340)" },
+  { id:"t-marigold", name:"Marigold Garland", bg:"linear-gradient(180deg,#ffe6ad,#ffd680)" },
+  { id:"t-celestial", name:"Celestial Night", bg:"radial-gradient(circle at 50% 20%,#243a72,#0a1230)" },
+  { id:"t-sandal",   name:"Sandal Minimal", bg:"#f4ecdd" },
   { id:"t-mandir",     name:"Floral Mandir",   bg:"linear-gradient(165deg,#e7accb,#e2a0c0)" },
   { id:"t-roses",      name:"Rose Garden",     bg:"url('assets/guruji/roses-bg.jpg') center/cover" },
   { id:"t-velvetred", name:"Velvet Butterflies", bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
