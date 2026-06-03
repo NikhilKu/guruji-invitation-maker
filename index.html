@@ -59,7 +59,7 @@
     <label>Langar / follow-up note</label>
     <input data-bind="langar" value="Followed by Langar Prasad" />
     <label>Host names</label>
-    <input data-bind="names" value="Familie Sharma" />
+    <input data-bind="names" value="The Sample Family" />
     <label>Contact / RSVP</label>
     <input data-bind="phone" value="+31 6 12 34 56 78" />
 
@@ -100,7 +100,7 @@
         </div>
         <div class="venue" data-bind="venue"></div>
         <div class="langar" data-bind="langar"></div>
-        <div class="rsvp">Please RSVP <span data-bind="names"></span> at <span data-bind="phone"></span></div>
+        <div class="rsvp"><span data-bind="names"></span><br/>RSVP <span data-bind="phone"></span></div>
       </div>
     </div>
 
@@ -242,6 +242,27 @@
         <div class="venue" data-bind="venue"></div>
         <div class="names" data-bind="names"></div>
         <div class="phone">RSVP: <span data-bind="phone"></span></div>
+      </div>
+    </div>
+    <!-- ROSE GARDEN -->
+    <div class="card t-roses" data-tpl="t-roses">
+      <div class="rosepanel"></div>
+      <div class="content">
+        <div class="jai">Jai Guru Ji</div>
+        <div class="blessing" data-bind="blessing"></div>
+        <img class="ji-photo" data-photo style="display:none" />
+        <div class="title">Guru Ji Ka Satsang</div>
+        <div class="datebar">
+          <div class="side" data-bind="day"></div>
+          <div><div class="daynum" data-bind="daynum"></div><div class="yr" data-bind="year"></div></div>
+          <div class="side" data-bind="month"></div>
+        </div>
+        <div class="langar"><span data-bind="time"></span><br/><span data-bind="langar"></span></div>
+        <div class="vlabel">AT</div>
+        <div class="venue" data-bind="venue"></div>
+        <div class="welcome">We look forward to welcoming you</div>
+        <div class="names" data-bind="names"></div>
+        <div class="venue">RSVP: <span data-bind="phone"></span></div>
       </div>
     </div>
     </div><!-- /card-stage -->

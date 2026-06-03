@@ -219,6 +219,7 @@ const templates = [
   { id:"t-pcroyal",  name:"Royal Peacock", bg:"linear-gradient(180deg,#0a3b6b,#0e6f8a)" },
   { id:"t-shivad",   name:"Divine Shiva",  bg:"linear-gradient(180deg,#d4eaf6,#aed4ec)" },
   { id:"t-velvetred", name:"Velvet Butterflies", bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
+  { id:"t-roses",      name:"Rose Garden",     bg:"url('assets/guruji/roses-bg.jpg') center/cover" },
 ];
 const tplWrap = document.getElementById("templates");
 const previewCap = document.getElementById("previewCap");
@@ -281,7 +282,7 @@ dateInput.addEventListener("input", applyDate);
 applyDate();
 
 // ---------- State & elements ----------
-const STORAGE_KEY = "guruji-invite-v1";
+const STORAGE_KEY = "guruji-invite-v2";
 const downloadBtn = document.getElementById("download");
 const shareBtn    = document.getElementById("share");
 const resetBtn    = document.getElementById("reset");

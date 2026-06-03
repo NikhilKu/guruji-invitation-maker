@@ -54,7 +54,7 @@ textarea { resize:vertical; }
 .content { position:relative; z-index:2; height:100%; display:flex; flex-direction:column; align-items:center; text-align:center; padding:34px 38px; }
 .wm { position:absolute; right:12px; bottom:7px; z-index:6; font-family:"Cormorant Garamond",serif; font-size:10px; letter-spacing:.3px; font-style:italic; color:rgba(60,40,20,.4); pointer-events:none; }
 .t-midnight .wm, .t-peacock .wm { color:rgba(255,245,220,.5); }
-.ji-photo { object-fit:cover; background:#eee; }
+.ji-photo { object-fit:cover; object-position:center 22%; background:#eee; }
 .gold-text { background:linear-gradient(180deg,#caa24a,#9c7115); -webkit-background-clip:text; background-clip:text; color:transparent; }
 
 /* ---------- T1 : DIVINE GOLD ---------- */
@@ -332,6 +332,26 @@ textarea { resize:vertical; }
 .t-velvetred .divider i { color:#d8b256; font-size:11px; }
 .t-velvetred .dateplaque { margin-top:18px; padding:7px 18px; border:1px solid #d8b256; border-radius:3px; font-family:"Cinzel",serif; font-size:13px; letter-spacing:1.5px; color:#edd199; box-shadow:inset 0 0 0 3px rgba(216,178,86,.1); }
 .t-velvetred .wm { color:rgba(255,235,190,.5); }
+
+/* ---------- ROSE GARDEN (roses photo background; dark scrim keeps roses red + text legible) ---------- */
+.t-roses { background:#5e0c1c url('assets/guruji/roses-bg.jpg') center/cover; }
+.t-roses .rosepanel { position:absolute; inset:0; z-index:0; background:linear-gradient(180deg, rgba(38,2,10,.66), rgba(38,2,10,.40) 38%, rgba(38,2,10,.42) 62%, rgba(38,2,10,.70)); }
+.t-roses::after { content:""; position:absolute; inset:16px; border:1px solid rgba(232,201,122,.7); z-index:1; pointer-events:none; }
+.t-roses .content { padding:34px 40px 28px; z-index:2; text-shadow:0 1px 5px rgba(20,0,5,.66); }
+.t-roses .jai { font-family:"Playfair Display",serif; font-weight:700; font-size:19px; color:#ecca72; }
+.t-roses .blessing { font-family:"Cinzel",serif; font-size:11.5px; letter-spacing:.4px; color:#f4e8de; margin-top:10px; line-height:1.6; }
+.t-roses .ji-photo { width:126px; height:148px; object-fit:cover; margin-top:12px; border:4px solid #fff; box-shadow:0 4px 14px rgba(0,0,0,.5); }
+.t-roses .title { font-family:"Great Vibes",cursive; font-size:46px; color:#f7dca2; margin-top:10px; line-height:1; }
+.t-roses .datebar { display:flex; align-items:flex-end; justify-content:center; gap:16px; margin-top:10px; }
+.t-roses .datebar .side { font-family:"Cinzel",serif; font-size:14px; letter-spacing:1px; color:#f1e0d4; border-top:2px solid #e8c97a; padding-top:5px; }
+.t-roses .datebar .daynum { font-family:"Playfair Display",serif; font-weight:700; font-size:46px; color:#f7dca2; line-height:.85; }
+.t-roses .datebar .yr { font-family:"Playfair Display",serif; font-size:15px; color:#f1e0d4; }
+.t-roses .langar { font-weight:600; font-size:13.5px; color:#f4e8de; margin-top:10px; line-height:1.5; }
+.t-roses .vlabel { font-family:"Cinzel",serif; font-size:12px; letter-spacing:3px; color:#e8c97a; margin-top:10px; }
+.t-roses .venue { font-family:"Cinzel",serif; font-size:12.5px; letter-spacing:.4px; color:#f4e8de; line-height:1.6; margin-top:2px; }
+.t-roses .welcome { font-family:"Great Vibes",cursive; font-size:26px; color:#f7dca2; margin-top:10px; line-height:1; }
+.t-roses .names { font-family:"Playfair Display",serif; font-weight:700; font-size:18px; color:#f7dca2; margin-top:2px; }
+.t-roses .wm { color:rgba(255,235,200,.6); }
 
 /* ===================== PRO POLISH ===================== */
 :root { --brand:#7a4a12; --brand-2:#9a6018; --accent:#b8860b; }
