@@ -1,0 +1,400 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: "Cormorant Garamond", serif;
+  color: #2b2118;
+  background: #ece6da radial-gradient(1100px 520px at 50% -8%, #f6f0e3, rgba(246,240,227,0) 60%);
+  background-attachment: fixed;
+}
+header { text-align:center; padding:20px 16px 6px; }
+header h1 { font-family:"Cinzel",serif; font-size:24px; margin:0; color:#7a4a12; letter-spacing:1px; }
+header p { margin:4px 0 0; opacity:.7; }
+.layout { display:flex; flex-wrap:wrap; gap:26px; justify-content:center; padding:16px; max-width:1200px; margin:0 auto; align-items:flex-start; }
+.panel { background:#fff; border-radius:12px; padding:18px; box-shadow:0 6px 24px rgba(0,0,0,.08); width:370px; }
+.panel h2 { font-family:"Cinzel",serif; font-size:15px; margin:0 0 12px; color:#7a4a12; }
+.templates { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+.tpl-thumb {
+  width:78px; height:110px; border-radius:8px; cursor:pointer; border:3px solid transparent; flex-shrink:0;
+  display:flex; align-items:flex-end; justify-content:center; padding-bottom:6px;
+  font-family:"Cinzel",serif; font-size:9px; text-align:center; color:#5a3a14; box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.tpl-thumb.active { border-color:#b8860b; }
+label { display:block; font-size:14px; font-weight:600; margin:11px 0 4px; }
+input, textarea { width:100%; padding:9px 10px; border:1px solid #d8cfc0; border-radius:7px; font-family:inherit; font-size:15px; background:#fcfaf6; }
+textarea { resize:vertical; }
+.row2 { display:flex; gap:10px; } .row2 > div { flex:1; }
+.photo-gallery { display:flex; gap:10px; flex-wrap:wrap; }
+.pg-item { width:60px; height:60px; border-radius:8px; background-size:cover; background-position:center top; cursor:pointer; border:3px solid transparent; box-shadow:0 2px 6px rgba(0,0,0,.15); display:flex; align-items:center; justify-content:center; font-size:11px; text-align:center; color:#7a4a12; }
+.pg-item.pg-none { background:#f0ebe1; border:2px dashed #c9bda5; }
+.pg-item.active { border-color:#b8860b; }
+.btn { margin-top:18px; width:100%; padding:13px; border:none; border-radius:8px; background:#7a4a12; color:#fff; font-family:"Cinzel",serif; font-size:14px; cursor:pointer; letter-spacing:.5px; }
+.btn:hover { background:#9a6018; }
+.hint { font-size:12px; opacity:.6; margin-top:6px; text-align:center; }
+.preview-wrap { display:flex; flex-direction:column; align-items:center; width:430px; max-width:100%; }
+.preview-wrap h2 { font-family:"Cinzel",serif; color:#7a4a12; margin-bottom:2px; }
+/* Scaling stage: card stays 430x680 for crisp export; stage shrinks visually on small screens */
+.card-stage { --s:1; width:430px; height:680px; box-shadow:0 16px 44px rgba(50,35,12,.20); }
+.card-stage > .card { transform-origin:top left; transform:scale(var(--s)); }
+.card-stage { width:calc(430px * var(--s)); height:calc(680px * var(--s)); }
+
+/* ============ MOBILE ============ */
+@media (max-width:820px) {
+  .layout { flex-direction:column; align-items:center; gap:16px; padding:12px; }
+  .panel { width:100%; max-width:430px; }
+  header h1 { font-size:20px; }
+}
+
+/* ============ CARD BASE ============ */
+.card { width:430px; height:680px; position:relative; overflow:hidden; display:none; }
+.card.show { display:block; }
+.card .corner { position:absolute; width:200px; height:200px; pointer-events:none; }
+.card .c-tl { top:-6px; left:-6px; }
+.card .c-tr { top:-6px; right:-6px; transform:scaleX(-1); }
+.card .c-bl { bottom:-6px; left:-6px; transform:scaleY(-1); }
+.card .c-br { bottom:-6px; right:-6px; transform:scale(-1,-1); }
+.content { position:relative; z-index:2; height:100%; display:flex; flex-direction:column; align-items:center; text-align:center; padding:34px 38px; }
+.wm { position:absolute; right:12px; bottom:7px; z-index:6; font-family:"Cormorant Garamond",serif; font-size:10px; letter-spacing:.3px; font-style:italic; color:rgba(60,40,20,.4); pointer-events:none; }
+.t-midnight .wm, .t-peacock .wm { color:rgba(255,245,220,.5); }
+.ji-photo { object-fit:cover; background:#eee; }
+.gold-text { background:linear-gradient(180deg,#caa24a,#9c7115); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+/* ---------- T1 : DIVINE GOLD ---------- */
+.t-gold { background:radial-gradient(circle at 50% 20%, #fffdf6, #f3e6c8 70%, #e7d3a0); }
+.t-gold .om { font-size:42px; color:#a9802a; line-height:1; }
+.t-gold .jai { font-family:"Great Vibes",cursive; font-size:30px; color:#7a5410; margin-top:-2px; }
+.t-gold .cartouche { margin-top:14px; padding:18px 14px 20px; border-radius:48% 48% 8% 8%/30% 30% 8% 8%; position:relative; width:100%; }
+.t-gold .cartouche { border:2px solid #c8a23a; background:linear-gradient(180deg,#fffefb,#fdf6e6); box-shadow:0 4px 14px rgba(150,110,20,.18); }
+.t-gold .lotus-top { font-size:22px; color:#c79b32; }
+.t-gold .title { font-family:"Playfair Display",serif; font-weight:700; font-size:46px; line-height:1.02; margin:4px 0; }
+.t-gold .ji-photo { width:118px; height:150px; border-radius:8px; border:3px solid #c8a23a; margin:14px auto 0; box-shadow:0 4px 12px rgba(0,0,0,.2); }
+.t-gold .blessing { font-size:17px; line-height:1.4; margin-top:16px; color:#4a3415; }
+.t-gold .blessing b { color:#8a6012; }
+.t-gold .iconrow { display:flex; justify-content:space-between; width:100%; margin-top:20px; }
+.t-gold .iconrow .ic { flex:1; }
+.t-gold .iconrow .badge { width:42px; height:42px; border-radius:50%; background:linear-gradient(145deg,#d4ab3e,#9c7115); color:#fff; display:flex; align-items:center; justify-content:center; font-size:17px; margin:0 auto 6px; }
+.t-gold .iconrow .lbl { font-family:"Cinzel",serif; font-size:11px; letter-spacing:1px; color:#8a6012; }
+.t-gold .iconrow .val { font-size:14px; line-height:1.25; margin-top:2px; }
+.t-gold .hosts { margin-top:auto; }
+.t-gold .warm { font-style:italic; font-size:15px; color:#6a4a18; }
+.t-gold .names { font-family:"Playfair Display",serif; font-weight:700; font-size:21px; margin-top:4px; color:#5a3a10; }
+.t-gold .phone { font-size:15px; margin-top:8px; color:#5a3a10; } .t-gold .phone i { color:#a9802a; margin-right:6px; }
+
+/* ---------- T2 : LOTUS PINK ARCH ---------- */
+.t-pink { background:linear-gradient(160deg,#f4c5d6,#e9a7c0 50%,#f4c5d6); }
+.t-pink .arch { position:absolute; top:34px; left:34px; right:34px; bottom:34px; background:#fdf3f7; border-radius:140px 140px 14px 14px; z-index:1; box-shadow:inset 0 0 0 2px rgba(214,106,152,.25); }
+.t-pink .content { padding:48px 46px 30px; }
+.t-pink .ji-photo { width:120px; height:150px; border-radius:6px; border:2px solid #fff; box-shadow:0 4px 12px rgba(120,40,80,.25); }
+.t-pink .blessing { font-family:"Cormorant Garamond",serif; font-size:23px; color:#5a2a40; line-height:1.25; margin-top:18px; }
+.t-pink .title { font-family:"Great Vibes",cursive; font-size:48px; color:#b0316a; line-height:1; margin:6px 0; }
+.t-pink .datebar { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:14px; width:100%; }
+.t-pink .datebar .side { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#4a2a3a; border-top:1.5px solid #4a2a3a; border-bottom:1.5px solid #4a2a3a; padding:5px 4px; }
+.t-pink .datebar .month { font-family:"Cinzel",serif; font-size:14px; letter-spacing:2px; color:#4a2a3a; }
+.t-pink .datebar .daynum { font-family:"Playfair Display",serif; font-size:40px; color:#3a1a2a; border:2px solid #c97; border-top:none; border-radius:0 0 40px 40px; padding:0 16px 6px; line-height:1; }
+.t-pink .venue { font-family:"Cormorant Garamond",serif; font-size:21px; color:#4a2236; margin-top:22px; }
+.t-pink .langar { font-size:19px; color:#4a2236; margin-top:16px; }
+.t-pink .rsvp { font-size:19px; color:#4a2236; margin-top:auto; line-height:1.35; }
+
+/* ---------- T3 : SACRED LOTUS ---------- */
+.t-lotus { background:#f7f0e6; }
+.t-lotus .frame { position:absolute; inset:18px; border:1px solid #c9a98a; z-index:1; }
+.t-lotus .content { padding:46px 50px 36px; }
+.t-lotus .ji-photo { width:140px; height:175px; border-radius:10px; border:3px solid #fff; box-shadow:0 5px 16px rgba(120,70,40,.3); align-self:center; }
+.t-lotus .shabad { font-family:"Noto Sans Gurmukhi",sans-serif; font-size:18px; color:#8a2a2a; margin-top:20px; }
+.t-lotus .orn { color:#b06a4a; font-size:14px; margin:8px 0; letter-spacing:2px; }
+.t-lotus .blessing { font-family:"Cormorant Garamond",serif; font-size:20px; color:#5a4030; line-height:1.45; }
+.t-lotus .sec { margin-top:22px; }
+.t-lotus .sec .line { width:60px; height:1px; background:#c9a98a; margin:0 auto 12px; }
+.t-lotus .date { font-family:"Playfair Display",serif; font-size:24px; color:#7a2a2a; }
+.t-lotus .time { font-size:18px; color:#5a4030; margin-top:2px; }
+.t-lotus .note { font-size:17px; color:#7a2a2a; margin-top:4px; }
+.t-lotus .venue { font-family:"Playfair Display",serif; font-size:18px; color:#5a2a2a; margin-top:6px; } .t-lotus .venue i { color:#b04a2a; margin-right:6px; }
+.t-lotus .sub { font-size:16px; color:#6a5040; }
+.t-lotus .grat { font-family:"Playfair Display",serif; color:#8a3a2a; font-size:18px; }
+.t-lotus .names { font-family:"Playfair Display",serif; font-weight:600; font-size:20px; color:#4a2a2a; margin-top:4px; }
+.t-lotus .confirm { font-style:italic; font-size:18px; color:#8a3a2a; margin-top:auto; }
+
+/* ---------- T4 : CORAL PEACH ---------- */
+.t-coral { background:linear-gradient(150deg,#fff,#fbe0d4 45%,#f6c3ad); }
+.t-coral .sym { position:absolute; z-index:3; font-size:26px; color:#d4a64a; font-family:"Noto Sans Gurmukhi",serif; }
+.t-coral .sym.s1 { top:24px; left:26px; } .t-coral .sym.s2 { top:24px; right:26px; }
+.t-coral .sym.s3 { top:250px; left:20px; } .t-coral .sym.s4 { top:250px; right:20px; }
+.t-coral .photo-wrap { position:relative; margin-top:18px; }
+.t-coral .ji-photo { width:150px; height:150px; border-radius:50%; object-fit:cover; border:5px solid #fff; box-shadow:0 4px 14px rgba(150,70,50,.3); }
+.t-coral .jai { font-family:"Great Vibes",cursive; font-size:42px; color:#3a2a22; margin-top:18px; line-height:1; }
+.t-coral .blessing { font-weight:700; font-size:18px; color:#4a3328; margin-top:10px; line-height:1.4; }
+.t-coral .bigdate { font-family:"Playfair Display",serif; font-size:34px; color:#8a6a5a; margin-top:14px; }
+.t-coral .time { font-size:20px; color:#3a2a22; margin-top:6px; } .t-coral .time span { color:#9a6a5a; }
+.t-coral .langar { font-size:18px; color:#3a2a22; margin-top:6px; }
+.t-coral .vlabel { font-size:18px; color:#7a5a4a; margin-top:12px; }
+.t-coral .venue { font-size:17px; color:#5a4438; line-height:1.4; }
+.t-coral .names { font-size:17px; color:#7a5a4a; margin-top:10px; line-height:1.45; }
+
+/* ---------- T5 : ROYAL MAROON ARCH ---------- */
+.t-royal { background:#f3ead4; }
+.t-royal .arch { position:absolute; inset:16px; border:3px solid #7a1f2b; border-radius:120px 120px 10px 10px; z-index:1; }
+.t-royal .content { padding:46px 44px 30px; z-index:2; }
+.t-royal .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #c89b3c; box-shadow:0 3px 10px rgba(80,20,30,.3); }
+.t-royal .jai { font-family:"Cormorant Garamond",serif; font-weight:600; font-size:16px; color:#7a1f2b; margin-top:8px; }
+.t-royal .shabad { font-size:13px; color:#5a4030; margin-top:4px; line-height:1.5; }
+.t-royal .blessing { font-size:16px; color:#4a3528; margin-top:16px; line-height:1.4; }
+.t-royal .title { font-family:"Playfair Display",serif; font-weight:700; font-size:30px; color:#7a1f2b; margin-top:12px; }
+.t-royal .bigdate { font-family:"Cinzel",serif; font-weight:600; font-size:15px; letter-spacing:1px; color:#9a4a14; margin-top:14px; }
+.t-royal .langar { font-style:italic; font-size:15px; color:#5a4030; margin-top:8px; line-height:1.5; }
+.t-royal .vlabel { font-family:"Cinzel",serif; font-size:13px; letter-spacing:1px; color:#7a1f2b; margin-top:14px; }
+.t-royal .venue { font-size:16px; color:#4a3528; line-height:1.4; }
+.t-royal .names { font-size:16px; color:#7a1f2b; margin-top:10px; }
+.t-royal .palace { position:absolute; bottom:20px; left:0; right:0; text-align:center; font-size:30px; color:#c89b3c; z-index:2; }
+
+/* ---------- T6 : EMERALD GREEN ---------- */
+.t-green { background:#fbf6ea; }
+.t-green .topband { position:absolute; top:0; left:0; right:0; height:150px; background:#1f5b3a; z-index:0; clip-path:path('M0,0 H1000 V90 Q700,150 500,95 Q300,150 0,90 Z'); }
+.t-green .content { padding:30px 46px 30px; z-index:2; }
+.t-green .join { font-family:"Cinzel",serif; font-size:12px; letter-spacing:1px; color:#fff; margin-top:6px; }
+.t-green .shabad { font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; color:#fff; margin-top:10px; }
+.t-green .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #c89b3c; margin-top:18px; box-shadow:0 3px 10px rgba(0,0,0,.25); }
+.t-green .title { font-family:"Great Vibes",cursive; font-size:42px; color:#1f5b3a; margin-top:18px; line-height:1; }
+.t-green .blessing { font-style:italic; font-size:18px; color:#8a6a2a; margin-top:14px; line-height:1.4; }
+.t-green .on { font-family:"Great Vibes",cursive; font-size:26px; color:#8a6a2a; margin-top:10px; }
+.t-green .orn { color:#c89b3c; letter-spacing:3px; margin:6px 0; }
+.t-green .bigdate { font-size:18px; color:#8a6a2a; line-height:1.5; margin-top:4px; }
+.t-green .vlabel { font-family:"Great Vibes",cursive; font-size:30px; color:#1f5b3a; margin-top:12px; }
+.t-green .venue { font-size:18px; color:#8a6a2a; line-height:1.4; margin-top:4px; }
+
+/* ---------- T7 : BLUSH FLORAL ---------- */
+.t-blush { background:#fff; }
+.t-blush .content { padding:30px 44px; }
+.t-blush .jai { font-family:"Playfair Display",serif; font-weight:700; font-size:20px; color:#2a2a2a; }
+.t-blush .blessing { font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; color:#3a3a3a; margin-top:12px; line-height:1.6; }
+.t-blush .ji-photo { width:150px; height:170px; object-fit:cover; margin-top:16px; border:4px solid #d8a; box-shadow:6px 6px 0 #e8c2b8; transform:rotate(-3deg); }
+.t-blush .title { font-family:"Great Vibes",cursive; font-size:46px; color:#e0317a; margin-top:18px; line-height:1; }
+.t-blush .datebar { display:flex; align-items:flex-end; justify-content:center; gap:16px; margin-top:14px; }
+.t-blush .datebar .side { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#2a2a2a; border-top:2px solid #2a2a2a; padding-top:6px; }
+.t-blush .datebar .daynum { font-family:"Playfair Display",serif; font-weight:700; font-size:52px; color:#e0317a; line-height:.8; }
+.t-blush .datebar .yr { font-family:"Playfair Display",serif; font-size:16px; color:#2a2a2a; }
+.t-blush .langar { font-weight:700; font-size:15px; color:#2a2a2a; margin-top:14px; line-height:1.5; }
+.t-blush .vlabel { font-size:14px; color:#3a3a3a; margin-top:12px; }
+.t-blush .venue { font-family:"Cinzel",serif; font-size:13px; letter-spacing:.5px; color:#2a2a2a; line-height:1.6; }
+.t-blush .welcome { font-weight:700; font-size:18px; color:#e0317a; margin-top:14px; }
+.t-blush .names { font-weight:700; font-size:17px; color:#3a3a3a; margin-top:4px; }
+
+/* ---------- T8 : DIVINE SHIVA BLUE ---------- */
+.t-shiva { background:linear-gradient(180deg,#dcebf5,#c3def0 60%,#bcd9ee); }
+.t-shiva .topbar { position:absolute; top:0; left:0; right:0; height:90px; background:linear-gradient(180deg,#e8d3a0,#e8d3a0 70%,transparent); z-index:0; }
+.t-shiva .content { padding:30px 44px; }
+.t-shiva .bell { position:absolute; top:80px; font-size:30px; color:#9a7b3a; z-index:3; } .t-shiva .bell.l { left:30px; } .t-shiva .bell.r { right:30px; }
+.t-shiva .jai { font-family:"Cinzel",serif; font-weight:600; font-size:15px; letter-spacing:1px; color:#1a4a7a; }
+.t-shiva .shabad { font-family:"Noto Sans Gurmukhi",sans-serif; font-size:14px; color:#1a4a7a; margin-top:8px; line-height:1.6; }
+.t-shiva .blessing { font-family:"Cinzel",serif; font-weight:600; font-size:13px; letter-spacing:.5px; color:#1a4a7a; margin-top:10px; line-height:1.5; }
+.t-shiva .orn { color:#1a4a7a; margin:8px 0; }
+.t-shiva .title { font-family:"Great Vibes",cursive; font-size:44px; color:#3a6a2a; line-height:1; }
+.t-shiva .om { font-size:26px; color:#2a2a2a; margin-top:6px; }
+.t-shiva .shiva { font-size:58px; margin-top:4px; line-height:1; color:#3a7a9a; }
+.t-shiva .ji-photo { width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.25); }
+.t-shiva .faces { position:absolute; bottom:90px; width:100%; display:flex; justify-content:space-between; padding:0 24px; z-index:3; }
+.t-shiva .info { margin-top:auto; z-index:4; position:relative; }
+.t-shiva .bigdate { font-family:"Cinzel",serif; font-size:14px; color:#1a4a7a; line-height:1.5; }
+.t-shiva .venue { font-size:15px; color:#1a4a7a; margin-top:6px; line-height:1.4; }
+
+/* ---------- T9 : MIDNIGHT GOLD ---------- */
+.t-midnight { background:radial-gradient(circle at 50% 28%, #1c2c4e, #0c1424 75%); }
+.t-midnight .frame { position:absolute; inset:16px; border:1.5px solid #c9a24a; z-index:1; }
+.t-midnight .frame::after { content:""; position:absolute; inset:6px; border:1px solid rgba(201,162,74,.45); }
+.t-midnight .content { padding:44px 44px 32px; z-index:2; }
+.t-midnight .om { font-size:34px; color:#d8b65a; line-height:1; }
+.t-midnight .jai { font-family:"Cinzel",serif; font-size:15px; letter-spacing:4px; color:#d8b65a; margin-top:6px; }
+.t-midnight .ji-photo { width:128px; height:128px; border-radius:50%; object-fit:cover; border:3px solid #c9a24a; margin-top:18px; box-shadow:0 0 0 6px rgba(201,162,74,.15); }
+.t-midnight .title { font-family:"Playfair Display",serif; font-weight:700; font-size:42px; margin-top:16px; line-height:1.05; background:linear-gradient(180deg,#f2dca0,#c9a24a); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.t-midnight .orn { color:#c9a24a; letter-spacing:4px; margin:10px 0; }
+.t-midnight .blessing { font-size:17px; line-height:1.5; color:#e8e0cc; margin-top:6px; }
+.t-midnight .bigdate { font-family:"Cinzel",serif; font-size:16px; letter-spacing:1px; color:#d8b65a; margin-top:18px; }
+.t-midnight .time { font-size:16px; color:#cdc4ad; margin-top:6px; font-style:italic; }
+.t-midnight .venue { font-size:16px; color:#e8e0cc; line-height:1.4; margin-top:14px; }
+.t-midnight .names { font-family:"Playfair Display",serif; font-size:19px; color:#d8b65a; margin-top:auto; }
+.t-midnight .phone { font-size:15px; color:#cdc4ad; margin-top:4px; }
+
+/* ---------- T10 : PEACOCK TEAL ---------- */
+.t-peacock { background:linear-gradient(165deg,#0d6b66,#0a4f55 60%,#0d6b66); }
+.t-peacock .panel { position:absolute; inset:26px; background:linear-gradient(180deg,#fffdf7,#fbf3e2); border-radius:10px; z-index:1; box-shadow:0 0 0 2px #c9a24a, inset 0 0 0 5px #fffdf7; }
+.t-peacock .content { padding:46px 46px 34px; z-index:2; }
+.t-peacock .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#0d6b66; }
+.t-peacock .ji-photo { width:124px; height:124px; border-radius:50%; object-fit:cover; border:4px solid #c9a24a; margin-top:14px; box-shadow:0 4px 12px rgba(10,60,60,.3); }
+.t-peacock .title { font-family:"Great Vibes",cursive; font-size:48px; color:#0d6b66; margin-top:14px; line-height:1; }
+.t-peacock .orn { color:#c9a24a; letter-spacing:4px; margin:8px 0; }
+.t-peacock .blessing { font-size:18px; line-height:1.45; color:#3a4a48; margin-top:4px; }
+.t-peacock .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#9a6a14; margin-top:16px; }
+.t-peacock .time { font-size:17px; color:#3a4a48; margin-top:4px; }
+.t-peacock .venue { font-size:17px; color:#3a4a48; line-height:1.4; margin-top:14px; }
+.t-peacock .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#0d6b66; margin-top:12px; }
+.t-peacock .phone { font-size:15px; color:#6a5a3a; margin-top:4px; }
+
+/* ---------- T11 : ROSE GOLD ---------- */
+.t-rose { background:linear-gradient(155deg,#fffafb,#fbe9ec 60%,#f6dde2); }
+.t-rose .hex { position:absolute; inset:0; z-index:1; }
+.t-rose .content { padding:50px 50px 36px; z-index:2; }
+.t-rose .jai { font-family:"Cinzel",serif; font-size:13px; letter-spacing:4px; color:#b76e79; }
+.t-rose .ji-photo { width:140px; height:160px; object-fit:cover; margin-top:18px; border:1px solid #d89aa4; padding:6px; background:#fff; box-shadow:0 6px 18px rgba(150,90,100,.18); }
+.t-rose .title { font-family:"Great Vibes",cursive; font-size:50px; color:#b76e79; margin-top:18px; line-height:1; }
+.t-rose .orn { color:#cf9aa6; letter-spacing:6px; margin:10px 0; font-size:13px; }
+.t-rose .blessing { font-size:18px; line-height:1.5; color:#6a4a52; margin-top:4px; }
+.t-rose .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:2px; color:#a85c68; margin-top:18px; }
+.t-rose .time { font-size:17px; color:#6a4a52; font-style:italic; margin-top:4px; }
+.t-rose .venue { font-size:16px; color:#6a4a52; line-height:1.4; margin-top:14px; }
+.t-rose .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#b76e79; margin-top:12px; }
+.t-rose .phone { font-size:15px; color:#8a6a72; margin-top:4px; }
+
+/* ---------- T12 : IVORY MANDALA ---------- */
+.t-ivory { background:#f7f1e6; }
+.t-ivory .mandala { position:absolute; top:50%; left:50%; width:520px; height:520px; transform:translate(-50%,-50%); opacity:.10; z-index:0; }
+.t-ivory .frame { position:absolute; inset:18px; border:2px double #b08a3a; z-index:1; }
+.t-ivory .content { padding:46px 48px 34px; z-index:2; }
+.t-ivory .om { font-size:30px; color:#b08a3a; }
+.t-ivory .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#7a3a3a; margin-top:4px; }
+.t-ivory .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid #b08a3a; margin-top:14px; box-shadow:0 0 0 5px rgba(176,138,58,.18); }
+.t-ivory .title { font-family:"Playfair Display",serif; font-weight:700; font-size:36px; color:#7a3a3a; margin-top:14px; }
+.t-ivory .orn { color:#b08a3a; letter-spacing:4px; margin:8px 0; }
+.t-ivory .blessing { font-size:17px; line-height:1.5; color:#5a4636; margin-top:4px; }
+.t-ivory .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#9a5a2a; margin-top:16px; }
+.t-ivory .time { font-size:17px; color:#5a4636; margin-top:4px; }
+.t-ivory .venue { font-size:16px; color:#5a4636; line-height:1.4; margin-top:14px; }
+.t-ivory .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#7a3a3a; margin-top:12px; }
+.t-ivory .phone { font-size:15px; color:#7a5a4a; margin-top:4px; }
+
+/* ---------- LUXE BASE (blue / purple / velvet) ---------- */
+.lux .frame { position:absolute; inset:16px; border:1.5px solid var(--gold); z-index:1; }
+.lux .frame::after { content:""; position:absolute; inset:6px; border:1px solid rgba(255,220,140,.4); }
+.lux .content { padding:44px 44px 32px; z-index:2; }
+.lux .om { font-size:34px; color:var(--gold); line-height:1; }
+.lux .jai { font-family:"Cinzel",serif; font-size:15px; letter-spacing:4px; color:var(--gold); margin-top:6px; }
+.lux .ji-photo { width:128px; height:128px; border-radius:50%; object-fit:cover; border:3px solid var(--gold); margin-top:18px; box-shadow:0 0 0 6px rgba(255,220,140,.14); }
+.lux .title { font-family:"Playfair Display",serif; font-weight:700; font-size:42px; margin-top:16px; line-height:1.05; background:linear-gradient(180deg,#f6e3ad,var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.lux .orn { color:var(--gold); letter-spacing:4px; margin:10px 0; }
+.lux .blessing { font-size:17px; line-height:1.5; color:#efe7d6; margin-top:6px; }
+.lux .bigdate { font-family:"Cinzel",serif; font-size:16px; letter-spacing:1px; color:var(--gold); margin-top:18px; }
+.lux .time { font-size:16px; color:#d6cdb6; margin-top:6px; font-style:italic; }
+.lux .venue { font-size:16px; color:#efe7d6; line-height:1.4; margin-top:14px; }
+.lux .names { font-family:"Playfair Display",serif; font-size:19px; color:var(--gold); margin-top:auto; }
+.lux .phone { font-size:15px; color:#d6cdb6; margin-top:4px; }
+.lux .wm { color:rgba(255,245,220,.5); }
+.t-blue   { --gold:#c9a24a; background:radial-gradient(circle at 50% 24%, #1a3e7a, #0a1a3c 78%); }
+.t-purple { --gold:#dab65e; background:radial-gradient(circle at 50% 24%, #45236e, #1d0f36 78%); }
+.t-velvet { --gold:#e6c069; background:radial-gradient(circle at 50% 24%, #7a1422, #3a0a12 78%); }
+
+/* ---------- ROYAL PEACOCK ---------- */
+.t-pcroyal { background:linear-gradient(180deg,#0a3b6b,#0e6f8a 58%,#0a3b6b); }
+.t-pcroyal .panel { position:absolute; inset:24px; background:linear-gradient(180deg,#fffdf7,#fbf2df); border-radius:12px; z-index:1; box-shadow:0 0 0 2px #c9a24a; }
+.t-pcroyal .content { padding:42px 46px 30px; z-index:3; position:relative; }
+.t-pcroyal .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#0d5b8f; }
+.t-pcroyal .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #c9a24a; margin-top:12px; box-shadow:0 4px 12px rgba(10,40,70,.3); }
+.t-pcroyal .title { font-family:"Great Vibes",cursive; font-size:46px; color:#0d5b8f; margin-top:12px; line-height:1; }
+.t-pcroyal .orn { color:#c9a24a; letter-spacing:4px; margin:6px 0; }
+.t-pcroyal .blessing { font-size:17px; line-height:1.45; color:#34485a; margin-top:4px; }
+.t-pcroyal .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#9a6a14; margin-top:14px; }
+.t-pcroyal .time { font-size:16px; color:#34485a; margin-top:4px; }
+.t-pcroyal .venue { font-size:16px; color:#34485a; line-height:1.4; margin-top:12px; }
+.t-pcroyal .names { font-family:"Playfair Display",serif; font-weight:600; font-size:18px; color:#0d5b8f; margin-top:10px; }
+.t-pcroyal .phone { font-size:14px; color:#6a5a3a; margin-top:3px; }
+.t-pcroyal .peacock { position:absolute; width:300px; height:auto; z-index:2; mix-blend-mode:multiply; opacity:.55; }
+.t-pcroyal .peacock.l { bottom:90px; left:-70px; } .t-pcroyal .peacock.r { bottom:-20px; right:-70px; }
+
+/* ---------- DIVINE SHIVA (both sides) ---------- */
+.t-shivad { background:linear-gradient(180deg,#cfe6f4,#e4f1fa 58%,#fbfdff); }
+.t-shivad .frame { position:absolute; inset:16px; border:2px solid #2a6a9a; z-index:1; border-radius:6px; }
+.t-shivad .content { padding:36px 54px 150px; z-index:3; }
+.t-shivad .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#1a4a7a; }
+.t-shivad .shabad { font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; color:#1a4a7a; margin-top:6px; }
+.t-shivad .ji-photo { width:118px; height:118px; border-radius:50%; object-fit:cover; border:4px solid #c9a24a; margin-top:12px; box-shadow:0 4px 12px rgba(20,60,100,.25); }
+.t-shivad .title { font-family:"Great Vibes",cursive; font-size:44px; color:#1f6a4a; margin-top:10px; line-height:1; }
+.t-shivad .orn { color:#2a6a9a; letter-spacing:3px; margin:6px 0; }
+.t-shivad .blessing { font-family:"Cinzel",serif; font-weight:600; font-size:12px; letter-spacing:.3px; color:#1a4a7a; margin-top:6px; line-height:1.6; }
+.t-shivad .bigdate { font-family:"Cinzel",serif; font-size:14px; letter-spacing:1px; color:#1a4a7a; margin-top:12px; }
+.t-shivad .time { font-size:16px; color:#223344; margin-top:4px; }
+.t-shivad .venue { font-size:15px; color:#223344; line-height:1.4; margin-top:10px; }
+.t-shivad .names { font-family:"Playfair Display",serif; font-weight:600; font-size:18px; color:#1f6a4a; margin-top:10px; }
+.t-shivad .phone { font-size:14px; color:#334455; margin-top:3px; }
+.t-shivad .shiva { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); width:170px; height:160px; object-fit:contain; z-index:2; mix-blend-mode:multiply; }
+
+/* ===================== PRO POLISH ===================== */
+:root { --brand:#7a4a12; --brand-2:#9a6018; --accent:#b8860b; }
+
+/* Branded header */
+header.site { padding:22px 16px 10px; }
+.brand { display:flex; align-items:center; justify-content:center; gap:14px; }
+.brand-mark {
+  width:48px; height:48px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:27px; color:#fff6df;
+  background:radial-gradient(circle at 35% 30%, #d4ab3e, #7a4a12);
+  box-shadow:0 3px 10px rgba(122,74,18,.35), inset 0 0 0 2px rgba(255,240,200,.45);
+}
+.brand-text { text-align:left; }
+header.site h1 { font-family:"Cinzel",serif; font-size:23px; margin:0; color:var(--brand); letter-spacing:.5px; }
+header.site p { margin:3px 0 0; font-size:15px; opacity:.72; }
+
+/* Numbered step headings */
+.panel > h2 { display:flex; align-items:center; gap:9px; margin:26px 0 12px; }
+.panel > h2:first-of-type { margin-top:4px; }
+.panel > h2 .step {
+  display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+  width:22px; height:22px; border-radius:50%; background:var(--brand); color:#fff;
+  font-family:"Cinzel",serif; font-size:12px; line-height:1;
+}
+
+/* Inputs: hover + focus */
+input, textarea, select { transition:border-color .15s, box-shadow .15s; }
+input:hover, textarea:hover { border-color:#c2b49a; }
+input:focus, textarea:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(184,134,11,.15); }
+input[type=file] { padding:7px 10px; font-size:13px; cursor:pointer; }
+
+/* Template thumb labels — readable on dark backgrounds */
+.tpl-thumb { align-items:flex-end; transition:transform .12s, box-shadow .12s; }
+.tpl-thumb:hover { transform:translateY(-2px); box-shadow:0 5px 14px rgba(0,0,0,.28); }
+.tpl-thumb span {
+  background:rgba(255,255,255,.92); color:#5a3a14; padding:2px 6px; border-radius:5px; max-width:90%;
+  font-family:"Cinzel",serif; font-size:9px; line-height:1.15; box-shadow:0 1px 3px rgba(0,0,0,.25);
+}
+
+/* Buttons */
+.btn { position:relative; display:flex; align-items:center; justify-content:center; gap:8px; transition:background .15s, transform .08s, box-shadow .15s; box-shadow:0 3px 10px rgba(122,74,18,.25); }
+.btn:active { transform:translateY(1px); }
+.btn:disabled { opacity:.6; cursor:default; box-shadow:none; }
+.btn-secondary { background:#137a3a; box-shadow:0 3px 10px rgba(19,122,58,.25); }
+.btn-secondary:hover { background:#15914a; }
+.action-row { display:flex; gap:10px; margin-top:18px; }
+.action-row .btn { margin-top:0; flex:1; }
+.btn-ghost { display:flex; align-items:center; justify-content:center; gap:7px; width:100%; margin-top:10px; padding:9px; border:1px solid #d8cfc0; border-radius:8px; background:transparent; color:#6a553a; font-family:inherit; font-size:13px; cursor:pointer; transition:background .12s, color .12s; }
+.btn-ghost:hover { background:#f3ede1; color:var(--brand); }
+.btn.loading .btn-label, .btn.loading > i { visibility:hidden; }
+.btn.loading::after { content:""; position:absolute; width:18px; height:18px; border-radius:50%; border:2.5px solid rgba(255,255,255,.4); border-top-color:#fff; animation:spin .7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* Segmented format control */
+.seg { display:flex; border:1px solid #d8cfc0; border-radius:8px; overflow:hidden; margin-top:4px; }
+.seg-btn { flex:1; padding:9px 0; border:none; background:#fcfaf6; color:#6a553a; font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; cursor:pointer; transition:background .12s, color .12s; }
+.seg-btn + .seg-btn { border-left:1px solid #e4dccd; }
+.seg-btn:hover:not(.active) { background:#f3ede1; }
+.seg-btn.active { background:var(--brand); color:#fff; }
+
+/* Toast */
+#toast { position:fixed; left:50%; bottom:26px; transform:translate(-50%,20px); background:#2b2118; color:#fff; padding:11px 20px; border-radius:24px; font-size:14px; box-shadow:0 8px 24px rgba(0,0,0,.28); opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:50; max-width:88vw; text-align:center; }
+#toast.show { opacity:1; transform:translate(-50%,0); }
+
+/* Footer */
+footer.site { text-align:center; padding:26px 16px 34px; color:#6a553a; font-size:13px; opacity:.85; }
+footer.site a { color:var(--brand); text-decoration:none; }
+footer.site a:hover { text-decoration:underline; }
+
+/* Live-preview caption (shows the active template name) */
+.preview-cap { margin:0 0 12px; min-height:18px; font-family:"Cormorant Garamond",serif; font-style:italic; font-size:15px; color:#8a6a3a; letter-spacing:.3px; }
+
+/* ---- Template overlap fixes (keep decorative art clear of text) ---- */
+.t-pcroyal .peacock.r { width:190px; right:-80px; bottom:-40px; opacity:.42; }
+.t-shivad .content { padding:36px 54px 128px; }
+.t-shivad .shiva { width:160px; height:120px; bottom:18px; }
+
+/* ---- Sticky preview on desktop: stays in view while the form scrolls ---- */
+@media (min-width:821px) {
+  .preview-wrap { position:sticky; top:16px; align-self:flex-start; width:430px; }
+}
+
+@media (max-width:820px) {
+  .brand { gap:10px; } header.site h1 { font-size:19px; } header.site p { font-size:13px; }
+  .action-row { flex-direction:column; }
+}
