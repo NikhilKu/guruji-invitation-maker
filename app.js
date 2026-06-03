@@ -218,7 +218,7 @@ const templates = [
   { id:"t-ivory",    name:"Ivory Mandala", bg:"#f7f1e6" },
   { id:"t-pcroyal",  name:"Royal Peacock", bg:"linear-gradient(180deg,#0a3b6b,#0e6f8a)" },
   { id:"t-shivad",   name:"Divine Shiva",  bg:"linear-gradient(180deg,#d4eaf6,#aed4ec)" },
-  { id:"t-velvetred", name:"Velvet Red",   bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
+  { id:"t-velvetred", name:"Velvet Butterflies", bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
 ];
 const tplWrap = document.getElementById("templates");
 const previewCap = document.getElementById("previewCap");
