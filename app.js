@@ -255,21 +255,21 @@ document.querySelectorAll(".card").forEach(card => {
 
 /* ===== App logic ===== */
 const templates = [
-  { id:"t-pink",  name:"Lotus Pink",   bg:"linear-gradient(160deg,#f4c5d6,#e9a7c0)" },
-  { id:"t-blush", name:"Blush Floral", bg:"linear-gradient(150deg,#fff,#fbe0e8)" },
-  { id:"t-midnight", name:"Midnight Gold", bg:"radial-gradient(circle,#1c2c4e,#0c1424)" },
-  { id:"t-peacock",  name:"Peacock Teal",  bg:"linear-gradient(165deg,#0d6b66,#0a4f55)" },
-  { id:"t-rose",     name:"Rose Gold",     bg:"linear-gradient(155deg,#fffafb,#f6dde2)" },
-  { id:"t-ivory",    name:"Ivory Mandala", bg:"#f7f1e6" },
-  { id:"t-pcroyal",  name:"Royal Peacock", bg:"linear-gradient(180deg,#0a3b6b,#0e6f8a)" },
-  { id:"t-shivad",   name:"Divine Shiva",  bg:"linear-gradient(180deg,#d4eaf6,#aed4ec)" },
-  { id:"t-velvetred", name:"Velvet Butterflies", bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
-  { id:"t-roses",      name:"Rose Garden",     bg:"url('assets/guruji/roses-bg.jpg') center/cover" },
   { id:"t-mandir",     name:"Floral Mandir",   bg:"linear-gradient(165deg,#e7accb,#e2a0c0)" },
+  { id:"t-roses",      name:"Rose Garden",     bg:"url('assets/guruji/roses-bg.jpg') center/cover" },
+  { id:"t-velvetred", name:"Velvet Butterflies", bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
+  { id:"t-shivad",   name:"Divine Shiva",  bg:"linear-gradient(180deg,#d4eaf6,#aed4ec)" },
+  { id:"t-pcroyal",  name:"Royal Peacock", bg:"linear-gradient(180deg,#0a3b6b,#0e6f8a)" },
+  { id:"t-ivory",    name:"Ivory Mandala", bg:"#f7f1e6" },
+  { id:"t-rose",     name:"Rose Gold",     bg:"linear-gradient(155deg,#fffafb,#f6dde2)" },
+  { id:"t-peacock",  name:"Peacock Teal",  bg:"linear-gradient(165deg,#0d6b66,#0a4f55)" },
+  { id:"t-midnight", name:"Midnight Gold", bg:"radial-gradient(circle,#1c2c4e,#0c1424)" },
+  { id:"t-blush", name:"Blush Floral", bg:"linear-gradient(150deg,#fff,#fbe0e8)" },
+  { id:"t-pink",  name:"Lotus Pink",   bg:"linear-gradient(160deg,#f4c5d6,#e9a7c0)" },
 ];
 const tplWrap = document.getElementById("templates");
 const previewCap = document.getElementById("previewCap");
-let current = "t-pink";
+let current = templates[0].id;
 
 // Switch the visible template, sync the active thumb + caption
 function setActiveTemplate(id) {
