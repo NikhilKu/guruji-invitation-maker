@@ -188,7 +188,7 @@ if (velvetCard) {
       if (onPhoto(cx, cy) || onTitle(cx, cy)) cx = Math.random() < 0.5 ? 14 + Math.random() * 38 : 378 + Math.random() * 38;
       const w = Math.round(40 + Math.random() * 48);      // 40–88px wide
       const rot = Math.round(-32 + Math.random() * 64);   // gentle tilt -32°..32°
-      const op = (0.55 + Math.random() * 0.33).toFixed(2);
+      const op = (0.38 + Math.random() * 0.26).toFixed(2);
       html += `<img class="butterfly" src="assets/guruji/butterfly.png" alt="" `
         + `style="left:${cx.toFixed(0)}px;top:${cy.toFixed(0)}px;width:${w}px;`
         + `transform:translate(-50%,-50%) rotate(${rot}deg);opacity:${op}" />`;
