@@ -187,7 +187,7 @@ if (velvetCard) {
       <circle cx="150" cy="150" r="22" fill="none" stroke="${GOLD}" stroke-width="1.3"/>
       <circle cx="150" cy="150" r="8" fill="${GOLD}"/>
     </g></svg>`;
-  velvetCard.insertAdjacentHTML("beforeend", goldMandala("top") + goldMandala("bottom"));
+  velvetCard.insertAdjacentHTML("beforeend", goldMandala("tr") + goldMandala("bl"));
 }
 Object.keys(decor).forEach(tpl => {
   const card = document.querySelector(`.card[data-tpl="${tpl}"]`);

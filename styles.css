@@ -315,10 +315,10 @@ textarea { resize:vertical; }
 .t-velvetred { background:radial-gradient(circle at 50% 16%, #a4162f, #74111f 60%, #520713); }
 .t-velvetred .goldframe { position:absolute; inset:18px; border:1.5px solid #d8b256; z-index:1; }
 .t-velvetred .goldframe::after { content:""; position:absolute; inset:5px; border:1px solid rgba(216,178,86,.5); }
-.t-velvetred .mandala { position:absolute; left:50%; transform:translateX(-50%); z-index:1; width:300px; height:auto; pointer-events:none; }
-.t-velvetred .mandala.top { top:-70px; opacity:.5; }
-.t-velvetred .mandala.bottom { bottom:-152px; width:280px; opacity:.5; }
-.t-velvetred .content { padding:50px 46px 44px; z-index:2; }
+.t-velvetred .mandala { position:absolute; z-index:1; width:182px; height:auto; opacity:.45; pointer-events:none; }
+.t-velvetred .mandala.tr { top:-62px; right:-64px; }
+.t-velvetred .mandala.bl { bottom:-62px; left:-64px; }
+.t-velvetred .content { padding:54px 46px 50px; z-index:2; }
 .t-velvetred .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:4px; color:#e7c879; }
 .t-velvetred .ji-photo { width:116px; height:116px; border-radius:50%; object-fit:cover; border:3px solid #d8b256; margin-top:14px; box-shadow:0 0 0 5px rgba(216,178,86,.18); }
 .t-velvetred .title { font-family:"Great Vibes",cursive; font-size:50px; line-height:1; margin-top:12px; color:#ecca72; text-shadow:0 1px 2px rgba(0,0,0,.22); }
