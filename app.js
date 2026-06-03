@@ -256,15 +256,63 @@ if (marigoldCard) {
   marigoldCard.insertAdjacentHTML("afterbegin", `<svg class="garland" viewBox="0 0 430 66" xmlns="http://www.w3.org/2000/svg">${g}</svg>`);
 }
 
-// Celestial Night: scattered gold stars, faint dots, and a crescent moon
-const celestialCard = document.querySelector('.card[data-tpl="t-celestial"]');
-if (celestialCard) {
-  const star = (x, y, r, o) => `<path transform="translate(${x},${y})" d="M0,${-r} L${(r*0.3).toFixed(1)},${(-r*0.3).toFixed(1)} L${r},0 L${(r*0.3).toFixed(1)},${(r*0.3).toFixed(1)} L0,${r} L${(-r*0.3).toFixed(1)},${(r*0.3).toFixed(1)} L${-r},0 L${(-r*0.3).toFixed(1)},${(-r*0.3).toFixed(1)} Z" fill="#ecca72" opacity="${o}"/>`;
-  const pts = [[42,72,5],[110,44,3],[384,64,4.5],[330,116,3],[58,300,4],[392,250,4],[34,470,3],[400,440,5],[78,560,4],[360,584,4],[300,170,3],[140,210,2.5],[300,520,3],[150,620,3],[230,92,2.5]];
-  let s = pts.map(([x,y,r]) => star(x, y, r, (0.45 + Math.random()*0.45).toFixed(2))).join("");
-  s += Array.from({length:34},(_,i) => `<circle cx="${(17+i*131)%420+5}" cy="${(29+i*97)%650+8}" r="1.1" fill="#cfd8f0" opacity="0.55"/>`).join("");
-  s += `<g transform="translate(372,96)"><circle r="20" fill="#ecca72"/><circle cx="8" cy="-6" r="18" fill="#0d1631"/></g>`;
-  celestialCard.insertAdjacentHTML("afterbegin", `<svg class="sky" viewBox="0 0 430 680" xmlns="http://www.w3.org/2000/svg">${s}</svg>`);
+// Royal Mandap: a hanging toran (leaf + marigold bandanwar) + ornate gold side borders
+const mandapCard = document.querySelector('.card[data-tpl="t-mandap"]');
+if (mandapCard) {
+  const mari = (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})">${Array.from({length:10},(_,k)=>`<circle cx="0" cy="-6" r="3.2" fill="#f3a01e" transform="rotate(${k*36})"/>`).join("")}<circle r="5" fill="#e07a12"/><circle r="2" fill="#b85a0e"/></g>`;
+  let t = `<path d="M4,8 Q108,40 215,14 Q322,40 426,8" fill="none" stroke="#e0bd5e" stroke-width="2.5"/>`;
+  for (let i = 0; i <= 26; i++) { const x = 10 + i*16; t += `<path d="M${x},12 Q${x-4.5},27 ${x},36 Q${x+4.5},27 ${x},12Z" fill="#2f7a3a" stroke="#1f5a28" stroke-width="0.6"/>`; }
+  for (let i = 0; i <= 6; i++) { const x = 33 + i*60; t += `<line x1="${x}" y1="14" x2="${x}" y2="42" stroke="#caa84a" stroke-width="1"/>` + mari(x, 48, 1.05); }
+  mandapCard.insertAdjacentHTML("afterbegin", `<svg class="toran" viewBox="0 0 430 66" xmlns="http://www.w3.org/2000/svg">${t}</svg>`);
+  const side = (cls) => `<svg class="mandap-side ${cls}" viewBox="0 0 26 600" xmlns="http://www.w3.org/2000/svg">
+    <line x1="13" y1="6" x2="13" y2="594" stroke="#d8b04a" stroke-width="2"/>
+    <line x1="20" y1="6" x2="20" y2="594" stroke="#d8b04a" stroke-width="1" opacity=".55"/>
+    ${Array.from({length:13},(_,i)=>`<g transform="translate(13,${26+i*45})"><path d="M0,-7 L7,0 L0,7 L-7,0Z" fill="#e0bd5e" stroke="#b8902a" stroke-width="0.7"/><circle r="1.8" fill="#7a1228"/></g>`).join("")}
+  </svg>`;
+  mandapCard.insertAdjacentHTML("beforeend", side("ms-l") + side("ms-r"));
+}
+
+// Divine Aura: a golden sunrise/prabhavali fan of rays behind the photo
+const auraCard = document.querySelector('.card[data-tpl="t-aura"]');
+if (auraCard) {
+  let r = "";
+  for (let a = -130; a <= 130; a += 10) {
+    const long = Math.abs(a) < 65; const len = long ? 158 : 118; const w = long ? 5 : 3.5;
+    r += `<path d="M0,-34 L${w},${-len} L${-w},${-len} Z" fill="#e8bb50" opacity="${a % 20 === 0 ? 0.85 : 0.5}" transform="rotate(${a})"/>`;
+  }
+  auraCard.insertAdjacentHTML("afterbegin", `<svg class="rays" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg"><g transform="translate(160,160)">${r}</g></svg>`);
+}
+
+// Lotus Pond: pink lotuses rising from a serene pond along the bottom
+const pondCard = document.querySelector('.card[data-tpl="t-lotuspond"]');
+if (pondCard) {
+  const pad = (x, y, rx, rot) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${(rx*0.4).toFixed(1)}" fill="#3f8a6a" stroke="#2f6a50" stroke-width="1" transform="rotate(${rot} ${x} ${y})"/>`;
+  const lotus = (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})">
+    <g fill="#e98ab4" stroke="#d96fa0" stroke-width="1.2">
+      <ellipse cx="0" cy="-22" rx="9" ry="26"/>
+      <ellipse cx="0" cy="-20" rx="8" ry="22" transform="rotate(32)"/><ellipse cx="0" cy="-20" rx="8" ry="22" transform="rotate(-32)"/>
+      <ellipse cx="0" cy="-17" rx="7" ry="18" transform="rotate(62)"/><ellipse cx="0" cy="-17" rx="7" ry="18" transform="rotate(-62)"/></g>
+    <g fill="#f5b9d3" stroke="#e98ab4" stroke-width="0.9">
+      <ellipse cx="0" cy="-17" rx="6" ry="19"/><ellipse cx="0" cy="-15" rx="5" ry="15" transform="rotate(22)"/><ellipse cx="0" cy="-15" rx="5" ry="15" transform="rotate(-22)"/></g></g>`;
+  let p = `<path d="M0,634 Q215,622 430,634 L430,680 L0,680 Z" fill="#cfe4ea" opacity="0.65"/>`;
+  p += `<path d="M28,628 Q120,622 210,628" fill="none" stroke="#b3d2da" stroke-width="1.5" opacity=".7"/><path d="M226,635 Q320,629 408,635" fill="none" stroke="#b3d2da" stroke-width="1.5" opacity=".7"/>`;
+  p += pad(150,634,24,8) + pad(300,632,24,-8) + pad(70,638,34,-6) + pad(360,638,34,6) + pad(215,646,42,0);
+  p += lotus(150,636,0.8) + lotus(300,634,0.8) + lotus(70,630,1.15) + lotus(360,630,1.15) + lotus(215,620,1.5);
+  pondCard.insertAdjacentHTML("afterbegin", `<svg class="pond" viewBox="0 0 430 680" xmlns="http://www.w3.org/2000/svg">${p}</svg>`);
+}
+
+// Diya Glow: a row of lit oil lamps with warm halos along the bottom
+const diyaCard = document.querySelector('.card[data-tpl="t-diya"]');
+if (diyaCard) {
+  const diya = (x, y, s) => `<g transform="translate(${x},${y}) scale(${s})">
+    <ellipse cx="0" cy="6" rx="48" ry="34" fill="#f0a83a" opacity="0.16"/>
+    <path d="M-30,0 Q0,15 30,0 Q26,20 0,23 Q-26,20 -30,0Z" fill="#b5651d" stroke="#7a3d10" stroke-width="1"/>
+    <ellipse cx="0" cy="0" rx="29" ry="6.5" fill="#d98a2a"/>
+    <path d="M0,-2 Q-6,-18 0,-31 Q6,-18 0,-2Z" fill="#ffd24a"/>
+    <path d="M0,-4 Q-3,-14 0,-23 Q3,-14 0,-4Z" fill="#ff8a1e"/></g>`;
+  let g = "";
+  [60, 158, 256, 354].forEach((x, i) => { g += diya(x, 624, i === 1 || i === 2 ? 1.05 : 0.9); });
+  diyaCard.insertAdjacentHTML("afterbegin", `<svg class="diyas" viewBox="0 0 430 680" xmlns="http://www.w3.org/2000/svg">${g}</svg>`);
 }
 Object.keys(decor).forEach(tpl => {
   const card = document.querySelector(`.card[data-tpl="${tpl}"]`);
@@ -280,11 +328,11 @@ document.querySelectorAll(".card").forEach(card => {
 
 /* ===== App logic ===== */
 const templates = [
-  { id:"t-emerald",  name:"Emerald Royal",  bg:"radial-gradient(circle at 50% 22%,#136045,#073a27)" },
-  { id:"t-amethyst", name:"Royal Amethyst", bg:"radial-gradient(circle at 50% 22%,#5e2f80,#2b1340)" },
+  { id:"t-mandap",      name:"Royal Mandap",   bg:"linear-gradient(180deg,#7a1228,#560c1c)" },
+  { id:"t-aura",        name:"Divine Aura",    bg:"radial-gradient(circle at 50% 30%,#fff4de,#f1cf94)" },
+  { id:"t-lotuspond",   name:"Lotus Pond",     bg:"linear-gradient(180deg,#d8eaf0,#f0efe0)" },
+  { id:"t-diya",        name:"Diya Glow",      bg:"radial-gradient(circle at 50% 32%,#3a1810,#1d0b07)" },
   { id:"t-marigold", name:"Marigold Garland", bg:"linear-gradient(180deg,#ffe6ad,#ffd680)" },
-  { id:"t-celestial", name:"Celestial Night", bg:"radial-gradient(circle at 50% 20%,#243a72,#0a1230)" },
-  { id:"t-sandal",   name:"Sandal Minimal", bg:"#f4ecdd" },
   { id:"t-mandir",     name:"Floral Mandir",   bg:"linear-gradient(165deg,#e7accb,#e2a0c0)" },
   { id:"t-roses",      name:"Rose Garden",     bg:"url('assets/guruji/roses-bg.jpg') center/cover" },
   { id:"t-velvetred", name:"Velvet Butterflies", bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
