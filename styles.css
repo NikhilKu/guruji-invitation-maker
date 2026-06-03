@@ -85,8 +85,8 @@ textarea { resize:vertical; }
 .t-pink .ji-photo { width:120px; height:150px; border-radius:6px; border:2px solid #fff; box-shadow:0 4px 12px rgba(120,40,80,.25); }
 .t-pink .blessing { font-family:"Cormorant Garamond",serif; font-size:23px; color:#5a2a40; line-height:1.25; margin-top:18px; }
 .t-pink .title { font-family:"Great Vibes",cursive; font-size:48px; color:#b0316a; line-height:1; margin:6px 0; }
-.t-pink .datebar { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:14px; width:100%; }
-.t-pink .datebar .side { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#4a2a3a; border-top:1.5px solid #4a2a3a; border-bottom:1.5px solid #4a2a3a; padding:5px 4px; }
+.t-pink .datebar { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; column-gap:14px; margin-top:14px; width:100%; }
+.t-pink .datebar .side { justify-self:center; min-width:94px; text-align:center; font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#4a2a3a; border-top:1.5px solid #4a2a3a; border-bottom:1.5px solid #4a2a3a; padding:5px 4px; }
 .t-pink .datebar .month { font-family:"Cinzel",serif; font-size:14px; letter-spacing:2px; color:#4a2a3a; }
 .t-pink .datebar .daynum { font-family:"Playfair Display",serif; font-size:40px; color:#3a1a2a; border:2px solid #c97; border-top:none; border-radius:0 0 40px 40px; padding:0 16px 6px; line-height:1; }
 .t-pink .venue { font-family:"Cormorant Garamond",serif; font-size:21px; color:#4a2236; margin-top:22px; }
@@ -166,8 +166,8 @@ textarea { resize:vertical; }
 .t-blush .blessing { font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; color:#3a3a3a; margin-top:12px; line-height:1.6; }
 .t-blush .ji-photo { width:150px; height:170px; object-fit:cover; margin-top:16px; border:4px solid #d8a; box-shadow:6px 6px 0 #e8c2b8; transform:rotate(-3deg); }
 .t-blush .title { font-family:"Great Vibes",cursive; font-size:46px; color:#e0317a; margin-top:18px; line-height:1; }
-.t-blush .datebar { display:flex; align-items:flex-end; justify-content:center; gap:16px; margin-top:14px; }
-.t-blush .datebar .side { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#2a2a2a; border-top:2px solid #2a2a2a; padding-top:6px; }
+.t-blush .datebar { display:grid; grid-template-columns:1fr auto 1fr; align-items:flex-end; column-gap:16px; margin-top:14px; }
+.t-blush .datebar .side { justify-self:center; min-width:90px; text-align:center; font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#2a2a2a; border-top:2px solid #2a2a2a; padding-top:6px; }
 .t-blush .datebar .daynum { font-family:"Playfair Display",serif; font-weight:700; font-size:52px; color:#e0317a; line-height:.8; }
 .t-blush .datebar .yr { font-family:"Playfair Display",serif; font-size:16px; color:#2a2a2a; }
 .t-blush .langar { font-weight:700; font-size:15px; color:#2a2a2a; margin-top:14px; line-height:1.5; }
@@ -342,8 +342,8 @@ textarea { resize:vertical; }
 .t-roses .blessing { font-family:"Cinzel",serif; font-size:11.5px; letter-spacing:.4px; color:#f4e8de; margin-top:10px; line-height:1.6; }
 .t-roses .ji-photo { width:126px; height:148px; object-fit:cover; margin-top:12px; border:4px solid #fff; box-shadow:0 4px 14px rgba(0,0,0,.5); }
 .t-roses .title { font-family:"Great Vibes",cursive; font-size:46px; color:#f7dca2; margin-top:10px; line-height:1; }
-.t-roses .datebar { display:flex; align-items:flex-end; justify-content:center; gap:16px; margin-top:10px; }
-.t-roses .datebar .side { font-family:"Cinzel",serif; font-size:14px; letter-spacing:1px; color:#f1e0d4; border-top:2px solid #e8c97a; padding-top:5px; }
+.t-roses .datebar { display:grid; grid-template-columns:1fr auto 1fr; align-items:flex-end; column-gap:16px; margin-top:10px; }
+.t-roses .datebar .side { justify-self:center; min-width:90px; text-align:center; font-family:"Cinzel",serif; font-size:14px; letter-spacing:1px; color:#f1e0d4; border-top:2px solid #e8c97a; padding-top:5px; }
 .t-roses .datebar .daynum { font-family:"Playfair Display",serif; font-weight:700; font-size:46px; color:#f7dca2; line-height:.85; }
 .t-roses .datebar .yr { font-family:"Playfair Display",serif; font-size:15px; color:#f1e0d4; }
 .t-roses .langar { font-weight:600; font-size:13.5px; color:#f4e8de; margin-top:10px; line-height:1.5; }
@@ -373,8 +373,8 @@ textarea { resize:vertical; }
 .t-mandir .title { font-family:"Great Vibes",cursive; font-size:42px; color:#b0316a; line-height:1; margin-top:6px; }
 .t-mandir .datewrap { margin-top:10px; }
 .t-mandir .month { font-family:"Cinzel",serif; font-size:15px; letter-spacing:3px; color:#3a2a32; }
-.t-mandir .daterow { display:flex; align-items:flex-end; justify-content:center; gap:14px; margin-top:2px; }
-.t-mandir .daterow .dcol { font-family:"Cinzel",serif; font-size:14px; letter-spacing:1px; color:#3a2a32; border-top:1.5px solid #3a2a32; border-bottom:1.5px solid #3a2a32; padding:5px 2px; }
+.t-mandir .daterow { display:grid; grid-template-columns:1fr auto 1fr; align-items:flex-end; column-gap:14px; margin-top:2px; }
+.t-mandir .daterow .dcol { justify-self:center; min-width:90px; text-align:center; font-family:"Cinzel",serif; font-size:14px; letter-spacing:1px; color:#3a2a32; border-top:1.5px solid #3a2a32; border-bottom:1.5px solid #3a2a32; padding:5px 2px; }
 .t-mandir .daterow .dnum { font-family:"Playfair Display",serif; font-size:42px; color:#3a2a32; border:2px solid #3a2a32; border-top:none; border-radius:0 0 38px 38px; padding:0 14px 6px; line-height:1; }
 .t-mandir .venue { font-family:"Cormorant Garamond",serif; font-size:21px; color:#3a2630; margin-top:18px; }
 .t-mandir .langar { font-family:"Cormorant Garamond",serif; font-size:20px; color:#3a2630; margin-top:14px; }
