@@ -61,6 +61,10 @@ Hosted on **GitHub Pages**. Pushing to `main` triggers the workflow in `.github/
 
 ## License
 
-[MIT](LICENSE) © Nikhil Kumar
+The **source code** of this project is released under the [MIT License](LICENSE) © Nikhil Kumar. The MIT license covers the **code only**.
 
-Guru Ji photographs are used for devotional/illustrative purposes; please ensure you have the rights to any images you add.
+### Image disclaimer
+
+The photographs of Guru Ji bundled in `assets/` are **not** covered by the MIT license and are **not** owned by this project or its author. They remain the property of their respective copyright holders and are included **in good faith, purely for personal and devotional use** — no copyright or ownership over them is claimed, and no commercial use is intended. Any image you upload stays in your browser and remains yours.
+
+If you are a rights holder and would like an image removed, please open an issue or get in touch and it will be taken down promptly.
