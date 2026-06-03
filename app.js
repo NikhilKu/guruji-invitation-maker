@@ -355,16 +355,23 @@ function setActiveTemplate(id) {
   document.querySelector(".card.show")?.classList.remove("show");
   document.querySelector(`.card[data-tpl="${id}"]`).classList.add("show");
   current = id;
-  document.querySelectorAll(".tpl-thumb").forEach(n => n.classList.toggle("active", n.dataset.tpl === id));
+  document.querySelectorAll(".tpl-thumb").forEach(n => {
+    const on = n.dataset.tpl === id;
+    n.classList.toggle("active", on);
+    n.setAttribute("aria-pressed", on ? "true" : "false");
+  });
   const t = templates.find(x => x.id === id);
   if (previewCap) previewCap.textContent = t ? t.name : "";
 }
 
 templates.forEach(t => {
-  const el = document.createElement("div");
+  const el = document.createElement("button");
+  el.type = "button";
   el.className = "tpl-thumb" + (t.id === current ? " active" : "");
   el.style.background = t.bg;
   el.dataset.tpl = t.id;
+  el.setAttribute("aria-label", t.name + " template");
+  el.setAttribute("aria-pressed", t.id === current ? "true" : "false");
   const span = document.createElement("span"); span.textContent = t.name; el.appendChild(span);
   el.onclick = () => { setActiveTemplate(t.id); saveState(); };
   tplWrap.appendChild(el);
@@ -551,5 +558,6 @@ if (!restoreState()) {
   if (first) { first.classList.add("active"); setPhoto(first.dataset.src); }
 }
 setActiveTemplate(current);   // ensure caption + active states are in sync
+document.querySelectorAll(".card svg").forEach(s => s.setAttribute("aria-hidden", "true")); // decorative art
 fitStage();
 ready = true;   // enable autosave now that initial state is applied

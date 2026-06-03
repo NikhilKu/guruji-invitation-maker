@@ -551,3 +551,12 @@ footer.site a:hover { text-decoration:underline; }
   .brand { gap:10px; } header.site h1 { font-size:19px; } header.site p { font-size:13px; }
   .action-row { flex-direction:column; }
 }
+
+/* ---- Accessibility: button-based template & photo controls ---- */
+.tpl-thumb, .pg-item { appearance:none; -webkit-appearance:none; font-family:inherit; }
+.tpl-thumb { padding:0 0 5px; color:#5a3a14; }
+.pg-item { padding:0; }
+.tpl-thumb:focus-visible, .pg-item:focus-visible, .seg-btn:focus-visible,
+.btn:focus-visible, .btn-ghost:focus-visible {
+  outline:2px solid var(--accent); outline-offset:2px;
+}
