@@ -196,6 +196,51 @@ if (velvetCard) {
   }
   velvetCard.insertAdjacentHTML("beforeend", html);
 }
+
+// Floral Mandir: cream temple-arch panel + vector florals, gold diya strings & lotuses
+const mandirCard = document.querySelector('.card[data-tpl="t-mandir"]');
+if (mandirCard) {
+  const archPanel = `<svg class="archpanel" viewBox="0 0 430 680" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M28,250 C28,118 120,44 215,44 C310,44 402,118 402,250 L402,636 Q402,652 386,652 L44,652 Q28,652 28,636 Z"
+      fill="#fdf4f6" stroke="#e7b9cb" stroke-width="1.5"/></svg>`;
+
+  const flower = (x, y, s, pet, ctr) => `<g transform="translate(${x},${y}) scale(${s})">
+    <g fill="${pet}">${[0,72,144,216,288].map(a=>`<ellipse cx="0" cy="-11" rx="7.5" ry="12" transform="rotate(${a})"/>`).join("")}</g>
+    <circle r="4.5" fill="${ctr}"/></g>`;
+  const leaf = (x, y, r, s, c) => `<ellipse cx="${x}" cy="${y}" rx="${6*s}" ry="${13*s}" fill="${c}" transform="rotate(${r} ${x} ${y})"/>`;
+  const cluster = (cls) => `<svg class="floral ${cls}" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><g opacity=".97">
+      ${leaf(64,64,30,1.5,'#9ccf9c')}${leaf(102,46,-18,1.2,'#86c48a')}${leaf(44,102,62,1.2,'#9ccf9c')}${leaf(120,96,40,1,'#86c48a')}
+      ${flower(60,60,2.1,'#f0a0bf','#f6c14b')}
+      ${flower(108,48,1.4,'#f7c2d6','#f0a050')}
+      ${flower(48,108,1.35,'#f7c2d6','#f0a050')}
+      ${flower(104,104,1.05,'#fbd2e0','#f6c14b')}
+      <g fill="#ef8a3a">${[[132,72,5],[78,132,4.5],[140,128,4]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}"/>`).join("")}</g>
+    </g></svg>`;
+
+  const diya = (cls) => `<svg class="diya ${cls}" viewBox="0 0 60 360" xmlns="http://www.w3.org/2000/svg">
+    <line x1="30" y1="2" x2="30" y2="358" stroke="#d8a83a" stroke-width="1.5"/>
+    ${[44,300].map(cy=>`<g transform="translate(30,${cy})">
+      <g stroke="#d8a83a" stroke-width="1.4">${Array.from({length:12},(_,i)=>`<line x1="0" y1="0" x2="0" y2="-21" transform="rotate(${i*30})"/>`).join("")}</g>
+      <circle r="13" fill="#fff6dc" stroke="#d8a83a" stroke-width="1.5"/>
+      <path d="M-7,3 Q0,9 7,3 Q5,-2 0,-3 Q-5,-2 -7,3Z" fill="#e8a23a"/>
+      <path d="M0,-3 Q2,-10 0,-13 Q-2,-10 0,-3Z" fill="#f0642a"/></g>`).join("")}
+    ${[150,225].map(cy=>`<g transform="translate(30,${cy}) rotate(45)"><rect x="-5" y="-5" width="10" height="10" fill="#ecc25a" stroke="#c79320" stroke-width="1"/></g>`).join("")}
+    ${[110,265].map(cy=>`<circle cx="30" cy="${cy}" r="3" fill="#d8a83a"/>`).join("")}</svg>`;
+
+  const lotus = (cls) => `<svg class="lotus ${cls}" viewBox="0 0 120 92" xmlns="http://www.w3.org/2000/svg"><g transform="translate(60,76)">
+      <g fill="#e98ab4" stroke="#d96fa0" stroke-width="1.5">
+        <ellipse cx="0" cy="-28" rx="11" ry="32"/>
+        <ellipse cx="0" cy="-26" rx="10" ry="28" transform="rotate(34)"/><ellipse cx="0" cy="-26" rx="10" ry="28" transform="rotate(-34)"/>
+        <ellipse cx="0" cy="-22" rx="9" ry="23" transform="rotate(64)"/><ellipse cx="0" cy="-22" rx="9" ry="23" transform="rotate(-64)"/></g>
+      <g fill="#f5b9d3" stroke="#e98ab4" stroke-width="1">
+        <ellipse cx="0" cy="-22" rx="7" ry="24"/><ellipse cx="0" cy="-20" rx="6" ry="19" transform="rotate(24)"/><ellipse cx="0" cy="-20" rx="6" ry="19" transform="rotate(-24)"/></g>
+    </g></svg>`;
+
+  mandirCard.insertAdjacentHTML("afterbegin", archPanel);
+  mandirCard.insertAdjacentHTML("beforeend",
+    cluster("fl-tl") + cluster("fl-tr") + cluster("fl-bl") + cluster("fl-br") +
+    diya("dy-l") + diya("dy-r") + lotus("lo-l") + lotus("lo-r"));
+}
 Object.keys(decor).forEach(tpl => {
   const card = document.querySelector(`.card[data-tpl="${tpl}"]`);
   ["c-tl","c-tr","c-bl","c-br"].forEach(pos => {
@@ -220,6 +265,7 @@ const templates = [
   { id:"t-shivad",   name:"Divine Shiva",  bg:"linear-gradient(180deg,#d4eaf6,#aed4ec)" },
   { id:"t-velvetred", name:"Velvet Butterflies", bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
   { id:"t-roses",      name:"Rose Garden",     bg:"url('assets/guruji/roses-bg.jpg') center/cover" },
+  { id:"t-mandir",     name:"Floral Mandir",   bg:"linear-gradient(165deg,#e7accb,#e2a0c0)" },
 ];
 const tplWrap = document.getElementById("templates");
 const previewCap = document.getElementById("previewCap");
