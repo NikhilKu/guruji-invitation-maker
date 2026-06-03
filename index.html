@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guru Ji's Satsang — Invitation Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Sans+Gurmukhi:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Cormorant Garamond", serif;
+    background: #ece6da; color: #2b2118;
+  }
+  header { text-align:center; padding:20px 16px 6px; }
+  header h1 { font-family:"Cinzel",serif; font-size:24px; margin:0; color:#7a4a12; letter-spacing:1px; }
+  header p { margin:4px 0 0; opacity:.7; }
+  .layout { display:flex; flex-wrap:wrap; gap:26px; justify-content:center; padding:16px; max-width:1200px; margin:0 auto; }
+  .panel { background:#fff; border-radius:12px; padding:18px; box-shadow:0 6px 24px rgba(0,0,0,.08); width:370px; }
+  .panel h2 { font-family:"Cinzel",serif; font-size:15px; margin:0 0 12px; color:#7a4a12; }
+  .templates { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+  .tpl-thumb {
+    width:78px; height:110px; border-radius:8px; cursor:pointer; border:3px solid transparent; flex-shrink:0;
+    display:flex; align-items:flex-end; justify-content:center; padding-bottom:6px;
+    font-family:"Cinzel",serif; font-size:9px; text-align:center; color:#5a3a14; box-shadow:0 2px 8px rgba(0,0,0,.18);
+  }
+  .tpl-thumb.active { border-color:#b8860b; }
+  label { display:block; font-size:14px; font-weight:600; margin:11px 0 4px; }
+  input, textarea { width:100%; padding:9px 10px; border:1px solid #d8cfc0; border-radius:7px; font-family:inherit; font-size:15px; background:#fcfaf6; }
+  textarea { resize:vertical; }
+  .row2 { display:flex; gap:10px; } .row2 > div { flex:1; }
+  .photo-gallery { display:flex; gap:10px; flex-wrap:wrap; }
+  .pg-item { width:60px; height:60px; border-radius:8px; background-size:cover; background-position:center top; cursor:pointer; border:3px solid transparent; box-shadow:0 2px 6px rgba(0,0,0,.15); display:flex; align-items:center; justify-content:center; font-size:11px; text-align:center; color:#7a4a12; }
+  .pg-item.pg-none { background:#f0ebe1; border:2px dashed #c9bda5; }
+  .pg-item.active { border-color:#b8860b; }
+  .btn { margin-top:18px; width:100%; padding:13px; border:none; border-radius:8px; background:#7a4a12; color:#fff; font-family:"Cinzel",serif; font-size:14px; cursor:pointer; letter-spacing:.5px; }
+  .btn:hover { background:#9a6018; }
+  .hint { font-size:12px; opacity:.6; margin-top:6px; text-align:center; }
+  .preview-wrap { display:flex; flex-direction:column; align-items:center; }
+  .preview-wrap h2 { font-family:"Cinzel",serif; color:#7a4a12; }
+  /* Scaling stage: card stays 430x680 for crisp export; stage shrinks visually on small screens */
+  .card-stage { --s:1; width:430px; height:680px; }
+  .card-stage > .card { transform-origin:top left; transform:scale(var(--s)); }
+  .card-stage { width:calc(430px * var(--s)); height:calc(680px * var(--s)); }
+
+  /* ============ MOBILE ============ */
+  @media (max-width:820px) {
+    .layout { flex-direction:column; align-items:center; gap:16px; padding:12px; }
+    .panel { width:100%; max-width:430px; }
+    header h1 { font-size:20px; }
+  }
+
+  /* ============ CARD BASE ============ */
+  .card { width:430px; height:680px; position:relative; overflow:hidden; display:none; }
+  .card.show { display:block; }
+  .card .corner { position:absolute; width:200px; height:200px; pointer-events:none; }
+  .card .c-tl { top:-6px; left:-6px; }
+  .card .c-tr { top:-6px; right:-6px; transform:scaleX(-1); }
+  .card .c-bl { bottom:-6px; left:-6px; transform:scaleY(-1); }
+  .card .c-br { bottom:-6px; right:-6px; transform:scale(-1,-1); }
+  .content { position:relative; z-index:2; height:100%; display:flex; flex-direction:column; align-items:center; text-align:center; padding:34px 38px; }
+  .wm { position:absolute; right:12px; bottom:7px; z-index:6; font-family:"Cormorant Garamond",serif; font-size:10px; letter-spacing:.3px; font-style:italic; color:rgba(60,40,20,.4); pointer-events:none; }
+  .t-midnight .wm, .t-peacock .wm { color:rgba(255,245,220,.5); }
+  .ji-photo { object-fit:cover; background:#eee; }
+  .gold-text { background:linear-gradient(180deg,#caa24a,#9c7115); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  /* ---------- T1 : DIVINE GOLD ---------- */
+  .t-gold { background:radial-gradient(circle at 50% 20%, #fffdf6, #f3e6c8 70%, #e7d3a0); }
+  .t-gold .om { font-size:42px; color:#a9802a; line-height:1; }
+  .t-gold .jai { font-family:"Great Vibes",cursive; font-size:30px; color:#7a5410; margin-top:-2px; }
+  .t-gold .cartouche { margin-top:14px; padding:18px 14px 20px; border-radius:48% 48% 8% 8%/30% 30% 8% 8%; position:relative; width:100%; }
+  .t-gold .cartouche { border:2px solid #c8a23a; background:linear-gradient(180deg,#fffefb,#fdf6e6); box-shadow:0 4px 14px rgba(150,110,20,.18); }
+  .t-gold .lotus-top { font-size:22px; color:#c79b32; }
+  .t-gold .title { font-family:"Playfair Display",serif; font-weight:700; font-size:46px; line-height:1.02; margin:4px 0; }
+  .t-gold .ji-photo { width:118px; height:150px; border-radius:8px; border:3px solid #c8a23a; margin:14px auto 0; box-shadow:0 4px 12px rgba(0,0,0,.2); }
+  .t-gold .blessing { font-size:17px; line-height:1.4; margin-top:16px; color:#4a3415; }
+  .t-gold .blessing b { color:#8a6012; }
+  .t-gold .iconrow { display:flex; justify-content:space-between; width:100%; margin-top:20px; }
+  .t-gold .iconrow .ic { flex:1; }
+  .t-gold .iconrow .badge { width:42px; height:42px; border-radius:50%; background:linear-gradient(145deg,#d4ab3e,#9c7115); color:#fff; display:flex; align-items:center; justify-content:center; font-size:17px; margin:0 auto 6px; }
+  .t-gold .iconrow .lbl { font-family:"Cinzel",serif; font-size:11px; letter-spacing:1px; color:#8a6012; }
+  .t-gold .iconrow .val { font-size:14px; line-height:1.25; margin-top:2px; }
+  .t-gold .hosts { margin-top:auto; }
+  .t-gold .warm { font-style:italic; font-size:15px; color:#6a4a18; }
+  .t-gold .names { font-family:"Playfair Display",serif; font-weight:700; font-size:21px; margin-top:4px; color:#5a3a10; }
+  .t-gold .phone { font-size:15px; margin-top:8px; color:#5a3a10; } .t-gold .phone i { color:#a9802a; margin-right:6px; }
+
+  /* ---------- T2 : LOTUS PINK ARCH ---------- */
+  .t-pink { background:linear-gradient(160deg,#f4c5d6,#e9a7c0 50%,#f4c5d6); }
+  .t-pink .arch { position:absolute; top:34px; left:34px; right:34px; bottom:34px; background:#fdf3f7; border-radius:140px 140px 14px 14px; z-index:1; box-shadow:inset 0 0 0 2px rgba(214,106,152,.25); }
+  .t-pink .content { padding:48px 46px 30px; }
+  .t-pink .ji-photo { width:120px; height:150px; border-radius:6px; border:2px solid #fff; box-shadow:0 4px 12px rgba(120,40,80,.25); }
+  .t-pink .blessing { font-family:"Cormorant Garamond",serif; font-size:23px; color:#5a2a40; line-height:1.25; margin-top:18px; }
+  .t-pink .title { font-family:"Great Vibes",cursive; font-size:48px; color:#b0316a; line-height:1; margin:6px 0; }
+  .t-pink .datebar { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:14px; width:100%; }
+  .t-pink .datebar .side { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#4a2a3a; border-top:1.5px solid #4a2a3a; border-bottom:1.5px solid #4a2a3a; padding:5px 4px; }
+  .t-pink .datebar .month { font-family:"Cinzel",serif; font-size:14px; letter-spacing:2px; color:#4a2a3a; }
+  .t-pink .datebar .daynum { font-family:"Playfair Display",serif; font-size:40px; color:#3a1a2a; border:2px solid #c97; border-top:none; border-radius:0 0 40px 40px; padding:0 16px 6px; line-height:1; }
+  .t-pink .venue { font-family:"Cormorant Garamond",serif; font-size:21px; color:#4a2236; margin-top:22px; }
+  .t-pink .langar { font-size:19px; color:#4a2236; margin-top:16px; }
+  .t-pink .rsvp { font-size:19px; color:#4a2236; margin-top:auto; line-height:1.35; }
+
+  /* ---------- T3 : SACRED LOTUS ---------- */
+  .t-lotus { background:#f7f0e6; }
+  .t-lotus .frame { position:absolute; inset:18px; border:1px solid #c9a98a; z-index:1; }
+  .t-lotus .content { padding:46px 50px 36px; }
+  .t-lotus .ji-photo { width:140px; height:175px; border-radius:10px; border:3px solid #fff; box-shadow:0 5px 16px rgba(120,70,40,.3); align-self:center; }
+  .t-lotus .shabad { font-family:"Noto Sans Gurmukhi",sans-serif; font-size:18px; color:#8a2a2a; margin-top:20px; }
+  .t-lotus .orn { color:#b06a4a; font-size:14px; margin:8px 0; letter-spacing:2px; }
+  .t-lotus .blessing { font-family:"Cormorant Garamond",serif; font-size:20px; color:#5a4030; line-height:1.45; }
+  .t-lotus .sec { margin-top:22px; }
+  .t-lotus .sec .line { width:60px; height:1px; background:#c9a98a; margin:0 auto 12px; }
+  .t-lotus .date { font-family:"Playfair Display",serif; font-size:24px; color:#7a2a2a; }
+  .t-lotus .time { font-size:18px; color:#5a4030; margin-top:2px; }
+  .t-lotus .note { font-size:17px; color:#7a2a2a; margin-top:4px; }
+  .t-lotus .venue { font-family:"Playfair Display",serif; font-size:18px; color:#5a2a2a; margin-top:6px; } .t-lotus .venue i { color:#b04a2a; margin-right:6px; }
+  .t-lotus .sub { font-size:16px; color:#6a5040; }
+  .t-lotus .grat { font-family:"Playfair Display",serif; color:#8a3a2a; font-size:18px; }
+  .t-lotus .names { font-family:"Playfair Display",serif; font-weight:600; font-size:20px; color:#4a2a2a; margin-top:4px; }
+  .t-lotus .confirm { font-style:italic; font-size:18px; color:#8a3a2a; margin-top:auto; }
+
+  /* ---------- T4 : CORAL PEACH ---------- */
+  .t-coral { background:linear-gradient(150deg,#fff,#fbe0d4 45%,#f6c3ad); }
+  .t-coral .sym { position:absolute; z-index:3; font-size:26px; color:#d4a64a; font-family:"Noto Sans Gurmukhi",serif; }
+  .t-coral .sym.s1 { top:24px; left:26px; } .t-coral .sym.s2 { top:24px; right:26px; }
+  .t-coral .sym.s3 { top:250px; left:20px; } .t-coral .sym.s4 { top:250px; right:20px; }
+  .t-coral .photo-wrap { position:relative; margin-top:18px; }
+  .t-coral .ji-photo { width:150px; height:150px; border-radius:50%; object-fit:cover; border:5px solid #fff; box-shadow:0 4px 14px rgba(150,70,50,.3); }
+  .t-coral .jai { font-family:"Great Vibes",cursive; font-size:42px; color:#3a2a22; margin-top:18px; line-height:1; }
+  .t-coral .blessing { font-weight:700; font-size:18px; color:#4a3328; margin-top:10px; line-height:1.4; }
+  .t-coral .bigdate { font-family:"Playfair Display",serif; font-size:34px; color:#8a6a5a; margin-top:14px; }
+  .t-coral .time { font-size:20px; color:#3a2a22; margin-top:6px; } .t-coral .time span { color:#9a6a5a; }
+  .t-coral .langar { font-size:18px; color:#3a2a22; margin-top:6px; }
+  .t-coral .vlabel { font-size:18px; color:#7a5a4a; margin-top:12px; }
+  .t-coral .venue { font-size:17px; color:#5a4438; line-height:1.4; }
+  .t-coral .names { font-size:17px; color:#7a5a4a; margin-top:10px; line-height:1.45; }
+
+  /* ---------- T5 : ROYAL MAROON ARCH ---------- */
+  .t-royal { background:#f3ead4; }
+  .t-royal .arch { position:absolute; inset:16px; border:3px solid #7a1f2b; border-radius:120px 120px 10px 10px; z-index:1; }
+  .t-royal .content { padding:46px 44px 30px; z-index:2; }
+  .t-royal .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #c89b3c; box-shadow:0 3px 10px rgba(80,20,30,.3); }
+  .t-royal .jai { font-family:"Cormorant Garamond",serif; font-weight:600; font-size:16px; color:#7a1f2b; margin-top:8px; }
+  .t-royal .shabad { font-size:13px; color:#5a4030; margin-top:4px; line-height:1.5; }
+  .t-royal .blessing { font-size:16px; color:#4a3528; margin-top:16px; line-height:1.4; }
+  .t-royal .title { font-family:"Playfair Display",serif; font-weight:700; font-size:30px; color:#7a1f2b; margin-top:12px; }
+  .t-royal .bigdate { font-family:"Cinzel",serif; font-weight:600; font-size:15px; letter-spacing:1px; color:#9a4a14; margin-top:14px; }
+  .t-royal .langar { font-style:italic; font-size:15px; color:#5a4030; margin-top:8px; line-height:1.5; }
+  .t-royal .vlabel { font-family:"Cinzel",serif; font-size:13px; letter-spacing:1px; color:#7a1f2b; margin-top:14px; }
+  .t-royal .venue { font-size:16px; color:#4a3528; line-height:1.4; }
+  .t-royal .names { font-size:16px; color:#7a1f2b; margin-top:10px; }
+  .t-royal .palace { position:absolute; bottom:20px; left:0; right:0; text-align:center; font-size:30px; color:#c89b3c; z-index:2; }
+
+  /* ---------- T6 : EMERALD GREEN ---------- */
+  .t-green { background:#fbf6ea; }
+  .t-green .topband { position:absolute; top:0; left:0; right:0; height:150px; background:#1f5b3a; z-index:0; clip-path:path('M0,0 H1000 V90 Q700,150 500,95 Q300,150 0,90 Z'); }
+  .t-green .content { padding:30px 46px 30px; z-index:2; }
+  .t-green .join { font-family:"Cinzel",serif; font-size:12px; letter-spacing:1px; color:#fff; margin-top:6px; }
+  .t-green .shabad { font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; color:#fff; margin-top:10px; }
+  .t-green .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #c89b3c; margin-top:18px; box-shadow:0 3px 10px rgba(0,0,0,.25); }
+  .t-green .title { font-family:"Great Vibes",cursive; font-size:42px; color:#1f5b3a; margin-top:18px; line-height:1; }
+  .t-green .blessing { font-style:italic; font-size:18px; color:#8a6a2a; margin-top:14px; line-height:1.4; }
+  .t-green .on { font-family:"Great Vibes",cursive; font-size:26px; color:#8a6a2a; margin-top:10px; }
+  .t-green .orn { color:#c89b3c; letter-spacing:3px; margin:6px 0; }
+  .t-green .bigdate { font-size:18px; color:#8a6a2a; line-height:1.5; margin-top:4px; }
+  .t-green .vlabel { font-family:"Great Vibes",cursive; font-size:30px; color:#1f5b3a; margin-top:12px; }
+  .t-green .venue { font-size:18px; color:#8a6a2a; line-height:1.4; margin-top:4px; }
+
+  /* ---------- T7 : BLUSH FLORAL ---------- */
+  .t-blush { background:#fff; }
+  .t-blush .content { padding:30px 44px; }
+  .t-blush .jai { font-family:"Playfair Display",serif; font-weight:700; font-size:20px; color:#2a2a2a; }
+  .t-blush .blessing { font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; color:#3a3a3a; margin-top:12px; line-height:1.6; }
+  .t-blush .ji-photo { width:150px; height:170px; object-fit:cover; margin-top:16px; border:4px solid #d8a; box-shadow:6px 6px 0 #e8c2b8; transform:rotate(-3deg); }
+  .t-blush .title { font-family:"Great Vibes",cursive; font-size:46px; color:#e0317a; margin-top:18px; line-height:1; }
+  .t-blush .datebar { display:flex; align-items:flex-end; justify-content:center; gap:16px; margin-top:14px; }
+  .t-blush .datebar .side { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#2a2a2a; border-top:2px solid #2a2a2a; padding-top:6px; }
+  .t-blush .datebar .daynum { font-family:"Playfair Display",serif; font-weight:700; font-size:52px; color:#e0317a; line-height:.8; }
+  .t-blush .datebar .yr { font-family:"Playfair Display",serif; font-size:16px; color:#2a2a2a; }
+  .t-blush .langar { font-weight:700; font-size:15px; color:#2a2a2a; margin-top:14px; line-height:1.5; }
+  .t-blush .vlabel { font-size:14px; color:#3a3a3a; margin-top:12px; }
+  .t-blush .venue { font-family:"Cinzel",serif; font-size:13px; letter-spacing:.5px; color:#2a2a2a; line-height:1.6; }
+  .t-blush .welcome { font-weight:700; font-size:18px; color:#e0317a; margin-top:14px; }
+  .t-blush .names { font-weight:700; font-size:17px; color:#3a3a3a; margin-top:4px; }
+
+  /* ---------- T8 : DIVINE SHIVA BLUE ---------- */
+  .t-shiva { background:linear-gradient(180deg,#dcebf5,#c3def0 60%,#bcd9ee); }
+  .t-shiva .topbar { position:absolute; top:0; left:0; right:0; height:90px; background:linear-gradient(180deg,#e8d3a0,#e8d3a0 70%,transparent); z-index:0; }
+  .t-shiva .content { padding:30px 44px; }
+  .t-shiva .bell { position:absolute; top:80px; font-size:30px; color:#9a7b3a; z-index:3; } .t-shiva .bell.l { left:30px; } .t-shiva .bell.r { right:30px; }
+  .t-shiva .jai { font-family:"Cinzel",serif; font-weight:600; font-size:15px; letter-spacing:1px; color:#1a4a7a; }
+  .t-shiva .shabad { font-family:"Noto Sans Gurmukhi",sans-serif; font-size:14px; color:#1a4a7a; margin-top:8px; line-height:1.6; }
+  .t-shiva .blessing { font-family:"Cinzel",serif; font-weight:600; font-size:13px; letter-spacing:.5px; color:#1a4a7a; margin-top:10px; line-height:1.5; }
+  .t-shiva .orn { color:#1a4a7a; margin:8px 0; }
+  .t-shiva .title { font-family:"Great Vibes",cursive; font-size:44px; color:#3a6a2a; line-height:1; }
+  .t-shiva .om { font-size:26px; color:#2a2a2a; margin-top:6px; }
+  .t-shiva .shiva { font-size:58px; margin-top:4px; line-height:1; color:#3a7a9a; }
+  .t-shiva .ji-photo { width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.25); }
+  .t-shiva .faces { position:absolute; bottom:90px; width:100%; display:flex; justify-content:space-between; padding:0 24px; z-index:3; }
+  .t-shiva .info { margin-top:auto; z-index:4; position:relative; }
+  .t-shiva .bigdate { font-family:"Cinzel",serif; font-size:14px; color:#1a4a7a; line-height:1.5; }
+  .t-shiva .venue { font-size:15px; color:#1a4a7a; margin-top:6px; line-height:1.4; }
+
+  /* ---------- T9 : MIDNIGHT GOLD ---------- */
+  .t-midnight { background:radial-gradient(circle at 50% 28%, #1c2c4e, #0c1424 75%); }
+  .t-midnight .frame { position:absolute; inset:16px; border:1.5px solid #c9a24a; z-index:1; }
+  .t-midnight .frame::after { content:""; position:absolute; inset:6px; border:1px solid rgba(201,162,74,.45); }
+  .t-midnight .content { padding:44px 44px 32px; z-index:2; }
+  .t-midnight .om { font-size:34px; color:#d8b65a; line-height:1; }
+  .t-midnight .jai { font-family:"Cinzel",serif; font-size:15px; letter-spacing:4px; color:#d8b65a; margin-top:6px; }
+  .t-midnight .ji-photo { width:128px; height:128px; border-radius:50%; object-fit:cover; border:3px solid #c9a24a; margin-top:18px; box-shadow:0 0 0 6px rgba(201,162,74,.15); }
+  .t-midnight .title { font-family:"Playfair Display",serif; font-weight:700; font-size:42px; margin-top:16px; line-height:1.05; background:linear-gradient(180deg,#f2dca0,#c9a24a); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .t-midnight .orn { color:#c9a24a; letter-spacing:4px; margin:10px 0; }
+  .t-midnight .blessing { font-size:17px; line-height:1.5; color:#e8e0cc; margin-top:6px; }
+  .t-midnight .bigdate { font-family:"Cinzel",serif; font-size:16px; letter-spacing:1px; color:#d8b65a; margin-top:18px; }
+  .t-midnight .time { font-size:16px; color:#cdc4ad; margin-top:6px; font-style:italic; }
+  .t-midnight .venue { font-size:16px; color:#e8e0cc; line-height:1.4; margin-top:14px; }
+  .t-midnight .names { font-family:"Playfair Display",serif; font-size:19px; color:#d8b65a; margin-top:auto; }
+  .t-midnight .phone { font-size:15px; color:#cdc4ad; margin-top:4px; }
+
+  /* ---------- T10 : PEACOCK TEAL ---------- */
+  .t-peacock { background:linear-gradient(165deg,#0d6b66,#0a4f55 60%,#0d6b66); }
+  .t-peacock .panel { position:absolute; inset:26px; background:linear-gradient(180deg,#fffdf7,#fbf3e2); border-radius:10px; z-index:1; box-shadow:0 0 0 2px #c9a24a, inset 0 0 0 5px #fffdf7; }
+  .t-peacock .content { padding:46px 46px 34px; z-index:2; }
+  .t-peacock .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#0d6b66; }
+  .t-peacock .ji-photo { width:124px; height:124px; border-radius:50%; object-fit:cover; border:4px solid #c9a24a; margin-top:14px; box-shadow:0 4px 12px rgba(10,60,60,.3); }
+  .t-peacock .title { font-family:"Great Vibes",cursive; font-size:48px; color:#0d6b66; margin-top:14px; line-height:1; }
+  .t-peacock .orn { color:#c9a24a; letter-spacing:4px; margin:8px 0; }
+  .t-peacock .blessing { font-size:18px; line-height:1.45; color:#3a4a48; margin-top:4px; }
+  .t-peacock .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#9a6a14; margin-top:16px; }
+  .t-peacock .time { font-size:17px; color:#3a4a48; margin-top:4px; }
+  .t-peacock .venue { font-size:17px; color:#3a4a48; line-height:1.4; margin-top:14px; }
+  .t-peacock .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#0d6b66; margin-top:12px; }
+  .t-peacock .phone { font-size:15px; color:#6a5a3a; margin-top:4px; }
+
+  /* ---------- T11 : ROSE GOLD ---------- */
+  .t-rose { background:linear-gradient(155deg,#fffafb,#fbe9ec 60%,#f6dde2); }
+  .t-rose .hex { position:absolute; inset:0; z-index:1; }
+  .t-rose .content { padding:50px 50px 36px; z-index:2; }
+  .t-rose .jai { font-family:"Cinzel",serif; font-size:13px; letter-spacing:4px; color:#b76e79; }
+  .t-rose .ji-photo { width:140px; height:160px; object-fit:cover; margin-top:18px; border:1px solid #d89aa4; padding:6px; background:#fff; box-shadow:0 6px 18px rgba(150,90,100,.18); }
+  .t-rose .title { font-family:"Great Vibes",cursive; font-size:50px; color:#b76e79; margin-top:18px; line-height:1; }
+  .t-rose .orn { color:#cf9aa6; letter-spacing:6px; margin:10px 0; font-size:13px; }
+  .t-rose .blessing { font-size:18px; line-height:1.5; color:#6a4a52; margin-top:4px; }
+  .t-rose .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:2px; color:#a85c68; margin-top:18px; }
+  .t-rose .time { font-size:17px; color:#6a4a52; font-style:italic; margin-top:4px; }
+  .t-rose .venue { font-size:16px; color:#6a4a52; line-height:1.4; margin-top:14px; }
+  .t-rose .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#b76e79; margin-top:12px; }
+  .t-rose .phone { font-size:15px; color:#8a6a72; margin-top:4px; }
+
+  /* ---------- T12 : IVORY MANDALA ---------- */
+  .t-ivory { background:#f7f1e6; }
+  .t-ivory .mandala { position:absolute; top:50%; left:50%; width:520px; height:520px; transform:translate(-50%,-50%); opacity:.10; z-index:0; }
+  .t-ivory .frame { position:absolute; inset:18px; border:2px double #b08a3a; z-index:1; }
+  .t-ivory .content { padding:46px 48px 34px; z-index:2; }
+  .t-ivory .om { font-size:30px; color:#b08a3a; }
+  .t-ivory .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#7a3a3a; margin-top:4px; }
+  .t-ivory .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid #b08a3a; margin-top:14px; box-shadow:0 0 0 5px rgba(176,138,58,.18); }
+  .t-ivory .title { font-family:"Playfair Display",serif; font-weight:700; font-size:36px; color:#7a3a3a; margin-top:14px; }
+  .t-ivory .orn { color:#b08a3a; letter-spacing:4px; margin:8px 0; }
+  .t-ivory .blessing { font-size:17px; line-height:1.5; color:#5a4636; margin-top:4px; }
+  .t-ivory .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#9a5a2a; margin-top:16px; }
+  .t-ivory .time { font-size:17px; color:#5a4636; margin-top:4px; }
+  .t-ivory .venue { font-size:16px; color:#5a4636; line-height:1.4; margin-top:14px; }
+  .t-ivory .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#7a3a3a; margin-top:12px; }
+  .t-ivory .phone { font-size:15px; color:#7a5a4a; margin-top:4px; }
+
+  /* ---------- LUXE BASE (blue / purple / velvet) ---------- */
+  .lux .frame { position:absolute; inset:16px; border:1.5px solid var(--gold); z-index:1; }
+  .lux .frame::after { content:""; position:absolute; inset:6px; border:1px solid rgba(255,220,140,.4); }
+  .lux .content { padding:44px 44px 32px; z-index:2; }
+  .lux .om { font-size:34px; color:var(--gold); line-height:1; }
+  .lux .jai { font-family:"Cinzel",serif; font-size:15px; letter-spacing:4px; color:var(--gold); margin-top:6px; }
+  .lux .ji-photo { width:128px; height:128px; border-radius:50%; object-fit:cover; border:3px solid var(--gold); margin-top:18px; box-shadow:0 0 0 6px rgba(255,220,140,.14); }
+  .lux .title { font-family:"Playfair Display",serif; font-weight:700; font-size:42px; margin-top:16px; line-height:1.05; background:linear-gradient(180deg,#f6e3ad,var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .lux .orn { color:var(--gold); letter-spacing:4px; margin:10px 0; }
+  .lux .blessing { font-size:17px; line-height:1.5; color:#efe7d6; margin-top:6px; }
+  .lux .bigdate { font-family:"Cinzel",serif; font-size:16px; letter-spacing:1px; color:var(--gold); margin-top:18px; }
+  .lux .time { font-size:16px; color:#d6cdb6; margin-top:6px; font-style:italic; }
+  .lux .venue { font-size:16px; color:#efe7d6; line-height:1.4; margin-top:14px; }
+  .lux .names { font-family:"Playfair Display",serif; font-size:19px; color:var(--gold); margin-top:auto; }
+  .lux .phone { font-size:15px; color:#d6cdb6; margin-top:4px; }
+  .lux .wm { color:rgba(255,245,220,.5); }
+  .t-blue   { --gold:#c9a24a; background:radial-gradient(circle at 50% 24%, #1a3e7a, #0a1a3c 78%); }
+  .t-purple { --gold:#dab65e; background:radial-gradient(circle at 50% 24%, #45236e, #1d0f36 78%); }
+  .t-velvet { --gold:#e6c069; background:radial-gradient(circle at 50% 24%, #7a1422, #3a0a12 78%); }
+
+  /* ---------- ROYAL PEACOCK ---------- */
+  .t-pcroyal { background:linear-gradient(180deg,#0a3b6b,#0e6f8a 58%,#0a3b6b); }
+  .t-pcroyal .panel { position:absolute; inset:24px; background:linear-gradient(180deg,#fffdf7,#fbf2df); border-radius:12px; z-index:1; box-shadow:0 0 0 2px #c9a24a; }
+  .t-pcroyal .content { padding:42px 46px 30px; z-index:3; position:relative; }
+  .t-pcroyal .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#0d5b8f; }
+  .t-pcroyal .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #c9a24a; margin-top:12px; box-shadow:0 4px 12px rgba(10,40,70,.3); }
+  .t-pcroyal .title { font-family:"Great Vibes",cursive; font-size:46px; color:#0d5b8f; margin-top:12px; line-height:1; }
+  .t-pcroyal .orn { color:#c9a24a; letter-spacing:4px; margin:6px 0; }
+  .t-pcroyal .blessing { font-size:17px; line-height:1.45; color:#34485a; margin-top:4px; }
+  .t-pcroyal .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#9a6a14; margin-top:14px; }
+  .t-pcroyal .time { font-size:16px; color:#34485a; margin-top:4px; }
+  .t-pcroyal .venue { font-size:16px; color:#34485a; line-height:1.4; margin-top:12px; }
+  .t-pcroyal .names { font-family:"Playfair Display",serif; font-weight:600; font-size:18px; color:#0d5b8f; margin-top:10px; }
+  .t-pcroyal .phone { font-size:14px; color:#6a5a3a; margin-top:3px; }
+  .t-pcroyal .peacock { position:absolute; width:300px; height:auto; z-index:2; mix-blend-mode:multiply; opacity:.55; }
+  .t-pcroyal .peacock.l { bottom:90px; left:-70px; } .t-pcroyal .peacock.r { bottom:-20px; right:-70px; }
+
+  /* ---------- DIVINE SHIVA (both sides) ---------- */
+  .t-shivad { background:linear-gradient(180deg,#cfe6f4,#e4f1fa 58%,#fbfdff); }
+  .t-shivad .frame { position:absolute; inset:16px; border:2px solid #2a6a9a; z-index:1; border-radius:6px; }
+  .t-shivad .content { padding:36px 54px 150px; z-index:3; }
+  .t-shivad .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#1a4a7a; }
+  .t-shivad .shabad { font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; color:#1a4a7a; margin-top:6px; }
+  .t-shivad .ji-photo { width:118px; height:118px; border-radius:50%; object-fit:cover; border:4px solid #c9a24a; margin-top:12px; box-shadow:0 4px 12px rgba(20,60,100,.25); }
+  .t-shivad .title { font-family:"Great Vibes",cursive; font-size:44px; color:#1f6a4a; margin-top:10px; line-height:1; }
+  .t-shivad .orn { color:#2a6a9a; letter-spacing:3px; margin:6px 0; }
+  .t-shivad .blessing { font-family:"Cinzel",serif; font-weight:600; font-size:12px; letter-spacing:.3px; color:#1a4a7a; margin-top:6px; line-height:1.6; }
+  .t-shivad .bigdate { font-family:"Cinzel",serif; font-size:14px; letter-spacing:1px; color:#1a4a7a; margin-top:12px; }
+  .t-shivad .time { font-size:16px; color:#223344; margin-top:4px; }
+  .t-shivad .venue { font-size:15px; color:#223344; line-height:1.4; margin-top:10px; }
+  .t-shivad .names { font-family:"Playfair Display",serif; font-weight:600; font-size:18px; color:#1f6a4a; margin-top:10px; }
+  .t-shivad .phone { font-size:14px; color:#334455; margin-top:3px; }
+  .t-shivad .shiva { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); width:170px; height:160px; object-fit:contain; z-index:2; mix-blend-mode:multiply; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Guru Ji&rsquo;s Satsang — Invitation Maker</h1>
+  <p>Pick a template, fill in your details, and export a print-quality image.</p>
+</header>
+
+<div class="layout">
+  <!-- ============ FORM ============ -->
+  <div class="panel">
+    <h2>1 &middot; Choose a Template</h2>
+    <div class="templates" id="templates"></div>
+
+    <h2>2 &middot; Enter Details</h2>
+    <label>Blessing / invite message</label>
+    <textarea data-bind="blessing" rows="3">With the divine blessings of Guru Ji, we are delighted to invite you and your family to Guru Ji's Satsang, followed by Langar Prasad.</textarea>
+    <label>Date</label>
+    <input type="date" id="eventDate" value="2026-09-20" />
+    <label>Time</label>
+    <input data-bind="time" value="5 - 7 PM" />
+    <label>Venue / Address</label>
+    <textarea data-bind="venue" rows="2">12 Lotus Avenue, Sample Town</textarea>
+    <label>Langar / follow-up note</label>
+    <input data-bind="langar" value="Followed by Langar Prasad" />
+    <label>Host names</label>
+    <input data-bind="names" value="The Sample Family" />
+    <label>Contact / RSVP</label>
+    <input data-bind="phone" value="+00 000 000 000" />
+    <label>Guru Ji photo</label>
+    <div class="photo-gallery" id="photoGallery">
+      <div class="pg-item" data-src="assets/guruji/guruji-3.jpg" style="background-image:url('assets/guruji/guruji-3.jpg')"></div>
+      <div class="pg-item" data-src="assets/guruji/guruji-1.png" style="background-image:url('assets/guruji/guruji-1.png')"></div>
+      <div class="pg-item" data-src="assets/guruji/img.png" style="background-image:url('assets/guruji/img.png')"></div>
+      <div class="pg-item" data-src="assets/guruji/img_1.png" style="background-image:url('assets/guruji/img_1.png')"></div>
+      <div class="pg-item" data-src="assets/guruji/img_2.png" style="background-image:url('assets/guruji/img_2.png')"></div>
+      <div class="pg-item" data-src="assets/guruji/img_3.png" style="background-image:url('assets/guruji/img_3.png')"></div>
+      <div class="pg-item" data-src="assets/guruji/img_4.png" style="background-image:url('assets/guruji/img_4.png')"></div>
+      <div class="pg-item" data-src="assets/guruji/img_5.png" style="background-image:url('assets/guruji/img_5.png')"></div>
+      <div class="pg-item pg-none" data-src="">No&nbsp;photo</div>
+    </div>
+    <label>&hellip; or upload your own</label>
+    <input type="file" id="photo" accept="image/*" />
+
+    <button class="btn" id="download"><i class="fa-solid fa-download"></i>&nbsp; Download as Image</button>
+    <p class="hint">Exports a high-resolution PNG (3&times;).</p>
+  </div>
+
+  <!-- ============ PREVIEW ============ -->
+  <div class="preview-wrap">
+    <h2>Live Preview</h2>
+    <div class="card-stage" id="cardStage">
+
+    <!-- T2 LOTUS PINK -->
+    <div class="card t-pink show" data-tpl="t-pink">
+      <div class="arch"></div>
+      <div class="content">
+        <img class="ji-photo" data-photo style="display:none" />
+        <div class="blessing" data-bind="blessing"></div>
+        <div class="title">Guru Ji&rsquo;s Satsang</div>
+        <div class="datebar">
+          <div class="side" data-bind="day"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div class="month" data-bind="month"></div>
+            <div class="daynum" data-bind="daynum"></div>
+          </div>
+          <div class="side" data-bind="time"></div>
+        </div>
+        <div class="venue" data-bind="venue"></div>
+        <div class="langar" data-bind="langar"></div>
+        <div class="rsvp">Please RSVP <span data-bind="names"></span> at <span data-bind="phone"></span></div>
+      </div>
+    </div>
+
+    <!-- T7 BLUSH FLORAL -->
+    <div class="card t-blush" data-tpl="t-blush">
+      <div class="content">
+        <div class="jai">Jai Guru Ji</div>
+        <div class="blessing" data-bind="blessing"></div>
+        <img class="ji-photo" data-photo style="display:none" />
+        <div class="title">Guru ji Ka Satsang</div>
+        <div class="datebar">
+          <div class="side" data-bind="day"></div>
+          <div><div class="daynum" data-bind="daynum"></div><div class="yr" data-bind="year"></div></div>
+          <div class="side" data-bind="month"></div>
+        </div>
+        <div class="langar"><span data-bind="time"></span><br/><span data-bind="langar"></span></div>
+        <div class="vlabel">AT</div>
+        <div class="venue" data-bind="venue"></div>
+        <div class="welcome">We look forward to welcoming you</div>
+        <div class="names" data-bind="names"></div>
+        <div class="venue">RSVP: <span data-bind="phone"></span></div>
+      </div>
+    </div>
+
+    <!-- T9 MIDNIGHT GOLD -->
+    <div class="card t-midnight" data-tpl="t-midnight">
+      <div class="frame"></div>
+      <div class="content">
+        <div class="om">&#x950;</div>
+        <div class="jai">JAI GURU JI</div>
+        <img class="ji-photo" data-photo style="display:none" />
+        <div class="title">Guru Ji&rsquo;s Satsang</div>
+        <div class="orn">&#10070; &mdash;&mdash; &#10070; &mdash;&mdash; &#10070;</div>
+        <div class="blessing" data-bind="blessing"></div>
+        <div class="bigdate" data-bind="fulldate"></div>
+        <div class="time"><span data-bind="time"></span> &middot; <span data-bind="langar"></span></div>
+        <div class="venue" data-bind="venue"></div>
+        <div class="names" data-bind="names"></div>
+        <div class="phone">RSVP: <span data-bind="phone"></span></div>
+      </div>
+    </div>
+
+    <!-- T10 PEACOCK TEAL -->
+    <div class="card t-peacock" data-tpl="t-peacock">
+      <div class="panel"></div>
+      <div class="content">
+        <div class="jai">JAI GURU JI</div>
+        <img class="ji-photo" data-photo style="display:none" />
+        <div class="title">Guru Ji Ka Satsang</div>
+        <div class="orn">&#10070; &bull; &#10070;</div>
+        <div class="blessing" data-bind="blessing"></div>
+        <div class="bigdate" data-bind="fulldate"></div>
+        <div class="time"><span data-bind="time"></span> &middot; <span data-bind="langar"></span></div>
+        <div class="venue" data-bind="venue"></div>
+        <div class="names" data-bind="names"></div>
+        <div class="phone">RSVP: <span data-bind="phone"></span></div>
+      </div>
+    </div>
+
+    <!-- T11 ROSE GOLD -->
+    <div class="card t-rose" data-tpl="t-rose">
+      <div class="content">
+        <div class="jai">JAI GURU JI</div>
+        <img class="ji-photo" data-photo style="display:none" />
+        <div class="title">Guru Ji&rsquo;s Satsang</div>
+        <div class="orn">&#9670; &mdash;&mdash;&mdash; &#9670;</div>
+        <div class="blessing" data-bind="blessing"></div>
+        <div class="bigdate" data-bind="fulldate"></div>
+        <div class="time"><span data-bind="time"></span> &middot; <span data-bind="langar"></span></div>
+        <div class="venue" data-bind="venue"></div>
+        <div class="names" data-bind="names"></div>
+        <div class="phone">RSVP: <span data-bind="phone"></span></div>
+      </div>
+    </div>
+
+    <!-- T12 IVORY MANDALA -->
+    <div class="card t-ivory" data-tpl="t-ivory">
+      <div class="frame"></div>
+      <div class="content">
+        <div class="om">&#x950;</div>
+        <div class="jai">JAI GURU JI</div>
+        <img class="ji-photo" data-photo style="display:none" />
+        <div class="title">Guruji Ka Satsang</div>
+        <div class="orn">&mdash;&mdash; &#10047; &mdash;&mdash;</div>
+        <div class="blessing" data-bind="blessing"></div>
+        <div class="bigdate" data-bind="fulldate"></div>
+        <div class="time"><span data-bind="time"></span> &middot; <span data-bind="langar"></span></div>
+        <div class="venue" data-bind="venue"></div>
+        <div class="names" data-bind="names"></div>
+        <div class="phone">RSVP: <span data-bind="phone"></span></div>
+      </div>
+    </div>
+    <!-- ROYAL PEACOCK -->
+    <div class="card t-pcroyal" data-tpl="t-pcroyal">
+      <div class="panel"></div>
+      <div class="content">
+        <div class="jai">JAI GURU JI</div>
+        <img class="ji-photo" data-photo style="display:none" />
+        <div class="title">Guru Ji Ka Satsang</div>
+        <div class="orn">&#10070; &bull; &#10070;</div>
+        <div class="blessing" data-bind="blessing"></div>
+        <div class="bigdate" data-bind="fulldate"></div>
+        <div class="time"><span data-bind="time"></span> &middot; <span data-bind="langar"></span></div>
+        <div class="venue" data-bind="venue"></div>
+        <div class="names" data-bind="names"></div>
+        <div class="phone">RSVP: <span data-bind="phone"></span></div>
+      </div>
+    </div>
+
+    <!-- DIVINE SHIVA -->
+    <div class="card t-shivad" data-tpl="t-shivad">
+      <div class="frame"></div>
+      <div class="content">
+        <div class="jai">JAI GURU JI</div>
+        <div class="shabad">OM NAMAH SHIVAY &middot; GURU JI SADA SAHAY</div>
+        <img class="ji-photo" data-photo style="display:none" />
+        <div class="title">Guru Ji Ka Satsang</div>
+        <div class="orn">&#10070; &bull; &#10070;</div>
+        <div class="blessing" data-bind="blessing"></div>
+        <div class="bigdate" data-bind="fulldate"></div>
+        <div class="time"><span data-bind="time"></span> &middot; <span data-bind="langar"></span></div>
+        <div class="venue" data-bind="venue"></div>
+        <div class="names" data-bind="names"></div>
+        <div class="phone">RSVP: <span data-bind="phone"></span></div>
+      </div>
+    </div>
+    </div><!-- /card-stage -->
+  </div>
+</div>
+
+<!-- ===== Reusable decorative SVGs injected per template ===== -->
+<script>
+  // Floral/lotus corner decorations as inline SVG (data-driven per template)
+  const goldFloral = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#c8a23a" stroke-width="2" opacity="0.9">
+      <path d="M0,70 Q40,60 60,20 Q70,55 110,55" stroke-width="2.5"/>
+      <circle cx="22" cy="40" r="10" fill="#e9d49a" stroke="#b8902a"/>
+      <circle cx="50" cy="22" r="8" fill="#f0e2b0" stroke="#b8902a"/>
+      <circle cx="78" cy="38" r="7" fill="#e9d49a" stroke="#b8902a"/>
+      <path d="M5,95 Q35,90 45,70" /><path d="M0,120 Q30,118 42,100"/>
+    </g>
+    <g fill="#d8bf78" opacity="0.85">
+      <circle cx="14" cy="62" r="4"/><circle cx="38" cy="50" r="3"/><circle cx="64" cy="60" r="3"/>
+    </g></svg>`;
+
+  const pinkLotus = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(60,60)">
+      <g fill="#f7a8c4" stroke="#e07aa0" stroke-width="1.5" opacity=".95">
+        <ellipse cx="0" cy="-30" rx="13" ry="34"/>
+        <ellipse cx="0" cy="-30" rx="13" ry="34" transform="rotate(40)"/>
+        <ellipse cx="0" cy="-30" rx="13" ry="34" transform="rotate(-40)"/>
+        <ellipse cx="0" cy="-30" rx="13" ry="34" transform="rotate(80)"/>
+        <ellipse cx="0" cy="-30" rx="13" ry="34" transform="rotate(-80)"/>
+      </g>
+      <g fill="#fcd0e0" stroke="#e07aa0" stroke-width="1.2">
+        <ellipse cx="0" cy="-22" rx="9" ry="24"/>
+        <ellipse cx="0" cy="-22" rx="9" ry="24" transform="rotate(25)"/>
+        <ellipse cx="0" cy="-22" rx="9" ry="24" transform="rotate(-25)"/>
+      </g>
+      <circle r="7" fill="#f6c14b"/>
+    </g>
+    <g fill="#f6a8b0"><circle cx="120" cy="30" r="6"/><circle cx="140" cy="55" r="5"/><circle cx="30" cy="120" r="6"/></g>
+  </svg>`;
+
+  const lotusBig = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(70,70) scale(1.25)">
+      <g fill="#f3c6d6" stroke="#d98aa8" stroke-width="1.2" opacity=".92">
+        <ellipse cx="0" cy="-34" rx="15" ry="40"/>
+        <ellipse cx="0" cy="-34" rx="15" ry="40" transform="rotate(35)"/>
+        <ellipse cx="0" cy="-34" rx="15" ry="40" transform="rotate(-35)"/>
+        <ellipse cx="0" cy="-34" rx="15" ry="40" transform="rotate(70)"/>
+        <ellipse cx="0" cy="-34" rx="15" ry="40" transform="rotate(-70)"/>
+      </g>
+      <g fill="#f9dbe6" stroke="#d98aa8" stroke-width="1">
+        <ellipse cx="0" cy="-26" rx="10" ry="28"/>
+        <ellipse cx="0" cy="-26" rx="10" ry="28" transform="rotate(22)"/>
+        <ellipse cx="0" cy="-26" rx="10" ry="28" transform="rotate(-22)"/>
+      </g>
+      <circle r="7" fill="#e8a0c0"/>
+    </g></svg>`;
+
+  const redLeaf = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#6a8a5a" stroke-width="2" fill="#7a9a6a" opacity=".9">
+      <ellipse cx="30" cy="55" rx="8" ry="20" transform="rotate(-30 30 55)"/>
+      <ellipse cx="55" cy="35" rx="8" ry="20" transform="rotate(10 55 35)"/>
+      <ellipse cx="78" cy="55" rx="7" ry="17" transform="rotate(40 78 55)"/>
+    </g>
+    <g fill="#a83a3a" stroke="#7a2020" stroke-width="1">
+      <circle cx="40" cy="40" r="11"/><circle cx="68" cy="32" r="9"/><circle cx="58" cy="62" r="8"/>
+    </g></svg>`;
+
+  const greenVine = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#2f6b3a" stroke-width="2.5" fill="none"><path d="M0,40 Q40,30 60,70 Q75,100 110,95"/></g>
+    <g fill="#3f7b4a" stroke="#235a30" stroke-width="1" opacity=".92">
+      <ellipse cx="22" cy="38" rx="9" ry="18" transform="rotate(-25 22 38)"/>
+      <ellipse cx="48" cy="28" rx="9" ry="18" transform="rotate(15 48 28)"/>
+      <ellipse cx="64" cy="60" rx="8" ry="16" transform="rotate(45 64 60)"/>
+    </g>
+    <g fill="#e8e0c0" stroke="#c8b870"><circle cx="38" cy="48" r="5"/><circle cx="60" cy="40" r="4"/></g></svg>`;
+
+  const marigold = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#3f7b4a" stroke-width="2" fill="#3f7b4a" opacity=".85">
+      <ellipse cx="26" cy="62" rx="7" ry="16" transform="rotate(-30 26 62)"/>
+      <ellipse cx="58" cy="60" rx="7" ry="15" transform="rotate(30 58 60)"/>
+    </g>
+    <g>
+      <g transform="translate(40,40)"><g fill="#e8902a"><circle r="16"/></g><g fill="#f6b94a">
+        <circle cx="0" cy="-13" r="5"/><circle cx="13" cy="0" r="5"/><circle cx="0" cy="13" r="5"/><circle cx="-13" cy="0" r="5"/>
+        <circle cx="9" cy="-9" r="5"/><circle cx="9" cy="9" r="5"/><circle cx="-9" cy="9" r="5"/><circle cx="-9" cy="-9" r="5"/></g>
+        <circle r="6" fill="#b86a14"/></g>
+      <g transform="translate(72,28) scale(.7)"><g fill="#e8902a"><circle r="16"/></g><g fill="#f6b94a">
+        <circle cx="0" cy="-13" r="5"/><circle cx="13" cy="0" r="5"/><circle cx="0" cy="13" r="5"/><circle cx="-13" cy="0" r="5"/></g>
+        <circle r="5" fill="#b86a14"/></g>
+    </g></svg>`;
+
+  const blossom = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#b07a5a" stroke-width="2" fill="none" opacity=".7"><path d="M0,30 Q30,40 50,75"/><path d="M30,0 Q40,30 70,48"/></g>
+    ${[[34,34,1],[64,26,.7],[28,66,.7],[60,62,.55]].map(([x,y,s])=>`
+      <g transform="translate(${x},${y}) scale(${s})"><g fill="#f7c0d4" stroke="#e893b3" stroke-width="1">
+        <circle cx="0" cy="-11" r="7"/><circle cx="10" cy="-3" r="7"/><circle cx="6" cy="9" r="7"/><circle cx="-6" cy="9" r="7"/><circle cx="-10" cy="-3" r="7"/>
+      </g><circle r="4" fill="#f6c14b"/></g>`).join("")}
+  </svg>`;
+
+  const artDeco = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#c9a24a" stroke-width="2">
+      <path d="M30,30 H95 M30,30 V95"/>
+      <path d="M30,46 H80 M46,30 V80" stroke-width="1" opacity=".7"/>
+      <circle cx="30" cy="30" r="6" fill="#c9a24a" stroke="none"/>
+      <path d="M70,30 Q86,30 86,46 M30,70 Q30,86 46,86" opacity=".8"/>
+      <circle cx="92" cy="92" r="3" fill="#c9a24a" stroke="none"/>
+    </g></svg>`;
+
+  const peacockFeather = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(34,34) rotate(45)">
+      <path d="M0,0 C-26,-44 26,-44 0,0" fill="#0d6b66" opacity=".9"/>
+      <ellipse cx="0" cy="-40" rx="13" ry="17" fill="#1f8f86"/>
+      <ellipse cx="0" cy="-42" rx="8" ry="11" fill="#0a4f55"/>
+      <circle cx="0" cy="-42" r="4.5" fill="#c9a24a"/>
+      <path d="M0,0 L0,-26" stroke="#0a4f55" stroke-width="1.5"/>
+    </g></svg>`;
+
+  const roseFlourish = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#cf9aa6" stroke-width="1.6">
+      <path d="M24,24 Q70,28 78,70 Q80,90 64,96"/>
+      <path d="M24,24 Q28,64 64,76" opacity=".6"/>
+    </g>
+    <g fill="#d89aa4" stroke="#c2808c" stroke-width="1">
+      <circle cx="30" cy="30" r="6"/><circle cx="54" cy="40" r="5"/><circle cx="44" cy="62" r="4"/>
+    </g>
+    <g fill="#e8c2c8"><circle cx="40" cy="30" r="3"/><circle cx="36" cy="48" r="2.5"/></g></svg>`;
+
+  const goldCornerSm = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#b08a3a" stroke-width="1.6">
+      <path d="M34,52 Q34,34 52,34"/><path d="M40,64 Q40,40 64,40" opacity=".6"/>
+      <circle cx="34" cy="34" r="4" fill="#b08a3a" stroke="none"/>
+    </g></svg>`;
+
+  const decor = {
+    "t-pink":  { svg:pinkLotus },
+    "t-blush": { svg:blossom },
+    "t-midnight": { svg:artDeco },
+    "t-peacock":  { svg:peacockFeather },
+    "t-rose":     { svg:roseFlourish },
+    "t-ivory":    { svg:goldCornerSm },
+  };
+
+  // Peacock & Shiva illustrations (injected into their templates)
+  const pcCard = document.querySelector('.card[data-tpl="t-pcroyal"]');
+  if (pcCard) {
+    pcCard.insertAdjacentHTML("beforeend", `<img class="peacock r" src="assets/guruji/img_6.png" alt="" />`);
+  }
+  const shCard = document.querySelector('.card[data-tpl="t-shivad"]');
+  if (shCard) {
+    shCard.insertAdjacentHTML("beforeend", `<img class="shiva" src="assets/guruji/shiva.jpg" alt="" />`);
+  }
+  // Mandala watermark for the Ivory template
+  const ivoryCard = document.querySelector('.card[data-tpl="t-ivory"]');
+  if (ivoryCard) {
+    const r = (n, fn) => Array.from({length:n}, (_, i) => fn(i, i*(360/n))).join("");
+    const petals = r(24, (i, a) => `<ellipse cx="260" cy="120" rx="14" ry="60" fill="none" stroke="#b08a3a" stroke-width="2" transform="rotate(${a} 260 260)"/>`);
+    const petals2 = r(16, (i, a) => `<ellipse cx="260" cy="160" rx="10" ry="40" fill="none" stroke="#b08a3a" stroke-width="2" transform="rotate(${a} 260 260)"/>`);
+    ivoryCard.insertAdjacentHTML("afterbegin",
+      `<svg class="mandala" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg"><g>${petals}${petals2}<circle cx="260" cy="260" r="46" fill="none" stroke="#b08a3a" stroke-width="2"/><circle cx="260" cy="260" r="24" fill="none" stroke="#b08a3a" stroke-width="2"/></g></svg>`);
+  }
+  Object.keys(decor).forEach(tpl => {
+    const card = document.querySelector(`.card[data-tpl="${tpl}"]`);
+    ["c-tl","c-tr","c-bl","c-br"].forEach(pos => {
+      card.insertAdjacentHTML("afterbegin", decor[tpl].svg.replace("{pos}", pos));
+    });
+  });
+
+  // Watermark on every template (also captured in the export)
+  document.querySelectorAll(".card").forEach(card => {
+    card.insertAdjacentHTML("beforeend", `<div class="wm">Made by Nikhil&rsquo;s Invitation Maker</div>`);
+  });
+</script>
+
+<script>
+  const templates = [
+    { id:"t-pink",  name:"Lotus Pink",   bg:"linear-gradient(160deg,#f4c5d6,#e9a7c0)" },
+    { id:"t-blush", name:"Blush Floral", bg:"linear-gradient(150deg,#fff,#fbe0e8)" },
+    { id:"t-midnight", name:"Midnight Gold", bg:"radial-gradient(circle,#1c2c4e,#0c1424)" },
+    { id:"t-peacock",  name:"Peacock Teal",  bg:"linear-gradient(165deg,#0d6b66,#0a4f55)" },
+    { id:"t-rose",     name:"Rose Gold",     bg:"linear-gradient(155deg,#fffafb,#f6dde2)" },
+    { id:"t-ivory",    name:"Ivory Mandala", bg:"#f7f1e6" },
+    { id:"t-pcroyal",  name:"Royal Peacock", bg:"linear-gradient(180deg,#0a3b6b,#0e6f8a)" },
+    { id:"t-shivad",   name:"Divine Shiva",  bg:"linear-gradient(180deg,#d4eaf6,#aed4ec)" },
+  ];
+  const tplWrap = document.getElementById("templates");
+  let current = "t-pink";
+
+  templates.forEach(t => {
+    const el = document.createElement("div");
+    el.className = "tpl-thumb" + (t.id===current ? " active" : "");
+    el.style.background = t.bg;
+    el.textContent = t.name;
+    el.onclick = () => {
+      document.querySelector(`.card.show`).classList.remove("show");
+      document.querySelector(`.card[data-tpl="${t.id}"]`).classList.add("show");
+      current = t.id;
+      document.querySelectorAll(".tpl-thumb").forEach(n => n.classList.remove("active"));
+      el.classList.add("active");
+    };
+    tplWrap.appendChild(el);
+  });
+
+  // Live binding: one input updates every matching [data-bind] across all templates
+  const setAll = (key, val) => document.querySelectorAll(`[data-bind="${key}"]`).forEach(n => n.textContent = val);
+  document.querySelectorAll("[data-bind]").forEach(input => {
+    if (input.tagName === "INPUT" || input.tagName === "TEXTAREA") {
+      setAll(input.dataset.bind, input.value);
+      input.addEventListener("input", () => setAll(input.dataset.bind, input.value));
+    }
+  });
+
+  // Date picker → auto-derive day name, date number (with ordinal), month, year & full line
+  const WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const SUP = { "1":"ˢᵗ","2":"ⁿᵈ","3":"ʳᵈ" };
+  const ordinal = (n) => {
+    const v = n % 100;
+    if (v >= 11 && v <= 13) return "ᵗʰ";
+    return SUP[String(n % 10)] || "ᵗʰ";
+  };
+  const dateInput = document.getElementById("eventDate");
+  function applyDate() {
+    const v = dateInput.value;
+    if (!v) return;
+    const [y, m, d] = v.split("-").map(Number);
+    const dt = new Date(y, m - 1, d);          // local date, no timezone shift
+    const day = WEEKDAYS[dt.getDay()];
+    const month = MONTHS[m - 1];
+    setAll("day", day);
+    setAll("daynum", String(d));
+    setAll("month", month);
+    setAll("year", String(y));
+    setAll("fulldate", `${day}, ${d}${ordinal(d)} ${month} ${y}`);
+  }
+  dateInput.addEventListener("input", applyDate);
+  applyDate();
+
+  // Shared photo setter — applies to every template instance
+  const setPhoto = (src) => document.querySelectorAll("[data-photo]").forEach(img => {
+    if (src) { img.src = src; img.style.display = "block"; }
+    else { img.removeAttribute("src"); img.style.display = "none"; }
+  });
+
+  // Preset gallery
+  document.querySelectorAll("#photoGallery .pg-item").forEach(item => {
+    item.addEventListener("click", () => {
+      document.querySelectorAll("#photoGallery .pg-item").forEach(n => n.classList.remove("active"));
+      item.classList.add("active");
+      setPhoto(item.dataset.src);
+    });
+  });
+
+  // Custom upload (read as data URL so it survives html2canvas export)
+  document.getElementById("photo").addEventListener("change", e => {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.querySelectorAll("#photoGallery .pg-item").forEach(n => n.classList.remove("active"));
+      setPhoto(ev.target.result);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Responsive scaling: shrink the stage to fit narrow screens (export stays full-res)
+  const stage = document.getElementById("cardStage");
+  function fitStage() {
+    const avail = stage.parentElement.clientWidth;
+    const s = Math.min(1, avail / 430);
+    stage.style.setProperty("--s", s.toFixed(4));
+  }
+  window.addEventListener("resize", fitStage);
+  fitStage();
+
+  // Pre-select the first Guru Ji photo on load
+  (() => {
+    const first = document.querySelector("#photoGallery .pg-item[data-src]");
+    if (first) { first.classList.add("active"); setPhoto(first.dataset.src); }
+  })();
+
+  // Export the visible card — force scale 1 during capture for full resolution
+  document.getElementById("download").addEventListener("click", () => {
+    const card = document.querySelector(".card.show");
+    const prev = stage.style.getPropertyValue("--s");
+    stage.style.setProperty("--s", "1");
+    html2canvas(card, { scale:3, useCORS:true, backgroundColor:null }).then(canvas => {
+      stage.style.setProperty("--s", prev || "1");
+      fitStage();
+      const link = document.createElement("a");
+      link.download = "guru-ji-satsang-invitation.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }).catch(() => { stage.style.setProperty("--s", prev || "1"); fitStage(); });
+  });
+</script>
+</body>
+</html>

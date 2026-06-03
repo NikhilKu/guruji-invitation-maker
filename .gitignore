@@ -1,0 +1,9 @@
+# IntelliJ IDEA / JetBrains IDE files
+.idea/
+*.iml
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# OS files
+.DS_Store
