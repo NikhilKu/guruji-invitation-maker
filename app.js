@@ -171,23 +171,30 @@ if (ivoryCard) {
     `<svg class="mandala" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg"><g>${petals}${petals2}<circle cx="260" cy="260" r="46" fill="none" stroke="#b08a3a" stroke-width="2"/><circle cx="260" cy="260" r="24" fill="none" stroke="#b08a3a" stroke-width="2"/></g></svg>`);
 }
 
-// Velvet Red: ornate gold mandala ornaments for two opposite corners
+// Velvet Red: scatter butterflies across the card (jittered grid → even but random),
+// at random sizes and gentle rotations, behind the text (z-index 1 < content z-index 2).
 const velvetCard = document.querySelector('.card[data-tpl="t-velvetred"]');
 if (velvetCard) {
-  const GOLD = "#e3c373";
-  const ring = (n, lift, rx, ry, sw) => Array.from({length:n}, (_, i) =>
-    `<ellipse cx="150" cy="${150 - lift}" rx="${rx}" ry="${ry}" fill="none" stroke="${GOLD}" stroke-width="${sw}" transform="rotate(${i * (360 / n)} 150 150)"/>`).join("");
-  const goldMandala = (cls) => `<svg class="mandala ${cls}" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><g opacity="0.95">
-      ${ring(32, 112, 3.5, 12, 1)}
-      ${ring(24, 92, 9, 42, 1.3)}
-      ${ring(16, 66, 8, 32, 1.3)}
-      ${ring(12, 40, 7, 20, 1.3)}
-      <circle cx="150" cy="150" r="120" fill="none" stroke="${GOLD}" stroke-width="1"/>
-      <circle cx="150" cy="150" r="106" fill="none" stroke="${GOLD}" stroke-width="1.4"/>
-      <circle cx="150" cy="150" r="22" fill="none" stroke="${GOLD}" stroke-width="1.3"/>
-      <circle cx="150" cy="150" r="8" fill="${GOLD}"/>
-    </g></svg>`;
-  velvetCard.insertAdjacentHTML("beforeend", goldMandala("tr") + goldMandala("bl"));
+  const COLS = 3, ROWS = 4;
+  const cellW = 430 / COLS, cellH = 680 / ROWS;
+  const onPhoto = (x, y) => (x - 215) ** 2 + (y - 116) ** 2 < 72 * 72;   // portrait medallion
+  const onTitle = (x, y) => x > 92 && x < 338 && y > 196 && y < 350;     // script title
+  let html = "";
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      let cx = col * cellW + cellW / 2 + (Math.random() - 0.5) * cellW * 0.7;
+      const cy = row * cellH + cellH / 2 + (Math.random() - 0.5) * cellH * 0.7;
+      // keep the two focal points (portrait + title) clear: nudge offenders to a side margin
+      if (onPhoto(cx, cy) || onTitle(cx, cy)) cx = Math.random() < 0.5 ? 14 + Math.random() * 38 : 378 + Math.random() * 38;
+      const w = Math.round(40 + Math.random() * 48);      // 40–88px wide
+      const rot = Math.round(-32 + Math.random() * 64);   // gentle tilt -32°..32°
+      const op = (0.55 + Math.random() * 0.33).toFixed(2);
+      html += `<img class="butterfly" src="assets/guruji/butterfly.png" alt="" `
+        + `style="left:${cx.toFixed(0)}px;top:${cy.toFixed(0)}px;width:${w}px;`
+        + `transform:translate(-50%,-50%) rotate(${rot}deg);opacity:${op}" />`;
+    }
+  }
+  velvetCard.insertAdjacentHTML("beforeend", html);
 }
 Object.keys(decor).forEach(tpl => {
   const card = document.querySelector(`.card[data-tpl="${tpl}"]`);
