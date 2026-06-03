@@ -9,6 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&family=Noto+Sans+Gurmukhi:wght@500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%237a4a12'/%3E%3Ctext x='32' y='45' font-size='40' text-anchor='middle' fill='%23f3e6c8' font-family='serif'%3E%E0%A5%90%3C/text%3E%3C/svg%3E" />
+<meta name="theme-color" content="#7a4a12" />
+<meta name="description" content="Create and share a beautiful Guru Ji Satsang invitation — pick a template, add your details, and download a print-quality PNG, JPG, or PDF." />
 <style>
   * { box-sizing: border-box; }
   body {
@@ -321,12 +325,93 @@
   .t-shivad .names { font-family:"Playfair Display",serif; font-weight:600; font-size:18px; color:#1f6a4a; margin-top:10px; }
   .t-shivad .phone { font-size:14px; color:#334455; margin-top:3px; }
   .t-shivad .shiva { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); width:170px; height:160px; object-fit:contain; z-index:2; mix-blend-mode:multiply; }
+
+  /* ===================== PRO POLISH ===================== */
+  :root { --brand:#7a4a12; --brand-2:#9a6018; --accent:#b8860b; }
+
+  /* Branded header */
+  header.site { padding:22px 16px 10px; }
+  .brand { display:flex; align-items:center; justify-content:center; gap:14px; }
+  .brand-mark {
+    width:48px; height:48px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:27px; color:#fff6df;
+    background:radial-gradient(circle at 35% 30%, #d4ab3e, #7a4a12);
+    box-shadow:0 3px 10px rgba(122,74,18,.35), inset 0 0 0 2px rgba(255,240,200,.45);
+  }
+  .brand-text { text-align:left; }
+  header.site h1 { font-family:"Cinzel",serif; font-size:23px; margin:0; color:var(--brand); letter-spacing:.5px; }
+  header.site p { margin:3px 0 0; font-size:15px; opacity:.72; }
+
+  /* Inputs: hover + focus */
+  input, textarea, select { transition:border-color .15s, box-shadow .15s; }
+  input:hover, textarea:hover { border-color:#c2b49a; }
+  input:focus, textarea:focus, select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(184,134,11,.15); }
+  input[type=file] { padding:7px 10px; font-size:13px; cursor:pointer; }
+
+  /* Template thumb labels — readable on dark backgrounds */
+  .tpl-thumb { align-items:flex-end; transition:transform .12s, box-shadow .12s; }
+  .tpl-thumb:hover { transform:translateY(-2px); box-shadow:0 5px 14px rgba(0,0,0,.28); }
+  .tpl-thumb span {
+    background:rgba(255,255,255,.92); color:#5a3a14; padding:2px 6px; border-radius:5px; max-width:90%;
+    font-family:"Cinzel",serif; font-size:9px; line-height:1.15; box-shadow:0 1px 3px rgba(0,0,0,.25);
+  }
+
+  /* Buttons */
+  .btn { position:relative; display:flex; align-items:center; justify-content:center; gap:8px; transition:background .15s, transform .08s, box-shadow .15s; box-shadow:0 3px 10px rgba(122,74,18,.25); }
+  .btn:active { transform:translateY(1px); }
+  .btn:disabled { opacity:.6; cursor:default; box-shadow:none; }
+  .btn-secondary { background:#137a3a; box-shadow:0 3px 10px rgba(19,122,58,.25); }
+  .btn-secondary:hover { background:#15914a; }
+  .action-row { display:flex; gap:10px; margin-top:18px; }
+  .action-row .btn { margin-top:0; flex:1; }
+  .btn-ghost { display:flex; align-items:center; justify-content:center; gap:7px; width:100%; margin-top:10px; padding:9px; border:1px solid #d8cfc0; border-radius:8px; background:transparent; color:#6a553a; font-family:inherit; font-size:13px; cursor:pointer; transition:background .12s, color .12s; }
+  .btn-ghost:hover { background:#f3ede1; color:var(--brand); }
+  .btn.loading .btn-label, .btn.loading > i { visibility:hidden; }
+  .btn.loading::after { content:""; position:absolute; width:18px; height:18px; border-radius:50%; border:2.5px solid rgba(255,255,255,.4); border-top-color:#fff; animation:spin .7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* Segmented format control + checkbox */
+  .seg { display:flex; border:1px solid #d8cfc0; border-radius:8px; overflow:hidden; margin-top:4px; }
+  .seg-btn { flex:1; padding:9px 0; border:none; background:#fcfaf6; color:#6a553a; font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; cursor:pointer; transition:background .12s, color .12s; }
+  .seg-btn + .seg-btn { border-left:1px solid #e4dccd; }
+  .seg-btn:hover:not(.active) { background:#f3ede1; }
+  .seg-btn.active { background:var(--brand); color:#fff; }
+  .check { display:flex; align-items:center; gap:8px; font-weight:500; font-size:13px; margin:14px 0 0; cursor:pointer; }
+  .check input { width:auto; }
+
+  /* Toast */
+  #toast { position:fixed; left:50%; bottom:26px; transform:translate(-50%,20px); background:#2b2118; color:#fff; padding:11px 20px; border-radius:24px; font-size:14px; box-shadow:0 8px 24px rgba(0,0,0,.28); opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; z-index:50; max-width:88vw; text-align:center; }
+  #toast.show { opacity:1; transform:translate(-50%,0); }
+
+  /* Footer */
+  footer.site { text-align:center; padding:26px 16px 34px; color:#6a553a; font-size:13px; opacity:.85; }
+  footer.site a { color:var(--brand); text-decoration:none; }
+  footer.site a:hover { text-decoration:underline; }
+
+  /* Watermark: hidden by default, shown only when opted-in */
+  .card .wm { display:none; }
+  .card-stage.show-wm .wm { display:block; }
+
+  /* ---- Template overlap fixes (keep decorative art clear of text) ---- */
+  .t-pcroyal .peacock.r { width:190px; right:-80px; bottom:-40px; opacity:.42; }
+  .t-shivad .content { padding:36px 54px 128px; }
+  .t-shivad .shiva { width:160px; height:120px; bottom:18px; }
+
+  @media (max-width:820px) {
+    .brand { gap:10px; } header.site h1 { font-size:19px; } header.site p { font-size:13px; }
+    .action-row { flex-direction:column; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <h1>Guru Ji&rsquo;s Satsang — Invitation Maker</h1>
-  <p>Pick a template, fill in your details, and export a print-quality image.</p>
+<header class="site">
+  <div class="brand">
+    <span class="brand-mark">&#x950;</span>
+    <div class="brand-text">
+      <h1>Guru Ji&rsquo;s Satsang &mdash; Invitation Maker</h1>
+      <p>Pick a template, add your details, and download or share a print-quality invite.</p>
+    </div>
+  </div>
 </header>
 
 <div class="layout">
@@ -365,8 +450,19 @@
     <label>&hellip; or upload your own</label>
     <input type="file" id="photo" accept="image/*" />
 
-    <button class="btn" id="download"><i class="fa-solid fa-download"></i>&nbsp; Download as Image</button>
-    <p class="hint">Exports a high-resolution PNG (3&times;).</p>
+    <h2>3 &middot; Download &amp; Share</h2>
+    <div class="seg" id="formatSeg" role="group" aria-label="File format">
+      <button type="button" class="seg-btn active" data-fmt="png">PNG</button>
+      <button type="button" class="seg-btn" data-fmt="jpg">JPG</button>
+      <button type="button" class="seg-btn" data-fmt="pdf">PDF</button>
+    </div>
+    <label class="check"><input type="checkbox" id="wmToggle" /> Add a small credit watermark</label>
+    <div class="action-row">
+      <button class="btn" id="download"><i class="fa-solid fa-download"></i><span class="btn-label">Download</span></button>
+      <button class="btn btn-secondary" id="share"><i class="fa-brands fa-whatsapp"></i><span class="btn-label">Share</span></button>
+    </div>
+    <button class="btn-ghost" id="reset" type="button"><i class="fa-solid fa-rotate-left"></i> Reset to sample defaults</button>
+    <p class="hint">High-resolution 3&times; export &mdash; perfect for print &amp; WhatsApp. Your details are saved in this browser.</p>
   </div>
 
   <!-- ============ PREVIEW ============ -->
@@ -521,6 +617,12 @@
     </div><!-- /card-stage -->
   </div>
 </div>
+
+<footer class="site">
+  <p>&#x950; Made with devotion &middot; <a href="https://github.com/NikhilKu/guruji-invitation-maker" target="_blank" rel="noopener">Open source on GitHub</a></p>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
 
 <!-- ===== Reusable decorative SVGs injected per template ===== -->
 <script>
@@ -685,7 +787,7 @@
 
   // Watermark on every template (also captured in the export)
   document.querySelectorAll(".card").forEach(card => {
-    card.insertAdjacentHTML("beforeend", `<div class="wm">Made by Nikhil&rsquo;s Invitation Maker</div>`);
+    card.insertAdjacentHTML("beforeend", `<div class="wm">Created with the Guru Ji Satsang Invitation Maker</div>`);
   });
 </script>
 
@@ -707,13 +809,15 @@
     const el = document.createElement("div");
     el.className = "tpl-thumb" + (t.id===current ? " active" : "");
     el.style.background = t.bg;
-    el.textContent = t.name;
+    el.dataset.tpl = t.id;
+    const span = document.createElement("span"); span.textContent = t.name; el.appendChild(span);
     el.onclick = () => {
-      document.querySelector(`.card.show`).classList.remove("show");
+      document.querySelector(`.card.show`)?.classList.remove("show");
       document.querySelector(`.card[data-tpl="${t.id}"]`).classList.add("show");
       current = t.id;
       document.querySelectorAll(".tpl-thumb").forEach(n => n.classList.remove("active"));
       el.classList.add("active");
+      saveState();
     };
     tplWrap.appendChild(el);
   });
@@ -753,62 +857,160 @@
   dateInput.addEventListener("input", applyDate);
   applyDate();
 
+  // ---------- State & elements ----------
+  const STORAGE_KEY = "guruji-invite-v1";
+  const downloadBtn = document.getElementById("download");
+  const shareBtn    = document.getElementById("share");
+  const resetBtn    = document.getElementById("reset");
+  const wmToggle    = document.getElementById("wmToggle");
+  const formatSeg   = document.getElementById("formatSeg");
+  const toastEl     = document.getElementById("toast");
+  const stage       = document.getElementById("cardStage");
+  let selectedPhoto = null;   // current photo src ("" = none, path = preset, data: = upload)
+  let currentFormat = "png";
+  let ready = false;          // gate autosave until initial state is applied
+
+  function toast(msg) {
+    toastEl.textContent = msg; toastEl.classList.add("show");
+    clearTimeout(toast._t); toast._t = setTimeout(() => toastEl.classList.remove("show"), 2800);
+  }
+
   // Shared photo setter — applies to every template instance
-  const setPhoto = (src) => document.querySelectorAll("[data-photo]").forEach(img => {
-    if (src) { img.src = src; img.style.display = "block"; }
-    else { img.removeAttribute("src"); img.style.display = "none"; }
-  });
-
-  // Preset gallery
-  document.querySelectorAll("#photoGallery .pg-item").forEach(item => {
-    item.addEventListener("click", () => {
-      document.querySelectorAll("#photoGallery .pg-item").forEach(n => n.classList.remove("active"));
-      item.classList.add("active");
-      setPhoto(item.dataset.src);
+  function setPhoto(src) {
+    selectedPhoto = src || null;
+    document.querySelectorAll("[data-photo]").forEach(img => {
+      if (src) { img.src = src; img.style.display = "block"; }
+      else { img.removeAttribute("src"); img.style.display = "none"; }
     });
-  });
+  }
+  function markPhoto(src) {
+    let matched = false;
+    document.querySelectorAll("#photoGallery .pg-item").forEach(n => {
+      const m = n.dataset.src === src; n.classList.toggle("active", m); if (m) matched = true;
+    });
+    return matched;
+  }
 
-  // Custom upload (read as data URL so it survives html2canvas export)
+  // ---------- Persistence ----------
+  function saveState() {
+    if (!ready) return;
+    try {
+      const d = { fields:{}, date:dateInput.value, tpl:current, photo:selectedPhoto, wm:wmToggle.checked, fmt:currentFormat };
+      document.querySelectorAll(".panel [data-bind]").forEach(i => d.fields[i.dataset.bind] = i.value);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+    } catch (e) { /* storage unavailable / quota — ignore */ }
+  }
+  function restoreState() {
+    let d; try { d = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (e) {}
+    if (!d) return false;
+    if (d.fields) document.querySelectorAll(".panel [data-bind]").forEach(i => {
+      if (d.fields[i.dataset.bind] != null) { i.value = d.fields[i.dataset.bind]; setAll(i.dataset.bind, i.value); }
+    });
+    if (d.date) { dateInput.value = d.date; }
+    applyDate();
+    if (d.fmt) { currentFormat = d.fmt; formatSeg.querySelectorAll(".seg-btn").forEach(b => b.classList.toggle("active", b.dataset.fmt === d.fmt)); }
+    if (d.wm)  { wmToggle.checked = true; stage.classList.add("show-wm"); }
+    if (d.tpl) {
+      const card = document.querySelector(`.card[data-tpl="${d.tpl}"]`);
+      const thumb = document.querySelector(`.tpl-thumb[data-tpl="${d.tpl}"]`);
+      if (card) {
+        document.querySelector(".card.show")?.classList.remove("show"); card.classList.add("show"); current = d.tpl;
+        document.querySelectorAll(".tpl-thumb").forEach(n => n.classList.remove("active")); thumb?.classList.add("active");
+      }
+    }
+    if (d.photo != null) { setPhoto(d.photo); markPhoto(d.photo); }
+    return true;
+  }
+
+  // ---------- Photo controls ----------
+  document.querySelectorAll("#photoGallery .pg-item").forEach(item => {
+    item.addEventListener("click", () => { setPhoto(item.dataset.src); markPhoto(item.dataset.src); saveState(); });
+  });
   document.getElementById("photo").addEventListener("change", e => {
     const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
-    reader.onload = ev => {
-      document.querySelectorAll("#photoGallery .pg-item").forEach(n => n.classList.remove("active"));
-      setPhoto(ev.target.result);
-    };
+    reader.onload = ev => { setPhoto(ev.target.result); markPhoto(ev.target.result); saveState(); };
     reader.readAsDataURL(file);
   });
 
-  // Responsive scaling: shrink the stage to fit narrow screens (export stays full-res)
-  const stage = document.getElementById("cardStage");
+  // ---------- Format / watermark / reset ----------
+  formatSeg.querySelectorAll(".seg-btn").forEach(b => b.addEventListener("click", () => {
+    formatSeg.querySelectorAll(".seg-btn").forEach(x => x.classList.remove("active"));
+    b.classList.add("active"); currentFormat = b.dataset.fmt; saveState();
+  }));
+  wmToggle.addEventListener("change", () => { stage.classList.toggle("show-wm", wmToggle.checked); saveState(); });
+  resetBtn.addEventListener("click", () => {
+    if (!confirm("Reset all details to the sample defaults? Your current text will be cleared.")) return;
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    location.reload();
+  });
+
+  // Autosave on any field edit
+  document.querySelector(".panel").addEventListener("input", saveState);
+
+  // ---------- Responsive scaling ----------
   function fitStage() {
     const avail = stage.parentElement.clientWidth;
     const s = Math.min(1, avail / 430);
     stage.style.setProperty("--s", s.toFixed(4));
   }
   window.addEventListener("resize", fitStage);
-  fitStage();
 
-  // Pre-select the first Guru Ji photo on load
-  (() => {
-    const first = document.querySelector("#photoGallery .pg-item[data-src]");
-    if (first) { first.classList.add("active"); setPhoto(first.dataset.src); }
-  })();
-
-  // Export the visible card — force scale 1 during capture for full resolution
-  document.getElementById("download").addEventListener("click", () => {
+  // ---------- Render / export / share ----------
+  function renderCanvas(fmt) {
     const card = document.querySelector(".card.show");
     const prev = stage.style.getPropertyValue("--s");
     stage.style.setProperty("--s", "1");
-    html2canvas(card, { scale:3, useCORS:true, backgroundColor:null }).then(canvas => {
-      stage.style.setProperty("--s", prev || "1");
-      fitStage();
+    const restore = () => { stage.style.setProperty("--s", prev || "1"); fitStage(); };
+    return html2canvas(card, { scale:3, useCORS:true, backgroundColor: fmt === "png" ? null : "#ffffff" })
+      .then(c => { restore(); return c; }, err => { restore(); throw err; });
+  }
+  async function withLoading(btn, fn) {
+    if (btn.disabled) return;
+    [downloadBtn, shareBtn].forEach(b => b.disabled = true);
+    btn.classList.add("loading");
+    try { await fn(); }
+    catch (e) { toast("Sorry, something went wrong. Please try again."); }
+    finally { [downloadBtn, shareBtn].forEach(b => b.disabled = false); btn.classList.remove("loading"); }
+  }
+  downloadBtn.addEventListener("click", () => withLoading(downloadBtn, async () => {
+    const fmt = currentFormat;
+    const canvas = await renderCanvas(fmt);
+    if (fmt === "pdf") {
+      const { jsPDF } = window.jspdf;
+      const w = canvas.width, h = canvas.height;
+      const pdf = new jsPDF({ orientation: w > h ? "landscape" : "portrait", unit:"px", format:[w, h] });
+      pdf.addImage(canvas.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, w, h);
+      pdf.save("guru-ji-satsang-invitation.pdf");
+    } else {
       const link = document.createElement("a");
-      link.download = "guru-ji-satsang-invitation.png";
-      link.href = canvas.toDataURL("image/png");
+      link.download = "guru-ji-satsang-invitation." + fmt;
+      link.href = canvas.toDataURL(fmt === "jpg" ? "image/jpeg" : "image/png", 0.95);
       link.click();
-    }).catch(() => { stage.style.setProperty("--s", prev || "1"); fitStage(); });
-  });
+    }
+    toast("Invitation saved to your downloads.");
+  }));
+  shareBtn.addEventListener("click", () => withLoading(shareBtn, async () => {
+    const canvas = await renderCanvas("png");
+    const blob = await new Promise(r => canvas.toBlob(r, "image/png"));
+    const file = new File([blob], "guru-ji-satsang-invitation.png", { type:"image/png" });
+    const text = "🙏 You are invited to Guru Ji's Satsang";
+    if (navigator.canShare && navigator.canShare({ files:[file] })) {
+      try { await navigator.share({ files:[file], title:"Guru Ji's Satsang", text }); } catch (e) { /* user cancelled */ }
+    } else {
+      const link = document.createElement("a");
+      link.download = "guru-ji-satsang-invitation.png"; link.href = canvas.toDataURL("image/png"); link.click();
+      toast("Image saved — attach it in WhatsApp to share.");
+    }
+  }));
+
+  // ---------- Init ----------
+  if (!restoreState()) {
+    const first = document.querySelector('#photoGallery .pg-item[data-src]:not(.pg-none)');
+    if (first) { first.classList.add("active"); setPhoto(first.dataset.src); }
+  }
+  fitStage();
+  ready = true;   // enable autosave now that initial state is applied
 </script>
 </body>
 </html>
