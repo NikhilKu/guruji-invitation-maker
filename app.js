@@ -328,21 +328,21 @@ document.querySelectorAll(".card").forEach(card => {
 
 /* ===== App logic ===== */
 const templates = [
-  { id:"t-mandap",      name:"Royal Mandap",   bg:"linear-gradient(180deg,#7a1228,#560c1c)" },
-  { id:"t-aura",        name:"Divine Aura",    bg:"radial-gradient(circle at 50% 30%,#fff4de,#f1cf94)" },
-  { id:"t-lotuspond",   name:"Lotus Pond",     bg:"linear-gradient(180deg,#d8eaf0,#f0efe0)" },
-  { id:"t-diya",        name:"Diya Glow",      bg:"radial-gradient(circle at 50% 32%,#3a1810,#1d0b07)" },
-  { id:"t-marigold", name:"Marigold Garland", bg:"linear-gradient(180deg,#ffe6ad,#ffd680)" },
   { id:"t-mandir",     name:"Floral Mandir",   bg:"linear-gradient(165deg,#e7accb,#e2a0c0)" },
-  { id:"t-roses",      name:"Rose Garden",     bg:"url('assets/guruji/roses-bg.jpg') center/cover" },
-  { id:"t-velvetred", name:"Velvet Butterflies", bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
-  { id:"t-shivad",   name:"Divine Shiva",  bg:"linear-gradient(180deg,#d4eaf6,#aed4ec)" },
-  { id:"t-pcroyal",  name:"Royal Peacock", bg:"linear-gradient(180deg,#0a3b6b,#0e6f8a)" },
-  { id:"t-ivory",    name:"Ivory Mandala", bg:"#f7f1e6" },
+  { id:"t-diya",        name:"Diya Glow",      bg:"radial-gradient(circle at 50% 32%,#3a1810,#1d0b07)" },
   { id:"t-rose",     name:"Rose Gold",     bg:"linear-gradient(155deg,#fffafb,#f6dde2)" },
-  { id:"t-peacock",  name:"Peacock Teal",  bg:"linear-gradient(165deg,#0d6b66,#0a4f55)" },
+  { id:"t-shivad",   name:"Divine Shiva",  bg:"linear-gradient(180deg,#d4eaf6,#aed4ec)" },
+  { id:"t-marigold", name:"Marigold Garland", bg:"linear-gradient(180deg,#ffe6ad,#ffd680)" },
   { id:"t-midnight", name:"Midnight Gold", bg:"radial-gradient(circle,#1c2c4e,#0c1424)" },
+  { id:"t-lotuspond",   name:"Lotus Pond",     bg:"linear-gradient(180deg,#d8eaf0,#f0efe0)" },
+  { id:"t-pcroyal",  name:"Royal Peacock", bg:"linear-gradient(180deg,#0a3b6b,#0e6f8a)" },
+  { id:"t-velvetred", name:"Velvet Butterflies", bg:"radial-gradient(circle at 50% 20%,#a4162f,#6c0c1e)" },
+  { id:"t-aura",        name:"Divine Aura",    bg:"radial-gradient(circle at 50% 30%,#fff4de,#f1cf94)" },
+  { id:"t-peacock",  name:"Peacock Teal",  bg:"linear-gradient(165deg,#0d6b66,#0a4f55)" },
+  { id:"t-roses",      name:"Rose Garden",     bg:"url('assets/guruji/roses-bg.jpg') center/cover" },
   { id:"t-blush", name:"Blush Floral", bg:"linear-gradient(150deg,#fff,#fbe0e8)" },
+  { id:"t-mandap",      name:"Royal Mandap",   bg:"linear-gradient(180deg,#7a1228,#560c1c)" },
+  { id:"t-ivory",    name:"Ivory Mandala", bg:"#f7f1e6" },
   { id:"t-pink",  name:"Lotus Pink",   bg:"linear-gradient(160deg,#f4c5d6,#e9a7c0)" },
 ];
 const tplWrap = document.getElementById("templates");
