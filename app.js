@@ -133,10 +133,29 @@ const decor = {
   "t-ivory":    { svg:goldCornerSm },
 };
 
-// Peacock & Shiva illustrations (injected into their templates)
+// Royal Peacock: scatter peacock feathers across the card (jittered grid → even but random),
+// sitting behind the text (z-index 2 < content z-index 3) at low opacity so it stays readable.
 const pcCard = document.querySelector('.card[data-tpl="t-pcroyal"]');
 if (pcCard) {
-  pcCard.insertAdjacentHTML("beforeend", `<img class="peacock r" src="assets/guruji/img_6.png" alt="" />`);
+  const FEATHER_W = 297, COLS = 3, ROWS = 4;
+  const cellW = 430 / COLS, cellH = 680 / ROWS;
+  let html = "";
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      const cx = col * cellW + cellW / 2 + (Math.random() - 0.5) * cellW * 0.7;
+      const cy = row * cellH + cellH / 2 + (Math.random() - 0.5) * cellH * 0.7;
+      const scale = 0.16 + Math.random() * 0.18;            // ~48–101px wide
+      const rot = Math.floor(Math.random() * 360);
+      // fainter in the central text column, a touch stronger toward the edges
+      const edge = Math.abs(col - (COLS - 1) / 2) / ((COLS - 1) / 2);
+      const op = (0.12 + edge * 0.12 + Math.random() * 0.06).toFixed(2);
+      const w = Math.round(FEATHER_W * scale);
+      html += `<img class="feather" src="assets/guruji/peacock-feather.png" alt="" `
+        + `style="left:${cx.toFixed(0)}px;top:${cy.toFixed(0)}px;width:${w}px;`
+        + `transform:translate(-50%,-50%) rotate(${rot}deg);opacity:${op}" />`;
+    }
+  }
+  pcCard.insertAdjacentHTML("afterbegin", html);
 }
 const shCard = document.querySelector('.card[data-tpl="t-shivad"]');
 if (shCard) {
