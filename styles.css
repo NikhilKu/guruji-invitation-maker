@@ -213,7 +213,7 @@ textarea { resize:vertical; }
 
 /* ---------- T10 : PEACOCK TEAL ---------- */
 .t-peacock { background:linear-gradient(165deg,#0d6b66,#0a4f55 60%,#0d6b66); }
-.t-peacock .panel { position:absolute; inset:26px; background:linear-gradient(180deg,#fffdf7,#fbf3e2); border-radius:10px; z-index:1; box-shadow:0 0 0 2px #c9a24a, inset 0 0 0 5px #fffdf7; }
+.t-peacock .bgpanel { position:absolute; inset:26px; background:linear-gradient(180deg,#fffdf7,#fbf3e2); border-radius:10px; z-index:1; box-shadow:0 0 0 2px #c9a24a, inset 0 0 0 5px #fffdf7; }
 .t-peacock .content { padding:46px 46px 34px; z-index:2; }
 .t-peacock .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#0d6b66; }
 .t-peacock .ji-photo { width:124px; height:124px; border-radius:50%; object-fit:cover; border:4px solid #c9a24a; margin-top:14px; box-shadow:0 4px 12px rgba(10,60,60,.3); }
@@ -280,7 +280,7 @@ textarea { resize:vertical; }
 
 /* ---------- ROYAL PEACOCK ---------- */
 .t-pcroyal { background:linear-gradient(180deg,#0a3b6b,#0e6f8a 58%,#0a3b6b); }
-.t-pcroyal .panel { position:absolute; inset:24px; background:linear-gradient(180deg,#fffdf7,#fbf2df); border-radius:12px; z-index:1; box-shadow:0 0 0 2px #c9a24a; }
+.t-pcroyal .bgpanel { position:absolute; inset:24px; background:linear-gradient(180deg,#fffdf7,#fbf2df); border-radius:12px; z-index:1; box-shadow:0 0 0 2px #c9a24a; }
 .t-pcroyal .content { padding:42px 46px 30px; z-index:3; position:relative; }
 .t-pcroyal .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#0d5b8f; }
 .t-pcroyal .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #c9a24a; margin-top:12px; box-shadow:0 4px 12px rgba(10,40,70,.3); }

@@ -21,10 +21,10 @@ Everything runs **client-side** — there is no backend. Your text and any photo
 
 Plain **HTML + CSS + vanilla JavaScript**, no build step. Two runtime libraries are loaded from a CDN:
 
-- [html2canvas](https://html2canvas.hertzen.com/) — renders the invitation to a canvas for export
+- [modern-screenshot](https://github.com/qq15725/modern-screenshot) — renders the invitation to a canvas via the browser's own engine (SVG `foreignObject`), so the export matches the live preview
 - [jsPDF](https://github.com/parallax/jsPDF) — wraps the rendered image into a PDF
 
-Fonts come from Google Fonts; a few icons from Font Awesome.
+Fonts are self-hosted in `assets/fonts/` (so the exporter can embed them into the image); a few icons from Font Awesome.
 
 ## Run locally
 

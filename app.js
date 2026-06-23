@@ -321,6 +321,17 @@ Object.keys(decor).forEach(tpl => {
   });
 });
 
+// Give every inline SVG an explicit width/height from its viewBox. An SVG sized only by CSS
+// has no intrinsic size, which can collapse it when the card is serialised for export on
+// strict engines (Safari/iOS). The attributes pin the intrinsic size; CSS still controls the
+// displayed size, so the on-screen preview is unchanged.
+document.querySelectorAll(".card svg[viewBox]").forEach(svg => {
+  if (svg.hasAttribute("width") && svg.hasAttribute("height")) return;
+  const vb = svg.getAttribute("viewBox").split(/[\s,]+/);
+  svg.setAttribute("width", vb[2]);
+  svg.setAttribute("height", vb[3]);
+});
+
 // Watermark on every template — always present (also captured in the export)
 document.querySelectorAll(".card").forEach(card => {
   card.insertAdjacentHTML("beforeend", `<div class="wm">Created with the Guru Ji Satsang Invitation Maker</div>`);
@@ -505,13 +516,27 @@ function fitStage() {
 window.addEventListener("resize", fitStage);
 
 // ---------- Render / export / share ----------
-function renderCanvas(fmt) {
+// modern-screenshot renders via an SVG <foreignObject>, i.e. the browser's own engine paints
+// the card — so object-fit, gradients, SVG and text all match the live preview (true WYSIWYG).
+// It embeds the page fonts into the image, which is why the fonts must be self-hosted.
+async function renderCanvas(fmt) {
   const card = document.querySelector(".card.show");
   const prev = stage.style.getPropertyValue("--s");
+  // The preview is scaled to fit the screen via transform:scale(--s); the capture honours that
+  // transform, so a shrunk preview would export at reduced resolution. Neutralise the scale
+  // (both the variable and the element transform) and force a reflow so the capture is always a
+  // full-resolution 430×680 → 1290×2040 px, independent of window size.
   stage.style.setProperty("--s", "1");
-  const restore = () => { stage.style.setProperty("--s", prev || "1"); fitStage(); };
-  return html2canvas(card, { scale:3, useCORS:true, backgroundColor: fmt === "png" ? null : "#ffffff" })
-    .then(c => { restore(); return c; }, err => { restore(); throw err; });
+  card.style.transform = "none";
+  void card.offsetWidth;
+  const restore = () => { card.style.transform = ""; stage.style.setProperty("--s", prev || "1"); fitStage(); };
+  try {
+    if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
+    return await modernScreenshot.domToCanvas(card, {
+      scale: 3, width: 430, height: 680,
+      backgroundColor: fmt === "png" ? null : "#ffffff"
+    });
+  } finally { restore(); }
 }
 async function withLoading(btn, fn) {
   if (btn.disabled) return;
