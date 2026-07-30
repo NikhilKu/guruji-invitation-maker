@@ -19,12 +19,16 @@ Everything runs **client-side** — there is no backend. Your text and any photo
 
 ## Tech
 
-Plain **HTML + CSS + vanilla JavaScript**, no build step. Two runtime libraries are loaded from a CDN:
+Plain **HTML + CSS + vanilla JavaScript**, no build step. Two runtime libraries (MIT-licensed) are vendored in `assets/vendor/` so a blocked or flaky CDN can never break exporting:
 
 - [modern-screenshot](https://github.com/qq15725/modern-screenshot) — renders the invitation to a canvas via the browser's own engine (SVG `foreignObject`), so the export matches the live preview
 - [jsPDF](https://github.com/parallax/jsPDF) — wraps the rendered image into a PDF
 
-Fonts are self-hosted in `assets/fonts/` (so the exporter can embed them into the image); a few icons from Font Awesome.
+Fonts are self-hosted in `assets/fonts/` (so the exporter can embed them into the image). Font Awesome (CDN) is used for form-UI icons only — card artwork never depends on it, so exports can't lose glyphs.
+
+### Export fidelity
+
+"The download must look exactly like the preview" is treated as a hard requirement and is enforced by a pixel-diff harness (`tools/fidelity_check.py`) that renders every template in Chromium, WebKit and Firefox and compares the on-screen preview against the app's own export pipeline. The export code in `app.js` also works around two WebKit (Safari/iOS) `foreignObject` bugs — blurred `box-shadow` smearing and `object-fit` cropping — by baking photo crops and shadows into pixels at capture time and undoing it afterwards.
 
 ## Run locally
 
@@ -43,6 +47,8 @@ styles.css    # all styling, including one block per template (.t-<name>)
 app.js        # template registry, decorative SVG generators, live binding,
               # date logic, photo handling, persistence, and export/share
 assets/guruji # Guru Ji photos and a few decorative images
+assets/vendor # vendored export libraries (modern-screenshot, jsPDF)
+tools/        # fidelity_check.py — preview-vs-export pixel-diff harness
 ```
 
 ## Adding a template

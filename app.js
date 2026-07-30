@@ -517,9 +517,150 @@ window.addEventListener("resize", fitStage);
 
 // ---------- Render / export / share ----------
 // modern-screenshot renders via an SVG <foreignObject>, i.e. the browser's own engine paints
-// the card — so object-fit, gradients, SVG and text all match the live preview (true WYSIWYG).
-// It embeds the page fonts into the image, which is why the fonts must be self-hosted.
+// the card — so gradients, SVG and text all match the live preview (true WYSIWYG). It embeds
+// the page fonts into the image, which is why the fonts must be self-hosted.
+const EXPORT_SCALE = 3;
+
+async function waitForCardAssets(card) {
+  if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
+  await Promise.all([...card.querySelectorAll("img")].map(img =>
+    (img.src && img.decode) ? img.decode().catch(() => {}) : Promise.resolve()));
+}
+
+// WebKit (Safari/iOS) mis-renders object-fit inside <foreignObject>: the crop origin shifts
+// and the overflow of the scaled image leaks outside the frame. The export must therefore
+// never rely on object-fit — bake the exact on-screen crop into the pixels, capture, undo.
+// The replacement reproduces what the user already sees, so the preview doesn't flicker.
+async function precropCardImages(card) {
+  const undos = [];
+  // object-position % semantics: the overflow (box minus scaled image) is distributed by the
+  // percentage; a px value is a straight offset of the image's top-left corner.
+  const axisOffset = (v, box, img) => v.endsWith("%") ? (box - img) * (parseFloat(v) / 100) : parseFloat(v);
+  for (const img of card.querySelectorAll("img")) {
+    const cs = getComputedStyle(img);
+    const fit = cs.objectFit;
+    if (cs.display === "none" || !img.naturalWidth || (fit !== "cover" && fit !== "contain")) continue;
+    const bw = img.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    const bh = img.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    if (bw <= 0 || bh <= 0) continue;
+    const iw = img.naturalWidth, ih = img.naturalHeight;
+    const s = fit === "cover" ? Math.max(bw / iw, bh / ih) : Math.min(bw / iw, bh / ih);
+    const pos = cs.objectPosition.split(" ");
+    const dx = axisOffset(pos[0], bw, iw * s), dy = axisOffset(pos[1] || "50%", bh, ih * s);
+    const c = document.createElement("canvas");
+    c.width = Math.round(bw * EXPORT_SCALE); c.height = Math.round(bh * EXPORT_SCALE);
+    c.getContext("2d").drawImage(img, dx * EXPORT_SCALE, dy * EXPORT_SCALE, iw * s * EXPORT_SCALE, ih * s * EXPORT_SCALE);
+    const saved = { src: img.src, cssText: img.style.cssText };
+    undos.push(() => { img.style.cssText = saved.cssText; img.src = saved.src; });
+    img.style.objectFit = "fill";
+    img.src = c.toDataURL("image/png");
+    if (img.decode) { try { await img.decode(); } catch (e) {} }
+  }
+  return undos;
+}
+
+// WebKit's <foreignObject> rasteriser cannot paint *blurred* box-shadows — they come out as
+// hard opaque slabs smeared to one side of the element (the classic "gray wedge" on exported
+// photos). Zero-blur ring shadows are fine. So for the capture, each image's shadow stack is
+// rasterised into a canvas (Canvas2D shadows use the same Gaussian σ = blur/2 as CSS, so the
+// pixels match) and swapped in as a plain <img> behind the photo; the photo itself keeps
+// box-shadow:none until the capture is undone.
+function parseShadowList(str) {
+  const parts = [];
+  let depth = 0, cur = "";
+  for (const ch of str) {
+    if (ch === "(") depth++;
+    else if (ch === ")") depth--;
+    if (ch === "," && depth === 0) { parts.push(cur); cur = ""; }
+    else cur += ch;
+  }
+  if (cur.trim()) parts.push(cur);
+  return parts.map(p => {
+    const inset = /\binset\b/.test(p);
+    const color = (p.match(/rgba?\([^)]*\)|#[0-9a-fA-F]+/) || ["rgba(0,0,0,0)"])[0];
+    const [dx = 0, dy = 0, blur = 0, spread = 0] =
+      p.replace(color, "").replace(/\binset\b/, "").trim().split(/\s+/).map(parseFloat);
+    return { inset, color, dx, dy, blur, spread };
+  });
+}
+function bakeImgShadows(card) {
+  const undos = [];
+  const S = EXPORT_SCALE, OFF = 5000;   // draws the silhouette off-canvas; only its shadow lands
+  for (const img of card.querySelectorAll("img")) {
+    const cs = getComputedStyle(img);
+    if (cs.display === "none" || cs.boxShadow === "none") continue;
+    const shadows = parseShadowList(cs.boxShadow).filter(s => !s.inset);
+    if (!shadows.length) continue;
+    const w = img.offsetWidth, h = img.offsetHeight;
+    const radii = [cs.borderTopLeftRadius, cs.borderTopRightRadius,
+                   cs.borderBottomRightRadius, cs.borderBottomLeftRadius]
+      .map(r => r.endsWith("%") ? parseFloat(r) / 100 * w : parseFloat(r));
+    const pad = Math.ceil(Math.max(...shadows.map(s =>
+      s.blur + s.spread + Math.max(Math.abs(s.dx), Math.abs(s.dy))))) + 2;
+    const c = document.createElement("canvas");
+    c.width = (w + 2 * pad) * S; c.height = (h + 2 * pad) * S;
+    const ctx = c.getContext("2d");
+    // manual rounded-rect path: ctx.roundRect is missing on the older Safari
+    // versions this whole workaround exists for
+    const roundRect = (x, y, rw, rh, rs) => {
+      const [tl, tr, br, bl] = rs.map(v => Math.max(0, Math.min(v, Math.min(rw, rh) / 2)));
+      ctx.beginPath();
+      ctx.moveTo(x + tl, y);
+      ctx.lineTo(x + rw - tr, y); ctx.arcTo(x + rw, y, x + rw, y + tr, tr);
+      ctx.lineTo(x + rw, y + rh - br); ctx.arcTo(x + rw, y + rh, x + rw - br, y + rh, br);
+      ctx.lineTo(x + bl, y + rh); ctx.arcTo(x, y + rh, x, y + rh - bl, bl);
+      ctx.lineTo(x, y + tl); ctx.arcTo(x, y, x + tl, y, tl);
+      ctx.closePath();
+    };
+    // CSS paints the first shadow on top — draw back-to-front
+    for (const s of [...shadows].reverse()) {
+      ctx.save();
+      ctx.shadowColor = s.color;
+      ctx.shadowBlur = s.blur * S;
+      ctx.shadowOffsetX = OFF + s.dx * S;
+      ctx.shadowOffsetY = s.dy * S;
+      ctx.fillStyle = "#000";
+      roundRect((pad - s.spread) * S - OFF, (pad - s.spread) * S,
+                (w + 2 * s.spread) * S, (h + 2 * s.spread) * S,
+                radii.map(r => (r + s.spread) * S));
+      ctx.fill();
+      ctx.restore();
+    }
+    // outset shadows never paint inside the border box — punch the interior out
+    ctx.globalCompositeOperation = "destination-out";
+    roundRect(pad * S, pad * S, w * S, h * S, radii.map(r => r * S));
+    ctx.fill();
+    const ghost = document.createElement("img");
+    ghost.style.cssText =
+      `position:absolute;z-index:-1;left:${img.offsetLeft - pad}px;top:${img.offsetTop - pad}px;` +
+      `width:${w + 2 * pad}px;height:${h + 2 * pad}px;margin:0;border:0;padding:0;` +
+      `transform:${cs.transform};`;
+    ghost.src = c.toDataURL("image/png");
+    img.parentNode.insertBefore(ghost, img);
+    const savedShadow = img.style.boxShadow;
+    img.style.boxShadow = "none";
+    undos.push(() => { ghost.remove(); img.style.boxShadow = savedShadow; });
+  }
+  return undos;
+}
+
+// No card is a flat colour, so a uniform capture means the engine rasterised the SVG before
+// its embedded resources were ready (a sporadic WebKit failure) — worth one retry.
+function canvasLooksBlank(canvas) {
+  const probe = document.createElement("canvas");
+  probe.width = probe.height = 16;
+  const ctx = probe.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(canvas, 0, 0, 16, 16);
+  const d = ctx.getImageData(0, 0, 16, 16).data;
+  for (let i = 4; i < d.length; i += 4) {
+    if (Math.abs(d[i] - d[0]) > 6 || Math.abs(d[i + 1] - d[1]) > 6 ||
+        Math.abs(d[i + 2] - d[2]) > 6 || Math.abs(d[i + 3] - d[3]) > 6) return false;
+  }
+  return true;
+}
+
 async function renderCanvas(fmt) {
+  if (!window.modernScreenshot) throw new Error("Export library not loaded");
   const card = document.querySelector(".card.show");
   const prev = stage.style.getPropertyValue("--s");
   // The preview is scaled to fit the screen via transform:scale(--s); the capture honours that
@@ -529,14 +670,24 @@ async function renderCanvas(fmt) {
   stage.style.setProperty("--s", "1");
   card.style.transform = "none";
   void card.offsetWidth;
-  const restore = () => { card.style.transform = ""; stage.style.setProperty("--s", prev || "1"); fitStage(); };
+  let undoPhotos = [];
   try {
-    if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
-    return await modernScreenshot.domToCanvas(card, {
-      scale: 3, width: 430, height: 680,
+    await waitForCardAssets(card);
+    undoPhotos = await precropCardImages(card);
+    undoPhotos.push(...bakeImgShadows(card));
+    const opts = {
+      scale: EXPORT_SCALE, width: 430, height: 680,
       backgroundColor: fmt === "png" ? null : "#ffffff"
-    });
-  } finally { restore(); }
+    };
+    let canvas = await modernScreenshot.domToCanvas(card, opts);
+    if (canvasLooksBlank(canvas)) canvas = await modernScreenshot.domToCanvas(card, opts);
+    return canvas;
+  } finally {
+    undoPhotos.forEach(u => u());
+    card.style.transform = "";
+    stage.style.setProperty("--s", prev || "1");
+    fitStage();
+  }
 }
 async function withLoading(btn, fn) {
   if (btn.disabled) return;
@@ -546,33 +697,46 @@ async function withLoading(btn, fn) {
   catch (e) { toast("Sorry, something went wrong. Please try again."); }
   finally { [downloadBtn, shareBtn].forEach(b => b.disabled = false); btn.classList.remove("loading"); }
 }
+// Downloads go through a Blob object-URL: data-URL anchors are unreliable on iOS Safari and
+// duplicate the multi-megabyte image as a string, which is exactly where low-memory phones die.
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.download = filename;
+  link.href = url;
+  document.body.appendChild(link);   // iOS requires the anchor to be in the document
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
 downloadBtn.addEventListener("click", () => withLoading(downloadBtn, async () => {
   const fmt = currentFormat;
   const canvas = await renderCanvas(fmt);
   if (fmt === "pdf") {
+    if (!window.jspdf) throw new Error("PDF library not loaded");
     const { jsPDF } = window.jspdf;
     const w = canvas.width, h = canvas.height;
     const pdf = new jsPDF({ orientation: w > h ? "landscape" : "portrait", unit:"px", format:[w, h] });
     pdf.addImage(canvas.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, w, h);
-    pdf.save("guru-ji-satsang-invitation.pdf");
+    downloadBlob(pdf.output("blob"), "guru-ji-satsang-invitation.pdf");
   } else {
-    const link = document.createElement("a");
-    link.download = "guru-ji-satsang-invitation." + fmt;
-    link.href = canvas.toDataURL(fmt === "jpg" ? "image/jpeg" : "image/png", 0.95);
-    link.click();
+    const type = fmt === "jpg" ? "image/jpeg" : "image/png";
+    const blob = await new Promise(r => canvas.toBlob(r, type, 0.95));
+    if (!blob) throw new Error("Image encoding failed");
+    downloadBlob(blob, "guru-ji-satsang-invitation." + fmt);
   }
   toast("Invitation saved to your downloads.");
 }));
 shareBtn.addEventListener("click", () => withLoading(shareBtn, async () => {
   const canvas = await renderCanvas("png");
   const blob = await new Promise(r => canvas.toBlob(r, "image/png"));
+  if (!blob) throw new Error("Image encoding failed");
   const file = new File([blob], "guru-ji-satsang-invitation.png", { type:"image/png" });
   const text = "🙏 You are invited to Guru Ji's Satsang";
   if (navigator.canShare && navigator.canShare({ files:[file] })) {
     try { await navigator.share({ files:[file], title:"Guru Ji's Satsang", text }); } catch (e) { /* user cancelled */ }
   } else {
-    const link = document.createElement("a");
-    link.download = "guru-ji-satsang-invitation.png"; link.href = canvas.toDataURL("image/png"); link.click();
+    downloadBlob(blob, "guru-ji-satsang-invitation.png");
     toast("Image saved — attach it in WhatsApp to share.");
   }
 }));

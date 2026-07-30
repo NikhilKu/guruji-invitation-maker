@@ -83,7 +83,7 @@ textarea { resize:vertical; }
 .t-pink .arch { position:absolute; top:34px; left:34px; right:34px; bottom:34px; background:#fdf3f7; border-radius:140px 140px 14px 14px; z-index:1; box-shadow:inset 0 0 0 2px rgba(214,106,152,.25); }
 .t-pink .content { padding:48px 46px 30px; }
 .t-pink .ji-photo { width:120px; height:150px; border-radius:6px; border:2px solid #fff; box-shadow:0 4px 12px rgba(120,40,80,.25); }
-.t-pink .blessing { font-family:"Cormorant Garamond",serif; font-size:23px; color:#5a2a40; line-height:1.25; margin-top:18px; }
+.t-pink .blessing { font-family:"Cormorant Garamond",serif; font-size:23px; color:#5a2a40; line-height:29px; margin-top:18px; }
 .t-pink .title { font-family:"Great Vibes",cursive; font-size:48px; color:#b0316a; line-height:1; margin:6px 0; }
 .t-pink .datebar { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; column-gap:14px; margin-top:14px; width:100%; }
 .t-pink .datebar .side { justify-self:center; min-width:94px; text-align:center; font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#4a2a3a; border-top:1.5px solid #4a2a3a; border-bottom:1.5px solid #4a2a3a; padding:5px 4px; }
@@ -91,7 +91,7 @@ textarea { resize:vertical; }
 .t-pink .datebar .daynum { font-family:"Playfair Display",serif; font-size:40px; color:#3a1a2a; border:2px solid #c97; border-top:none; border-radius:0 0 40px 40px; padding:0 16px 6px; line-height:1; }
 .t-pink .venue { font-family:"Cormorant Garamond",serif; font-size:21px; color:#4a2236; margin-top:22px; }
 .t-pink .langar { font-size:19px; color:#4a2236; margin-top:16px; }
-.t-pink .rsvp { font-size:19px; color:#4a2236; margin-top:auto; line-height:1.35; }
+.t-pink .rsvp { font-size:19px; color:#4a2236; margin-top:auto; line-height:26px; }
 
 /* ---------- T3 : SACRED LOTUS ---------- */
 .t-lotus { background:#f7f0e6; }
@@ -163,16 +163,16 @@ textarea { resize:vertical; }
 .t-blush { background:#fff; }
 .t-blush .content { padding:30px 44px; }
 .t-blush .jai { font-family:"Playfair Display",serif; font-weight:700; font-size:20px; color:#2a2a2a; }
-.t-blush .blessing { font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; color:#3a3a3a; margin-top:12px; line-height:1.6; }
+.t-blush .blessing { font-family:"Cinzel",serif; font-size:12px; letter-spacing:.5px; color:#3a3a3a; margin-top:12px; line-height:19px; }
 .t-blush .ji-photo { width:150px; height:170px; object-fit:cover; margin-top:16px; border:4px solid #d8a; box-shadow:6px 6px 0 #e8c2b8; transform:rotate(-3deg); }
 .t-blush .title { font-family:"Great Vibes",cursive; font-size:46px; color:#e0317a; margin-top:18px; line-height:1; }
 .t-blush .datebar { display:grid; grid-template-columns:1fr auto 1fr; align-items:flex-end; column-gap:16px; margin-top:14px; }
 .t-blush .datebar .side { justify-self:center; min-width:90px; text-align:center; font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#2a2a2a; border-top:2px solid #2a2a2a; padding-top:6px; }
 .t-blush .datebar .daynum { font-family:"Playfair Display",serif; font-weight:700; font-size:52px; color:#e0317a; line-height:.8; }
 .t-blush .datebar .yr { font-family:"Playfair Display",serif; font-size:16px; color:#2a2a2a; }
-.t-blush .langar { font-weight:700; font-size:15px; color:#2a2a2a; margin-top:14px; line-height:1.5; }
+.t-blush .langar { font-weight:700; font-size:15px; color:#2a2a2a; margin-top:14px; line-height:23px; }
 .t-blush .vlabel { font-size:14px; color:#3a3a3a; margin-top:12px; }
-.t-blush .venue { font-family:"Cinzel",serif; font-size:13px; letter-spacing:.5px; color:#2a2a2a; line-height:1.6; }
+.t-blush .venue { font-family:"Cinzel",serif; font-size:13px; letter-spacing:.5px; color:#2a2a2a; line-height:21px; }
 .t-blush .welcome { font-weight:700; font-size:18px; color:#e0317a; margin-top:14px; }
 .t-blush .names { font-weight:700; font-size:17px; color:#3a3a3a; margin-top:4px; }
 
@@ -202,27 +202,30 @@ textarea { resize:vertical; }
 .t-midnight .om { font-size:34px; color:#d8b65a; line-height:1; }
 .t-midnight .jai { font-family:"Cinzel",serif; font-size:15px; letter-spacing:4px; color:#d8b65a; margin-top:6px; }
 .t-midnight .ji-photo { width:128px; height:128px; border-radius:50%; object-fit:cover; border:3px solid #c9a24a; margin-top:18px; box-shadow:0 0 0 6px rgba(201,162,74,.15); }
-.t-midnight .title { font-family:"Playfair Display",serif; font-weight:700; font-size:42px; margin-top:16px; line-height:1.05; color:#e6c869; }
+.t-midnight .title { font-family:"Playfair Display",serif; font-weight:700; font-size:42px; margin-top:16px; line-height:44px; color:#e6c869; }
 .t-midnight .orn { color:#c9a24a; letter-spacing:4px; margin:10px 0; }
-.t-midnight .blessing { font-size:17px; line-height:1.5; color:#e8e0cc; margin-top:6px; }
+.t-midnight .blessing { font-size:17px; line-height:26px; color:#e8e0cc; margin-top:6px; }
 .t-midnight .bigdate { font-family:"Cinzel",serif; font-size:16px; letter-spacing:1px; color:#d8b65a; margin-top:18px; }
 .t-midnight .time { font-size:16px; color:#cdc4ad; margin-top:6px; font-style:italic; }
-.t-midnight .venue { font-size:16px; color:#e8e0cc; line-height:1.4; margin-top:14px; }
+.t-midnight .venue { font-size:16px; color:#e8e0cc; line-height:22px; margin-top:14px; }
 .t-midnight .names { font-family:"Playfair Display",serif; font-size:19px; color:#d8b65a; margin-top:auto; }
 .t-midnight .phone { font-size:15px; color:#cdc4ad; margin-top:4px; }
 
 /* ---------- T10 : PEACOCK TEAL ---------- */
 .t-peacock { background:linear-gradient(165deg,#0d6b66,#0a4f55 60%,#0d6b66); }
-.t-peacock .bgpanel { position:absolute; inset:26px; background:linear-gradient(180deg,#fffdf7,#fbf3e2); border-radius:10px; z-index:1; box-shadow:0 0 0 2px #c9a24a, inset 0 0 0 5px #fffdf7; }
+/* The gold ring is a real border, not a box-shadow spread ring: WebKit's foreignObject
+   rasteriser (Safari/iOS export) misdraws spread rings by a pixel at the bottom edge.
+   inset 26px+2px ring outside == inset 24px+2px border: same geometry. */
+.t-peacock .bgpanel { position:absolute; inset:24px; background:linear-gradient(180deg,#fffdf7,#fbf3e2); border:2px solid #c9a24a; border-radius:10px; z-index:1; box-shadow:inset 0 0 0 5px #fffdf7; }
 .t-peacock .content { padding:46px 46px 34px; z-index:2; }
 .t-peacock .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#0d6b66; }
 .t-peacock .ji-photo { width:124px; height:124px; border-radius:50%; object-fit:cover; border:4px solid #c9a24a; margin-top:14px; box-shadow:0 4px 12px rgba(10,60,60,.3); }
 .t-peacock .title { font-family:"Great Vibes",cursive; font-size:48px; color:#0d6b66; margin-top:14px; line-height:1; }
 .t-peacock .orn { color:#c9a24a; letter-spacing:4px; margin:8px 0; }
-.t-peacock .blessing { font-size:18px; line-height:1.45; color:#3a4a48; margin-top:4px; }
+.t-peacock .blessing { font-size:18px; line-height:26px; color:#3a4a48; margin-top:4px; }
 .t-peacock .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#9a6a14; margin-top:16px; }
 .t-peacock .time { font-size:17px; color:#3a4a48; margin-top:4px; }
-.t-peacock .venue { font-size:17px; color:#3a4a48; line-height:1.4; margin-top:14px; }
+.t-peacock .venue { font-size:17px; color:#3a4a48; line-height:24px; margin-top:14px; }
 .t-peacock .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#0d6b66; margin-top:12px; }
 .t-peacock .phone { font-size:15px; color:#6a5a3a; margin-top:4px; }
 
@@ -237,7 +240,7 @@ textarea { resize:vertical; }
 .t-rose .blessing { font-size:18px; line-height:1.5; color:#6a4a52; margin-top:4px; }
 .t-rose .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:2px; color:#a85c68; margin-top:18px; }
 .t-rose .time { font-size:17px; color:#6a4a52; font-style:italic; margin-top:4px; }
-.t-rose .venue { font-size:16px; color:#6a4a52; line-height:1.4; margin-top:14px; }
+.t-rose .venue { font-size:16px; color:#6a4a52; line-height:22px; margin-top:14px; }
 .t-rose .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#b76e79; margin-top:12px; }
 .t-rose .phone { font-size:15px; color:#8a6a72; margin-top:4px; }
 
@@ -251,10 +254,10 @@ textarea { resize:vertical; }
 .t-ivory .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid #b08a3a; margin-top:14px; box-shadow:0 0 0 5px rgba(176,138,58,.18); }
 .t-ivory .title { font-family:"Playfair Display",serif; font-weight:700; font-size:36px; color:#7a3a3a; margin-top:14px; }
 .t-ivory .orn { color:#b08a3a; letter-spacing:4px; margin:8px 0; }
-.t-ivory .blessing { font-size:17px; line-height:1.5; color:#5a4636; margin-top:4px; }
+.t-ivory .blessing { font-size:17px; line-height:26px; color:#5a4636; margin-top:4px; }
 .t-ivory .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#9a5a2a; margin-top:16px; }
 .t-ivory .time { font-size:17px; color:#5a4636; margin-top:4px; }
-.t-ivory .venue { font-size:16px; color:#5a4636; line-height:1.4; margin-top:14px; }
+.t-ivory .venue { font-size:16px; color:#5a4636; line-height:22px; margin-top:14px; }
 .t-ivory .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#7a3a3a; margin-top:12px; }
 .t-ivory .phone { font-size:15px; color:#7a5a4a; margin-top:4px; }
 
@@ -280,16 +283,17 @@ textarea { resize:vertical; }
 
 /* ---------- ROYAL PEACOCK ---------- */
 .t-pcroyal { background:linear-gradient(180deg,#0a3b6b,#0e6f8a 58%,#0a3b6b); }
-.t-pcroyal .bgpanel { position:absolute; inset:24px; background:linear-gradient(180deg,#fffdf7,#fbf2df); border-radius:12px; z-index:1; box-shadow:0 0 0 2px #c9a24a; }
+/* Real border instead of a shadow spread ring — see .t-peacock .bgpanel note. */
+.t-pcroyal .bgpanel { position:absolute; inset:22px; background:linear-gradient(180deg,#fffdf7,#fbf2df); border:2px solid #c9a24a; border-radius:12px; z-index:1; }
 .t-pcroyal .content { padding:42px 46px 30px; z-index:3; position:relative; }
 .t-pcroyal .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#0d5b8f; }
 .t-pcroyal .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #c9a24a; margin-top:12px; box-shadow:0 4px 12px rgba(10,40,70,.3); }
 .t-pcroyal .title { font-family:"Great Vibes",cursive; font-size:46px; color:#0d5b8f; margin-top:12px; line-height:1; }
 .t-pcroyal .orn { color:#c9a24a; letter-spacing:4px; margin:6px 0; }
-.t-pcroyal .blessing { font-size:17px; line-height:1.45; color:#34485a; margin-top:4px; }
+.t-pcroyal .blessing { font-size:17px; line-height:25px; color:#34485a; margin-top:4px; }
 .t-pcroyal .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#9a6a14; margin-top:14px; }
 .t-pcroyal .time { font-size:16px; color:#34485a; margin-top:4px; }
-.t-pcroyal .venue { font-size:16px; color:#34485a; line-height:1.4; margin-top:12px; }
+.t-pcroyal .venue { font-size:16px; color:#34485a; line-height:22px; margin-top:12px; }
 .t-pcroyal .names { font-family:"Playfair Display",serif; font-weight:600; font-size:18px; color:#0d5b8f; margin-top:10px; }
 .t-pcroyal .phone { font-size:14px; color:#6a5a3a; margin-top:3px; }
 .t-pcroyal .feather { position:absolute; z-index:2; height:auto; pointer-events:none; }
@@ -303,7 +307,7 @@ textarea { resize:vertical; }
 .t-shivad .ji-photo { width:120px; height:140px; border-radius:60px 60px 6px 6px; object-fit:cover; border:4px solid #c89b3c; margin-top:12px; box-shadow:0 4px 12px rgba(120,80,20,.28); }
 .t-shivad .title { font-family:"Great Vibes",cursive; font-size:44px; color:#c2641f; margin-top:10px; line-height:1; }
 .t-shivad .orn { color:#c89b3c; letter-spacing:3px; margin:6px 0; }
-.t-shivad .blessing { font-family:"Cinzel",serif; font-weight:600; font-size:12px; letter-spacing:.3px; color:#1a4a7a; margin-top:6px; line-height:1.6; }
+.t-shivad .blessing { font-family:"Cinzel",serif; font-weight:600; font-size:12px; letter-spacing:.3px; color:#1a4a7a; margin-top:6px; line-height:19px; }
 .t-shivad .bigdate { font-family:"Cinzel",serif; font-size:14px; letter-spacing:1px; color:#1a4a7a; margin-top:12px; }
 .t-shivad .time { font-size:16px; color:#223344; margin-top:4px; }
 .t-shivad .venue { font-size:15px; color:#223344; line-height:1.4; margin-top:10px; }
@@ -321,15 +325,15 @@ textarea { resize:vertical; }
 .t-velvetred .ji-photo { width:116px; height:116px; border-radius:50%; object-fit:cover; border:3px solid #d8b256; margin-top:14px; box-shadow:0 0 0 5px rgba(216,178,86,.18); }
 .t-velvetred .title { font-family:"Great Vibes",cursive; font-size:50px; line-height:1; margin-top:12px; color:#ecca72; text-shadow:0 1px 2px rgba(0,0,0,.22); }
 .t-velvetred .orn { color:#d8b256; letter-spacing:4px; margin:8px 0; }
-.t-velvetred .blessing { font-size:17px; line-height:1.5; color:#f3ddb2; margin-top:4px; }
+.t-velvetred .blessing { font-size:17px; line-height:26px; color:#f3ddb2; margin-top:4px; }
 .t-velvetred .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#e7c879; margin-top:16px; }
 .t-velvetred .time { font-size:16px; color:#edd199; margin-top:6px; font-style:italic; }
-.t-velvetred .venue { font-size:16px; color:#f3ddb2; line-height:1.4; margin-top:14px; }
+.t-velvetred .venue { font-size:16px; color:#f3ddb2; line-height:22px; margin-top:14px; }
 .t-velvetred .names { font-family:"Playfair Display",serif; font-weight:600; font-size:20px; color:#e7c879; margin-top:16px; }
 .t-velvetred .phone { font-size:15px; color:#edd199; margin-top:4px; }
 .t-velvetred .divider { display:flex; align-items:center; justify-content:center; gap:12px; margin:12px 0 2px; }
 .t-velvetred .divider span { width:54px; height:1px; background:#d8b256; opacity:.75; }
-.t-velvetred .divider i { color:#d8b256; font-size:11px; }
+.t-velvetred .divider .gem { display:block; }
 .t-velvetred .dateplaque { margin-top:18px; padding:7px 18px; border:1px solid #d8b256; border-radius:3px; font-family:"Cinzel",serif; font-size:13px; letter-spacing:1.5px; color:#edd199; box-shadow:inset 0 0 0 3px rgba(216,178,86,.1); }
 .t-velvetred .wm { color:rgba(255,235,190,.5); }
 
@@ -339,14 +343,14 @@ textarea { resize:vertical; }
 .t-roses::after { content:""; position:absolute; inset:16px; border:1px solid rgba(232,201,122,.7); z-index:1; pointer-events:none; }
 .t-roses .content { padding:34px 40px 28px; z-index:2; text-shadow:0 1px 5px rgba(20,0,5,.66); }
 .t-roses .jai { font-family:"Playfair Display",serif; font-weight:700; font-size:19px; color:#ecca72; }
-.t-roses .blessing { font-family:"Cinzel",serif; font-size:11.5px; letter-spacing:.4px; color:#f4e8de; margin-top:10px; line-height:1.6; }
+.t-roses .blessing { font-family:"Cinzel",serif; font-size:11.5px; letter-spacing:.4px; color:#f4e8de; margin-top:10px; line-height:18px; }
 .t-roses .ji-photo { width:126px; height:148px; object-fit:cover; margin-top:12px; border:4px solid #fff; box-shadow:0 4px 14px rgba(0,0,0,.5); }
 .t-roses .title { font-family:"Great Vibes",cursive; font-size:46px; color:#f7dca2; margin-top:10px; line-height:1; }
 .t-roses .datebar { display:grid; grid-template-columns:1fr auto 1fr; align-items:flex-end; column-gap:16px; margin-top:10px; }
 .t-roses .datebar .side { justify-self:center; min-width:90px; text-align:center; font-family:"Cinzel",serif; font-size:14px; letter-spacing:1px; color:#f1e0d4; border-top:2px solid #e8c97a; padding-top:5px; }
 .t-roses .datebar .daynum { font-family:"Playfair Display",serif; font-weight:700; font-size:46px; color:#f7dca2; line-height:.85; }
 .t-roses .datebar .yr { font-family:"Playfair Display",serif; font-size:15px; color:#f1e0d4; }
-.t-roses .langar { font-weight:600; font-size:13.5px; color:#f4e8de; margin-top:10px; line-height:1.5; }
+.t-roses .langar { font-weight:600; font-size:13.5px; color:#f4e8de; margin-top:10px; line-height:20px; }
 .t-roses .vlabel { font-family:"Cinzel",serif; font-size:12px; letter-spacing:3px; color:#e8c97a; margin-top:10px; }
 .t-roses .venue { font-family:"Cinzel",serif; font-size:12.5px; letter-spacing:.4px; color:#f4e8de; line-height:1.6; margin-top:2px; }
 .t-roses .welcome { font-family:"Great Vibes",cursive; font-size:26px; color:#f7dca2; margin-top:10px; line-height:1; }
@@ -369,7 +373,7 @@ textarea { resize:vertical; }
 .t-mandir .lo-r { top:332px; right:26px; transform:scaleX(-1); }
 .t-mandir .content { position:relative; z-index:3; padding:24px 64px 28px; }
 .t-mandir .ji-photo { width:128px; height:150px; object-fit:cover; object-position:center 22%; border-radius:62px 62px 6px 6px; margin-top:6px; box-shadow:0 4px 12px rgba(120,40,80,.28); }
-.t-mandir .blessing { font-family:"Cormorant Garamond",serif; font-size:19px; color:#5a3a48; line-height:1.3; margin-top:14px; }
+.t-mandir .blessing { font-family:"Cormorant Garamond",serif; font-size:19px; color:#5a3a48; line-height:25px; margin-top:14px; }
 .t-mandir .title { font-family:"Great Vibes",cursive; font-size:42px; color:#b0316a; line-height:1; margin-top:6px; }
 .t-mandir .datewrap { margin-top:10px; }
 .t-mandir .month { font-family:"Cinzel",serif; font-size:15px; letter-spacing:3px; color:#3a2a32; }
@@ -378,7 +382,7 @@ textarea { resize:vertical; }
 .t-mandir .daterow .dnum { font-family:"Playfair Display",serif; font-size:42px; color:#3a2a32; border:2px solid #3a2a32; border-top:none; border-radius:0 0 38px 38px; padding:0 14px 6px; line-height:1; }
 .t-mandir .venue { font-family:"Cormorant Garamond",serif; font-size:21px; color:#3a2630; margin-top:18px; }
 .t-mandir .langar { font-family:"Cormorant Garamond",serif; font-size:20px; color:#3a2630; margin-top:14px; }
-.t-mandir .rsvp { font-family:"Cormorant Garamond",serif; font-size:19px; color:#3a2630; margin-top:14px; line-height:1.4; }
+.t-mandir .rsvp { font-family:"Cormorant Garamond",serif; font-size:19px; color:#3a2630; margin-top:14px; line-height:27px; }
 .t-mandir .wm { color:rgba(90,40,60,.5); }
 
 /* ---------- ROYAL MANDAP (toran + gold side borders) ---------- */
@@ -390,12 +394,12 @@ textarea { resize:vertical; }
 .t-mandap .om { font-size:30px; color:#ecca72; line-height:1; }
 .t-mandap .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:4px; color:#e6c869; margin-top:4px; }
 .t-mandap .ji-photo { width:118px; height:118px; border-radius:50%; object-fit:cover; border:3px solid #d8b04a; margin-top:12px; box-shadow:0 0 0 5px rgba(216,176,74,.18); }
-.t-mandap .title { font-family:"Playfair Display",serif; font-weight:700; font-size:38px; color:#f2d98c; margin-top:12px; line-height:1.05; }
+.t-mandap .title { font-family:"Playfair Display",serif; font-weight:700; font-size:38px; color:#f2d98c; margin-top:12px; line-height:40px; }
 .t-mandap .orn { color:#d8b04a; letter-spacing:4px; margin:8px 0; }
-.t-mandap .blessing { font-size:17px; line-height:1.5; color:#f6e7d6; margin-top:4px; }
+.t-mandap .blessing { font-size:17px; line-height:26px; color:#f6e7d6; margin-top:4px; }
 .t-mandap .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#ecca72; margin-top:14px; }
 .t-mandap .time { font-size:16px; color:#e6cdb6; margin-top:6px; font-style:italic; }
-.t-mandap .venue { font-size:16px; color:#f6e7d6; line-height:1.4; margin-top:12px; }
+.t-mandap .venue { font-size:16px; color:#f6e7d6; line-height:22px; margin-top:12px; }
 .t-mandap .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#f2d98c; margin-top:12px; }
 .t-mandap .phone { font-size:15px; color:#e6cdb6; margin-top:4px; }
 .t-mandap .wm { color:rgba(255,225,180,.5); }
@@ -407,12 +411,12 @@ textarea { resize:vertical; }
 .t-aura .om { font-size:30px; color:#b5530f; line-height:1; }
 .t-aura .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:4px; color:#9a3b12; margin-top:4px; }
 .t-aura .ji-photo { width:122px; height:122px; border-radius:50%; object-fit:cover; border:4px solid #e8bb50; margin-top:10px; box-shadow:0 0 0 5px rgba(255,247,230,.92), 0 4px 14px rgba(150,90,20,.3); }
-.t-aura .title { font-family:"Playfair Display",serif; font-weight:700; font-size:38px; color:#8a2a12; margin-top:14px; line-height:1.05; }
+.t-aura .title { font-family:"Playfair Display",serif; font-weight:700; font-size:38px; color:#8a2a12; margin-top:14px; line-height:40px; }
 .t-aura .orn { color:#d09020; letter-spacing:4px; margin:8px 0; }
-.t-aura .blessing { font-size:17px; line-height:1.5; color:#5a3318; margin-top:4px; }
+.t-aura .blessing { font-size:17px; line-height:26px; color:#5a3318; margin-top:4px; }
 .t-aura .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#b5530f; margin-top:14px; }
 .t-aura .time { font-size:16px; color:#5a3318; margin-top:6px; font-style:italic; }
-.t-aura .venue { font-size:16px; color:#5a3318; line-height:1.4; margin-top:12px; }
+.t-aura .venue { font-size:16px; color:#5a3318; line-height:22px; margin-top:12px; }
 .t-aura .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#8a2a12; margin-top:12px; }
 .t-aura .phone { font-size:15px; color:#7a4a22; margin-top:4px; }
 .t-aura .wm { color:rgba(120,70,20,.45); }
@@ -425,10 +429,10 @@ textarea { resize:vertical; }
 .t-lotuspond .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #fff; margin-top:12px; box-shadow:0 4px 12px rgba(40,90,80,.28); }
 .t-lotuspond .title { font-family:"Great Vibes",cursive; font-size:46px; color:#b0316a; margin-top:8px; line-height:1; }
 .t-lotuspond .orn { color:#5aa890; letter-spacing:4px; margin:6px 0; }
-.t-lotuspond .blessing { font-size:17px; line-height:1.5; color:#2a4a44; margin-top:4px; }
+.t-lotuspond .blessing { font-size:17px; line-height:26px; color:#2a4a44; margin-top:4px; }
 .t-lotuspond .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#1f6a52; margin-top:14px; }
 .t-lotuspond .time { font-size:16px; color:#2a4a44; margin-top:6px; font-style:italic; }
-.t-lotuspond .venue { font-size:16px; color:#2a4a44; line-height:1.4; margin-top:12px; }
+.t-lotuspond .venue { font-size:16px; color:#2a4a44; line-height:22px; margin-top:12px; }
 .t-lotuspond .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#b0316a; margin-top:12px; }
 .t-lotuspond .phone { font-size:15px; color:#3a5a52; margin-top:4px; }
 .t-lotuspond .wm { color:rgba(40,80,70,.45); }
@@ -440,12 +444,12 @@ textarea { resize:vertical; }
 .t-diya .om { font-size:30px; color:#f3c25a; line-height:1; }
 .t-diya .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:4px; color:#eeb845; margin-top:4px; }
 .t-diya .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid #d89a3a; margin-top:12px; box-shadow:0 0 18px rgba(240,150,40,.3); }
-.t-diya .title { font-family:"Playfair Display",serif; font-weight:700; font-size:38px; color:#f6cd72; margin-top:12px; line-height:1.05; }
+.t-diya .title { font-family:"Playfair Display",serif; font-weight:700; font-size:38px; color:#f6cd72; margin-top:12px; line-height:40px; }
 .t-diya .orn { color:#d89a3a; letter-spacing:4px; margin:8px 0; }
-.t-diya .blessing { font-size:17px; line-height:1.5; color:#f3e0c8; margin-top:4px; }
+.t-diya .blessing { font-size:17px; line-height:26px; color:#f3e0c8; margin-top:4px; }
 .t-diya .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#eeb845; margin-top:14px; }
 .t-diya .time { font-size:16px; color:#e0c2a0; margin-top:6px; font-style:italic; }
-.t-diya .venue { font-size:16px; color:#f3e0c8; line-height:1.4; margin-top:12px; }
+.t-diya .venue { font-size:16px; color:#f3e0c8; line-height:22px; margin-top:12px; }
 .t-diya .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#f6cd72; margin-top:12px; }
 .t-diya .phone { font-size:15px; color:#e0c2a0; margin-top:4px; }
 .t-diya .wm { color:rgba(245,210,150,.5); }
@@ -458,10 +462,10 @@ textarea { resize:vertical; }
 .t-marigold .ji-photo { width:122px; height:122px; border-radius:50%; object-fit:cover; border:4px solid #ef8a1e; margin-top:12px; box-shadow:0 4px 12px rgba(180,90,20,.3); }
 .t-marigold .title { font-family:"Great Vibes",cursive; font-size:46px; color:#c8461e; margin-top:12px; line-height:1; }
 .t-marigold .orn { color:#e0701a; letter-spacing:4px; margin:6px 0; }
-.t-marigold .blessing { font-size:17px; line-height:1.5; color:#6e2c14; margin-top:4px; }
+.t-marigold .blessing { font-size:17px; line-height:26px; color:#6e2c14; margin-top:4px; }
 .t-marigold .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#b5530f; margin-top:14px; }
 .t-marigold .time { font-size:16px; color:#6e2c14; margin-top:4px; }
-.t-marigold .venue { font-size:16px; color:#6e2c14; line-height:1.4; margin-top:12px; }
+.t-marigold .venue { font-size:16px; color:#6e2c14; line-height:22px; margin-top:12px; }
 .t-marigold .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#c8461e; margin-top:12px; }
 .t-marigold .phone { font-size:15px; color:#8a4520; margin-top:4px; }
 .t-marigold .wm { color:rgba(120,50,20,.45); }
