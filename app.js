@@ -342,24 +342,63 @@ if (emeraldCard) {
   emeraldCard.insertAdjacentHTML("beforeend", vine("vn-l") + vine("vn-r"));
 }
 
-// Shubh Kalash: copper pot with mango leaves and a coconut — the auspicious crown of the card
-const kalashCard = document.querySelector('.card[data-tpl="t-kalash"]');
-if (kalashCard) {
-  const leaves = [-52, -27, 0, 27, 52].map(a =>
-    `<ellipse cx="0" cy="-26" rx="7.5" ry="19" fill="#3f7b4a" stroke="#2b5c36" stroke-width="1" transform="rotate(${a})"/>`).join("");
-  kalashCard.insertAdjacentHTML("afterbegin", `<svg class="kalash" viewBox="0 0 120 132" xmlns="http://www.w3.org/2000/svg">
-    <g transform="translate(60,56)">${leaves}</g>
-    <ellipse cx="60" cy="40" rx="15" ry="17" fill="#9a6238" stroke="#6f421f" stroke-width="1.2"/>
-    <g fill="#5d3417"><circle cx="55" cy="35" r="1.8"/><circle cx="65" cy="35" r="1.8"/><circle cx="60" cy="43" r="1.8"/></g>
-    <rect x="38" y="56" width="44" height="8" rx="3" fill="#b4541e" stroke="#8a3a10" stroke-width="1"/>
-    <path d="M44,64 L76,64 L72,73 L48,73 Z" fill="#c96a24" stroke="#8a3a10" stroke-width="1"/>
-    <path d="M48,73 C20,82 24,116 60,121 C96,116 100,82 72,73 Z" fill="#c96a24" stroke="#8a3a10" stroke-width="1.2"/>
-    <path d="M48,73 C34,78 28,90 30,99 C42,106 78,106 90,99 C92,90 86,78 72,73 Z" fill="#d67e35" opacity=".55"/>
-    <g fill="#fdf3e0" opacity=".92"><circle cx="48" cy="95" r="2.2"/><circle cx="60" cy="98" r="2.2"/><circle cx="72" cy="95" r="2.2"/></g>
-    <ellipse cx="60" cy="123" rx="19" ry="5.5" fill="#8a3a10"/>
-    <g fill="#e8902a"><circle cx="34" cy="124" r="3.6"/><circle cx="86" cy="124" r="3.6"/></g>
-    <g fill="#f6b94a"><circle cx="27" cy="127" r="2.6"/><circle cx="93" cy="127" r="2.6"/></g>
-  </svg>`);
+// Bade Mandir: a night-celebration scene — a canopy of fairy-light strings over the glowing
+// white pavilion, crowned by the dark shivling dome with its white tripundra stripes
+// (inspired by photos of the Bade Mandir).
+const bmCard = document.querySelector('.card[data-tpl="t-bademandir"]');
+if (bmCard) {
+  // fairy-light canopy: strings sag from the top centre out to the edges
+  let L = "";
+  const ends = [[0,60],[0,132],[0,212],[430,60],[430,132],[430,212],[104,0],[326,0]];
+  ends.forEach(([ex, ey], i) => {
+    const ax = 215, ay = -4;
+    const cx = (ax + ex) / 2, cy = Math.max(ay, ey) / 2 + 54 + (i % 3) * 16;
+    L += `<path d="M${ax},${ay} Q${cx},${cy} ${ex},${ey}" fill="none" stroke="#d9b45c" stroke-width="0.6" opacity="0.3"/>`;
+    for (let k = 1; k < 16; k++) {
+      const t = k / 16;
+      const x = (1-t)*(1-t)*ax + 2*(1-t)*t*cx + t*t*ex;
+      const y = (1-t)*(1-t)*ay + 2*(1-t)*t*cy + t*t*ey;
+      const big = (k + i) % 4 === 0;
+      L += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${big ? 5 : 3}" fill="#ffd98a" opacity="${big ? 0.13 : 0.09}"/>`
+         + `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${big ? 1.8 : 1.2}" fill="${big ? "#ffe9bb" : "#f6cd72"}" opacity="0.95"/>`;
+    }
+  });
+  bmCard.insertAdjacentHTML("afterbegin",
+    `<svg class="bm-lights" viewBox="0 0 430 300" xmlns="http://www.w3.org/2000/svg">${L}</svg>`);
+
+  // the temple: white tent pavilion with gold drape scallops, marigold-string curtain,
+  // glowing doorway, red swag — and the shivling dome rising behind it
+  let T = `<rect x="0" y="148" width="430" height="22" fill="#0e163a"/>`;
+  T += `<g transform="translate(215,6)">
+    <path d="M-36,84 C-36,32 -25,8 0,8 C25,8 36,32 36,84 Z" fill="#262019"/>
+    <path d="M-23,34 Q0,28 23,34" stroke="#f2ead8" stroke-width="5" fill="none"/>
+    <path d="M-28,50 Q0,44 28,50" stroke="#f2ead8" stroke-width="5" fill="none"/>
+    <path d="M-31,66 Q0,60 31,66" stroke="#f2ead8" stroke-width="5" fill="none"/>
+    <line x1="0" y1="9" x2="0" y2="-5" stroke="#d9b45c" stroke-width="1.5"/>
+    <path d="M0,-5 L17,-1 L0,4 Z" fill="#e8b93a"/>
+  </g>`;
+  T += `<path d="M24,80 L406,80 L416,150 L14,150 Z" fill="#f6f1e4"/>`;
+  let sc = "";
+  for (let x = 24; x < 406; x += 22) sc += `Q${x + 11},93 ${x + 22},82 `;
+  T += `<path d="M24,82 ${sc}L406,80 L24,80 Z" fill="#e8b93a" opacity=".9"/>`;
+  T += `<path d="M24,82 ${sc}" fill="none" stroke="#caa030" stroke-width="1" opacity=".8"/>`;
+  for (let x = 34; x <= 398; x += 9) {
+    T += `<line x1="${x}" y1="88" x2="${x}" y2="146" stroke="#eecf7e" stroke-width="1" opacity="${x % 27 === 7 ? 0.5 : 0.3}"/>`;
+  }
+  T += `<path d="M193,150 L193,112 Q215,94 237,112 L237,150 Z" fill="#ffe3a0"/>
+        <path d="M199,150 L199,116 Q215,103 231,116 L231,150 Z" fill="#fff3cf"/>`;
+  let sw = "";
+  for (let x = 24; x < 406; x += 54) sw += `M${x},124 Q${x + 27},136 ${x + 54},124 `;
+  T += `<path d="${sw}" fill="none" stroke="#c0504a" stroke-width="2.2" opacity=".85"/>`;
+  for (let x = 24; x <= 406; x += 54) T += `<circle cx="${x}" cy="124" r="2.4" fill="#a83a34"/>`;
+  T += `<ellipse cx="12" cy="152" rx="36" ry="24" fill="#152a1e"/>
+        <ellipse cx="418" cy="152" rx="36" ry="24" fill="#152a1e"/>
+        <ellipse cx="62" cy="158" rx="22" ry="14" fill="#183024"/>
+        <ellipse cx="368" cy="158" rx="22" ry="14" fill="#183024"/>
+        <g fill="#f6cd72" opacity=".9"><circle cx="20" cy="142" r="1.4"/><circle cx="8" cy="150" r="1.2"/>
+        <circle cx="412" cy="144" r="1.4"/><circle cx="424" cy="152" r="1.2"/><circle cx="64" cy="152" r="1.2"/><circle cx="366" cy="153" r="1.2"/></g>`;
+  bmCard.insertAdjacentHTML("afterbegin",
+    `<svg class="bm-temple" viewBox="0 0 430 170" xmlns="http://www.w3.org/2000/svg">${T}</svg>`);
 }
 
 // Saffron Mandir: temple-skyline silhouette along the bottom, a few birds in the sky
@@ -431,7 +470,7 @@ const templates = [
   { id:"t-ivory",    name:"Ivory Mandala", bg:"#f7f1e6" },
   { id:"t-pink",  name:"Lotus Pink",   bg:"linear-gradient(160deg,#f4c5d6,#e9a7c0)" },
   { id:"t-emerald", name:"Emerald Vine",   bg:"linear-gradient(170deg,#0e3f2d,#092b1e)" },
-  { id:"t-kalash",  name:"Shubh Kalash",   bg:"linear-gradient(180deg,#fdf9ee,#f3e2bc)" },
+  { id:"t-bademandir", name:"Bade Mandir", bg:"linear-gradient(180deg,#141c4a,#31417e)" },
   { id:"t-saffron", name:"Saffron Mandir", bg:"linear-gradient(180deg,#ffe2a0,#ee8c28)" },
   { id:"t-paisley", name:"Royal Paisley",  bg:"radial-gradient(circle at 50% 25%,#4a2472,#231040)" },
 ];
