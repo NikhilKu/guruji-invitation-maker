@@ -124,6 +124,18 @@ const goldCornerSm = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="htt
     <circle cx="34" cy="34" r="4" fill="#b08a3a" stroke="none"/>
   </g></svg>`;
 
+const paisleyGold = `<svg class="corner {pos}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#d9b45c" stroke-width="2">
+    <path d="M40,26 C86,16 112,48 104,84 C97,114 64,126 46,110 C32,97 38,72 56,68 C70,65 80,76 76,88" opacity=".95"/>
+    <path d="M50,40 C80,36 94,60 88,82" stroke-width="1.1" opacity=".65"/>
+    <path d="M24,118 Q34,140 26,162" stroke-width="1.5" opacity=".8"/>
+    <path d="M124,20 Q146,28 158,18" stroke-width="1.5" opacity=".8"/>
+  </g>
+  <g fill="#d9b45c" opacity=".9">
+    <circle cx="60" cy="78" r="3"/><circle cx="118" cy="34" r="3"/><circle cx="130" cy="52" r="2"/>
+    <circle cx="34" cy="130" r="2"/><circle cx="52" cy="124" r="1.6"/>
+  </g></svg>`;
+
 const decor = {
   "t-pink":  { svg:pinkLotus },
   "t-blush": { svg:blossom },
@@ -131,6 +143,7 @@ const decor = {
   "t-peacock":  { svg:peacockFeather },
   "t-rose":     { svg:roseFlourish },
   "t-ivory":    { svg:goldCornerSm },
+  "t-paisley":  { svg:paisleyGold },
 };
 
 // Royal Peacock: scatter peacock feathers across the card (jittered grid → even but random),
@@ -314,6 +327,68 @@ if (diyaCard) {
   [60, 158, 256, 354].forEach((x, i) => { g += diya(x, 624, i === 1 || i === 2 ? 1.05 : 0.9); });
   diyaCard.insertAdjacentHTML("afterbegin", `<svg class="diyas" viewBox="0 0 430 680" xmlns="http://www.w3.org/2000/svg">${g}</svg>`);
 }
+// Emerald Vine: a winding gold vine with leaves and berries down each side
+const emeraldCard = document.querySelector('.card[data-tpl="t-emerald"]');
+if (emeraldCard) {
+  let v = `<path d="M20,4 C33,56 7,96 20,148 C33,200 7,240 20,292 C33,344 7,384 20,436 C31,478 11,516 20,556" fill="none" stroke="#d4af5a" stroke-width="2"/>`;
+  for (let i = 0; i < 13; i++) {
+    const y = 24 + i * 42;
+    const side = i % 2 === 0 ? 1 : -1;                     // leaves alternate sides
+    const rot = side * (34 + (i % 3) * 8);
+    v += `<ellipse cx="${20 + side * 8}" cy="${y}" rx="4.2" ry="10" fill="#d4af5a" opacity=".85" transform="rotate(${rot} ${20 + side * 8} ${y})"/>`;
+    if (i % 3 === 1) v += `<circle cx="${20 - side * 7}" cy="${y + 16}" r="2.4" fill="#e8c987" opacity=".8"/>`;
+  }
+  const vine = (cls) => `<svg class="vine ${cls}" viewBox="0 0 40 560" xmlns="http://www.w3.org/2000/svg">${v}</svg>`;
+  emeraldCard.insertAdjacentHTML("beforeend", vine("vn-l") + vine("vn-r"));
+}
+
+// Shubh Kalash: copper pot with mango leaves and a coconut — the auspicious crown of the card
+const kalashCard = document.querySelector('.card[data-tpl="t-kalash"]');
+if (kalashCard) {
+  const leaves = [-52, -27, 0, 27, 52].map(a =>
+    `<ellipse cx="0" cy="-26" rx="7.5" ry="19" fill="#3f7b4a" stroke="#2b5c36" stroke-width="1" transform="rotate(${a})"/>`).join("");
+  kalashCard.insertAdjacentHTML("afterbegin", `<svg class="kalash" viewBox="0 0 120 132" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(60,56)">${leaves}</g>
+    <ellipse cx="60" cy="40" rx="15" ry="17" fill="#9a6238" stroke="#6f421f" stroke-width="1.2"/>
+    <g fill="#5d3417"><circle cx="55" cy="35" r="1.8"/><circle cx="65" cy="35" r="1.8"/><circle cx="60" cy="43" r="1.8"/></g>
+    <rect x="38" y="56" width="44" height="8" rx="3" fill="#b4541e" stroke="#8a3a10" stroke-width="1"/>
+    <path d="M44,64 L76,64 L72,73 L48,73 Z" fill="#c96a24" stroke="#8a3a10" stroke-width="1"/>
+    <path d="M48,73 C20,82 24,116 60,121 C96,116 100,82 72,73 Z" fill="#c96a24" stroke="#8a3a10" stroke-width="1.2"/>
+    <path d="M48,73 C34,78 28,90 30,99 C42,106 78,106 90,99 C92,90 86,78 72,73 Z" fill="#d67e35" opacity=".55"/>
+    <g fill="#fdf3e0" opacity=".92"><circle cx="48" cy="95" r="2.2"/><circle cx="60" cy="98" r="2.2"/><circle cx="72" cy="95" r="2.2"/></g>
+    <ellipse cx="60" cy="123" rx="19" ry="5.5" fill="#8a3a10"/>
+    <g fill="#e8902a"><circle cx="34" cy="124" r="3.6"/><circle cx="86" cy="124" r="3.6"/></g>
+    <g fill="#f6b94a"><circle cx="27" cy="127" r="2.6"/><circle cx="93" cy="127" r="2.6"/></g>
+  </svg>`);
+}
+
+// Saffron Mandir: temple-skyline silhouette along the bottom, a few birds in the sky
+const saffronCard = document.querySelector('.card[data-tpl="t-saffron"]');
+if (saffronCard) {
+  const C = "#5f1d0d";
+  // stepped shikhara tower: tiers narrow toward the finial
+  const tower = (x, s) => `<g transform="translate(${x},0) scale(${s})" fill="${C}">
+    <rect x="-30" y="84" width="60" height="36"/>
+    <rect x="-24" y="62" width="48" height="24"/>
+    <rect x="-18" y="42" width="36" height="22"/>
+    <rect x="-12" y="26" width="24" height="18"/>
+    <ellipse cx="0" cy="24" rx="9" ry="5"/>
+    <rect x="-1.2" y="6" width="2.4" height="16"/>
+    <path d="M1,7 L15,10 L1,14 Z"/></g>`;
+  // onion dome on a drum
+  const dome = (x, s) => `<g transform="translate(${x},0) scale(${s})" fill="${C}">
+    <rect x="-26" y="96" width="52" height="24"/>
+    <path d="M-22,96 C-22,74 -8,72 0,58 C8,72 22,74 22,96 Z"/>
+    <rect x="-1" y="46" width="2" height="12"/><circle cx="0" cy="45" r="2.5"/></g>`;
+  const bird = (x, y, s) => `<path d="M${x},${y} q5,-5 10,0 q5,-5 10,0" fill="none" stroke="${C}" stroke-width="1.6" opacity=".75" transform="scale(${s})" transform-origin="${x} ${y}"/>`;
+  let sk = `<rect x="0" y="112" width="430" height="20" fill="${C}"/>`;
+  sk += `<path d="M0,112 h430 v-6 l-8,-4 -8,4 -12,0 -8,-4 -8,4 -12,0 -8,-4 -8,4 h-286 l-8,-4 -8,4 -12,0 -8,-4 -8,4 -12,0 -8,-4 -8,4 Z" fill="${C}"/>`;
+  sk += tower(215, 1) + dome(92, 0.9) + dome(338, 0.9) + tower(24, 0.55) + tower(406, 0.55);
+  sk += bird(120, 26, 1) + bird(300, 18, 0.8) + bird(260, 34, 0.6);
+  saffronCard.insertAdjacentHTML("afterbegin",
+    `<svg class="skyline" viewBox="0 0 430 132" xmlns="http://www.w3.org/2000/svg">${sk}</svg>`);
+}
+
 Object.keys(decor).forEach(tpl => {
   const card = document.querySelector(`.card[data-tpl="${tpl}"]`);
   ["c-tl","c-tr","c-bl","c-br"].forEach(pos => {
@@ -355,6 +430,10 @@ const templates = [
   { id:"t-mandap",      name:"Royal Mandap",   bg:"linear-gradient(180deg,#7a1228,#560c1c)" },
   { id:"t-ivory",    name:"Ivory Mandala", bg:"#f7f1e6" },
   { id:"t-pink",  name:"Lotus Pink",   bg:"linear-gradient(160deg,#f4c5d6,#e9a7c0)" },
+  { id:"t-emerald", name:"Emerald Vine",   bg:"linear-gradient(170deg,#0e3f2d,#092b1e)" },
+  { id:"t-kalash",  name:"Shubh Kalash",   bg:"linear-gradient(180deg,#fdf9ee,#f3e2bc)" },
+  { id:"t-saffron", name:"Saffron Mandir", bg:"linear-gradient(180deg,#ffe2a0,#ee8c28)" },
+  { id:"t-paisley", name:"Royal Paisley",  bg:"radial-gradient(circle at 50% 25%,#4a2472,#231040)" },
 ];
 const tplWrap = document.getElementById("templates");
 const previewCap = document.getElementById("previewCap");

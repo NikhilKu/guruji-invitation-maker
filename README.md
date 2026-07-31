@@ -6,7 +6,7 @@ A free, browser-based tool to create and share a beautiful **Guru Ji Satsang inv
 
 ## Features
 
-- **16 templates** — a range of styles (Floral Mandir, Royal Mandap, Diya Glow, Divine Aura, Lotus Pond, Marigold Garland, Velvet Butterflies, Rose Garden, Divine Shiva, Midnight Gold, and more), all rendered with CSS/SVG.
+- **20 templates** — a range of styles (Floral Mandir, Royal Mandap, Diya Glow, Divine Aura, Lotus Pond, Marigold Garland, Velvet Butterflies, Rose Garden, Divine Shiva, Midnight Gold, and more), all rendered with CSS/SVG.
 - **Live preview** — every field updates the invitation instantly; the preview stays pinned while you scroll on desktop.
 - **Smart date** — the weekday, day number (with ordinal), month and year are derived automatically from a single date picker.
 - **Choose or upload a photo** — pick a Guru Ji photo or upload your own (your upload stays in your browser).

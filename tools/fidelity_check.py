@@ -44,7 +44,8 @@ OUT = os.path.join(REPO, "tools", "fidelity_out")
 PORT = 8641
 TEMPLATES = ["t-mandir", "t-diya", "t-rose", "t-shivad", "t-marigold", "t-midnight",
              "t-lotuspond", "t-pcroyal", "t-velvetred", "t-aura", "t-peacock", "t-roses",
-             "t-blush", "t-mandap", "t-ivory", "t-pink"]
+             "t-blush", "t-mandap", "t-ivory", "t-pink",
+             "t-emerald", "t-kalash", "t-saffron", "t-paisley"]
 # aa (>16) is AA-dominated and engine-specific; blob (eroded >48) catches real defects.
 AA_BUDGET = {"chromium": 0.5, "firefox": 1.2, "webkit": 4.5}
 BLOB_BUDGET = 0.02  # percent

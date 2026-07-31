@@ -470,6 +470,79 @@ textarea { resize:vertical; }
 .t-marigold .phone { font-size:15px; color:#8a4520; margin-top:4px; }
 .t-marigold .wm { color:rgba(120,50,20,.45); }
 
+/* ---------- EMERALD VINE (deep green + winding gold vines) ---------- */
+.t-emerald { background:linear-gradient(170deg,#0e3f2d,#092b1e 55%,#0e3f2d); }
+.t-emerald .frame { position:absolute; inset:16px; border:1.5px solid #d4af5a; z-index:1; }
+.t-emerald .frame::after { content:""; position:absolute; inset:5px; border:1px solid rgba(212,175,90,.45); }
+.t-emerald .vine { position:absolute; top:56px; width:32px; height:auto; z-index:2; pointer-events:none; }
+.t-emerald .vn-l { left:26px; } .t-emerald .vn-r { right:26px; transform:scaleX(-1); }
+.t-emerald .content { padding:44px 62px 32px; z-index:3; }
+.t-emerald .om { font-size:30px; color:#e2c377; line-height:1; }
+.t-emerald .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:4px; color:#e2c377; margin-top:6px; }
+.t-emerald .ji-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid #d4af5a; margin-top:14px; box-shadow:0 0 0 6px rgba(212,175,90,.14); }
+.t-emerald .title { font-family:"Playfair Display",serif; font-weight:700; font-size:40px; color:#ecd28a; margin-top:14px; line-height:42px; }
+.t-emerald .orn { color:#d4af5a; letter-spacing:4px; margin:8px 0; }
+.t-emerald .blessing { font-size:17px; line-height:26px; color:#eee6cd; margin-top:4px; }
+.t-emerald .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#e2c377; margin-top:14px; }
+.t-emerald .time { font-size:16px; color:#d6cbaa; margin-top:6px; font-style:italic; }
+.t-emerald .venue { font-size:16px; color:#eee6cd; line-height:22px; margin-top:12px; }
+.t-emerald .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#ecd28a; margin-top:auto; padding-top:12px; }
+.t-emerald .phone { font-size:15px; color:#d6cbaa; margin-top:4px; }
+.t-emerald .wm { color:rgba(240,225,180,.5); }
+
+/* ---------- SHUBH KALASH (cream + copper kalash crown) ---------- */
+.t-kalash { background:linear-gradient(180deg,#fdf9ee,#f8ecd2 60%,#f3e2bc); }
+.t-kalash .frame { position:absolute; inset:16px; border:2px solid #b4541e; border-radius:8px; z-index:1; }
+.t-kalash .frame::after { content:""; position:absolute; inset:5px; border:1px solid rgba(180,84,30,.4); border-radius:5px; }
+.t-kalash .kalash { position:absolute; top:32px; left:50%; transform:translateX(-50%); width:96px; height:auto; z-index:2; pointer-events:none; }
+.t-kalash .content { padding:142px 48px 30px; z-index:3; }
+.t-kalash .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:3px; color:#8a3a10; }
+.t-kalash .ji-photo { width:116px; height:116px; border-radius:50%; object-fit:cover; border:4px solid #c96a24; margin-top:10px; box-shadow:0 4px 12px rgba(150,80,20,.28); }
+.t-kalash .title { font-family:"Great Vibes",cursive; font-size:46px; color:#b4541e; margin-top:10px; line-height:1; }
+.t-kalash .orn { color:#c96a24; letter-spacing:4px; margin:6px 0; }
+.t-kalash .blessing { font-size:17px; line-height:26px; color:#5a3a22; margin-top:4px; }
+.t-kalash .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#a34a14; margin-top:14px; }
+.t-kalash .time { font-size:16px; color:#5a3a22; margin-top:4px; }
+.t-kalash .venue { font-size:16px; color:#5a3a22; line-height:22px; margin-top:12px; }
+.t-kalash .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#b4541e; margin-top:auto; padding-top:12px; }
+.t-kalash .phone { font-size:15px; color:#7a5a3a; margin-top:4px; }
+.t-kalash .wm { color:rgba(140,80,30,.45); }
+
+/* ---------- SAFFRON MANDIR (sunrise saffron sky + temple skyline) ---------- */
+.t-saffron { background:linear-gradient(180deg,#ffe2a0,#f9b25a 52%,#ee8c28); }
+.t-saffron .skyline { position:absolute; left:0; bottom:0; width:100%; height:auto; z-index:1; pointer-events:none; }
+.t-saffron .content { padding:38px 46px 150px; z-index:2; }
+.t-saffron .om { font-size:30px; color:#7a230f; line-height:1; }
+.t-saffron .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:4px; color:#7a230f; margin-top:4px; }
+.t-saffron .ji-photo { width:116px; height:116px; border-radius:50%; object-fit:cover; border:4px solid #7a230f; margin-top:10px; box-shadow:0 4px 14px rgba(120,40,10,.3); }
+.t-saffron .title { font-family:"Playfair Display",serif; font-weight:700; font-size:38px; color:#6b1c0c; margin-top:12px; line-height:40px; }
+.t-saffron .orn { color:#8a2f12; letter-spacing:4px; margin:8px 0; }
+.t-saffron .blessing { font-size:17px; line-height:26px; color:#5f2410; margin-top:4px; }
+.t-saffron .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#7a230f; margin-top:14px; }
+.t-saffron .time { font-size:16px; color:#5f2410; margin-top:4px; }
+.t-saffron .venue { font-size:16px; color:#5f2410; line-height:22px; margin-top:12px; }
+.t-saffron .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#6b1c0c; margin-top:auto; padding-top:10px; }
+.t-saffron .phone { font-size:15px; color:#6b3a1e; margin-top:3px; }
+.t-saffron .wm { color:rgba(255,230,190,.6); }
+
+/* ---------- ROYAL PAISLEY (deep amethyst + gold paisley corners) ---------- */
+.t-paisley { background:radial-gradient(circle at 50% 22%,#4a2472,#231040 76%); }
+.t-paisley .frame { position:absolute; inset:16px; border:1.5px solid #d9b45c; z-index:1; }
+.t-paisley .frame::after { content:""; position:absolute; inset:6px; border:1px solid rgba(217,180,92,.45); }
+.t-paisley .content { padding:44px 46px 32px; z-index:2; }
+.t-paisley .om { font-size:32px; color:#e3c470; line-height:1; }
+.t-paisley .jai { font-family:"Cinzel",serif; font-size:14px; letter-spacing:4px; color:#e3c470; margin-top:6px; }
+.t-paisley .ji-photo { width:122px; height:122px; border-radius:50%; object-fit:cover; border:3px solid #d9b45c; margin-top:14px; box-shadow:0 0 0 6px rgba(217,180,92,.15); }
+.t-paisley .title { font-family:"Great Vibes",cursive; font-size:48px; color:#ecd28a; margin-top:14px; line-height:1; }
+.t-paisley .orn { color:#d9b45c; letter-spacing:4px; margin:8px 0; }
+.t-paisley .blessing { font-size:17px; line-height:26px; color:#efe7f4; margin-top:4px; }
+.t-paisley .bigdate { font-family:"Cinzel",serif; font-size:15px; letter-spacing:1px; color:#e3c470; margin-top:14px; }
+.t-paisley .time { font-size:16px; color:#cfc2dd; margin-top:6px; font-style:italic; }
+.t-paisley .venue { font-size:16px; color:#efe7f4; line-height:22px; margin-top:12px; }
+.t-paisley .names { font-family:"Playfair Display",serif; font-weight:600; font-size:19px; color:#ecd28a; margin-top:auto; padding-top:12px; }
+.t-paisley .phone { font-size:15px; color:#cfc2dd; margin-top:4px; }
+.t-paisley .wm { color:rgba(235,215,255,.5); }
+
 /* ===================== PRO POLISH ===================== */
 :root { --brand:#7a4a12; --brand-2:#9a6018; --accent:#b8860b; }
 
